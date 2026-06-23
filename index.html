@@ -428,7 +428,7 @@
     <p id="book-sub" style="margin:0 0 26px; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#787878;">Our calendar opens at launch. Drop your email and we'll send you a booking link the moment we go live.</p>
     <div id="book-form">
       <form name="notify" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onsubmit="return submitNotify(event)">
-        <p class="hidden-visually"><label>Don't fill this: <input name="bot-field"></label></p>
+        <p style="position:absolute;left:-9999px;opacity:0;height:0;width:0;pointer-events:none;"><label>Don't fill this: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
         <label class="form-label">Your email</label>
         <input type="email" name="email" placeholder="you@company.com" class="form-input" id="book-email" required>
         <input type="hidden" name="source" value="notify-me-launch">

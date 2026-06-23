@@ -64,7 +64,7 @@
   .term:hover { color: #39FF14; }
 
   /* TOOLTIP */
-  #tip-box { position: fixed; z-index: 200; pointer-events: auto; animation: akFade 0.14s ease; display: none; }
+  #tip-box { position: fixed; z-index: 200; pointer-events: none; animation: akFade 0.14s ease; display: none; }
   #tip-box.visible { display: block; }
   .tip-inner { position: relative; background: #191919; border: 1px solid rgba(57,255,20,0.32); border-radius: 8px; padding: 14px 16px; box-shadow: 0 0 0 1px rgba(57,255,20,0.08), 0 12px 34px rgba(0,0,0,0.65); width: 272px; }
   .tip-title { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #39FF14; text-shadow: 0 0 6px rgba(57,255,20,0.5); margin-bottom: 7px; }
@@ -514,94 +514,63 @@
   let tipPinned = false;
   let activeTerm = null;
 
+  // Detect touch-only devices — synthetic mouseenter/mouseleave must be ignored on these
+  const isTouch = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
   function showTip(key, rect) {
     const g = GLOSSARY[key];
     if (!g) return;
     activeTerm = key;
     tipTitle.textContent = g.t;
     tipBody.textContent = g.b;
-    const cx = rect.left + rect.width / 2;
-    const ty = rect.top + window.scrollY;
-    tipBox.style.left = cx + 'px';
-    tipBox.style.top = (rect.top + window.scrollY) + 'px';
-    tipBox.style.transform = 'translate(-50%, calc(-100% - 12px))';
+    // position:fixed uses viewport coords — never add window.scrollY
+    const TIP_W = 272;
+    const GAP = 10;
+    let left = rect.left + rect.width / 2 - TIP_W / 2;
+    left = Math.max(GAP, Math.min(left, window.innerWidth - TIP_W - GAP));
+    tipBox.style.left = left + 'px';
+    if (rect.top > 80) {
+      tipBox.style.top = rect.top + 'px';
+      tipBox.style.transform = 'translateY(calc(-100% - 10px))';
+    } else {
+      tipBox.style.top = (rect.bottom + 8) + 'px';
+      tipBox.style.transform = 'none';
+    }
     tipBox.classList.add('visible');
   }
 
   function hideTip() {
-    if (!tipPinned) {
-      tipBox.classList.remove('visible');
-      activeTerm = null;
-    }
-  }
-
-  let lastTapTime = 0;
-
-  function showTipClamped(key, rect) {
-    const g = GLOSSARY[key];
-    if (!g) return;
-    activeTerm = key;
-    tipTitle.textContent = g.t;
-    tipBody.textContent = g.b;
-    tipBox.classList.add('visible');
-    // position:fixed uses viewport coords — do NOT add window.scrollY
-    const TIP_W = 272;
-    const MARGIN = 10;
-    let cx = rect.left + rect.width / 2;
-    let left = cx - TIP_W / 2;
-    left = Math.max(MARGIN, Math.min(left, window.innerWidth - TIP_W - MARGIN));
-    tipBox.style.left = left + 'px';
-    // If term is near top of viewport, show below instead of above
-    if (rect.top < 80) {
-      tipBox.style.top = (rect.bottom + 8) + 'px';
-      tipBox.style.transform = 'none';
-    } else {
-      tipBox.style.top = rect.top + 'px';
-      tipBox.style.transform = 'translateY(calc(-100% - 12px))';
-    }
+    tipBox.classList.remove('visible');
+    activeTerm = null;
+    tipPinned = false;
   }
 
   document.querySelectorAll('.term').forEach(el => {
-    // Desktop hover
-    el.addEventListener('mouseenter', e => {
-      if (!tipPinned) showTipClamped(el.dataset.term, el.getBoundingClientRect());
+    // Desktop hover — skip entirely on touch devices to avoid flicker
+    el.addEventListener('mouseenter', () => {
+      if (!isTouch() && !tipPinned) showTip(el.dataset.term, el.getBoundingClientRect());
     });
-    el.addEventListener('mouseleave', e => {
-      if (!tipPinned) hideTip();
+    el.addEventListener('mouseleave', () => {
+      if (!isTouch() && !tipPinned) hideTip();
     });
-    // Click/tap — toggle pin
+    // Click on desktop pins; tap on mobile shows and pins
     el.addEventListener('click', e => {
-      e.preventDefault();
       e.stopPropagation();
-      lastTapTime = Date.now();
       const key = el.dataset.term;
-      if (activeTerm === key && tipPinned) {
-        tipBox.classList.remove('visible');
-        activeTerm = null;
-        tipPinned = false;
+      if (tipPinned && activeTerm === key) {
+        hideTip();
       } else {
         tipPinned = true;
-        showTipClamped(key, el.getBoundingClientRect());
+        showTip(key, el.getBoundingClientRect());
       }
     });
   });
 
-  document.addEventListener('click', () => {
-    if (Date.now() - lastTapTime > 300) {
-      tipPinned = false;
-      tipBox.classList.remove('visible');
-      activeTerm = null;
-    }
-  });
+  // Click anywhere outside a term closes the tooltip
+  document.addEventListener('click', () => { if (tipPinned) hideTip(); });
 
-  // Scroll dismiss — ignore if triggered within 400ms of a tap (mobile scroll-after-tap)
-  window.addEventListener('scroll', () => {
-    if (Date.now() - lastTapTime > 400) {
-      tipPinned = false;
-      tipBox.classList.remove('visible');
-      activeTerm = null;
-    }
-  }, true);
+  // Scroll closes — passive for performance
+  window.addEventListener('scroll', () => { if (tipPinned) hideTip(); }, { passive: true });
 
   // ── BOOKING ──
   function openBooking() {

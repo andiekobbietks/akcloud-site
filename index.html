@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AKcloud — Sovereign Cloud MSP | Coming Soon</title>
+<meta name="description" content="Your sovereign cloud MSP. Fully UK compliant today, EU next. The smarter alternative to expensive hyperscalers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #080808; font-family: 'DM Sans', sans-serif; }
+  ::selection { background: rgba(57,255,20,0.25); color: #fff; }
+  input::placeholder { color: #3A3A3A; }
+
+  @keyframes akTrace { from { transform: translateX(-100%); } to { transform: translateX(600%); } }
+  @keyframes akBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes akNode { 0%, 100% { opacity: 0.35; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.15); } }
+  @keyframes akShimmer { from { background-position: -160px 0; } to { background-position: 220px 0; } }
+  @keyframes akFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes akFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; height: 64px; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; background: rgba(8,8,8,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid #242424; }
+  .nav-logo { display: flex; align-items: center; text-decoration: none; }
+  .nav-logo img { height: 40px; width: auto; display: block; filter: drop-shadow(0 0 8px rgba(80,200,70,0.35)); }
+  .nav-links { display: flex; align-items: center; gap: 30px; }
+  .nav-link { text-decoration: none; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #C8C8C8; transition: color 0.15s; }
+  .nav-link:hover { color: #39FF14; }
+  .btn-ghost { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: transparent; border: 1px solid #242424; border-radius: 4px; padding: 9px 18px; cursor: pointer; transition: all 0.15s; }
+  .btn-ghost:hover { color: #39FF14; border-color: #39FF14; box-shadow: inset 0 0 0 1px #39FF14, 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); }
+  .btn-primary { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #080808; background: #39FF14; border: none; border-radius: 4px; padding: 10px 18px; cursor: pointer; box-shadow: 0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5), 0 0 48px rgba(57,255,20,0.25); transition: transform 0.15s, box-shadow 0.15s; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 12px #39FF14, 0 0 32px rgba(57,255,20,0.55), 0 0 72px rgba(57,255,20,0.28), 0 0 120px rgba(57,255,20,0.12); }
+  .btn-primary-lg { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #080808; background: #39FF14; border: none; border-radius: 4px; padding: 15px 30px; cursor: pointer; box-shadow: 0 0 12px #39FF14, 0 0 32px rgba(57,255,20,0.55), 0 0 72px rgba(57,255,20,0.28), 0 0 120px rgba(57,255,20,0.12); transition: transform 0.15s; }
+  .btn-primary-lg:hover { transform: translateY(-1px); }
+  .btn-ghost-lg { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: transparent; border: 1px solid #242424; border-radius: 4px; padding: 14px 29px; cursor: pointer; transition: all 0.15s; }
+  .btn-ghost-lg:hover { color: #39FF14; border-color: #39FF14; box-shadow: inset 0 0 0 1px #39FF14, 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); }
+
+  /* CIRCUIT RULE */
+  .circuit-rule { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+  .circuit-line { position: relative; height: 1px; width: 100%; background: #242424; overflow: hidden; }
+  .circuit-pulse { position: absolute; top: 0; left: 0; height: 100%; width: 14%; background: linear-gradient(90deg, transparent, #39FF14, transparent); box-shadow: 0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5); animation: akTrace 4s linear infinite; }
+
+  /* SERVICE CARD corner accent */
+  .card { position: relative; background: #111; border: 1px solid #242424; border-radius: 8px; padding: 30px; transition: border-color 0.2s, box-shadow 0.2s; }
+  .card::before { content: ''; position: absolute; top: -1px; left: -1px; width: 38px; height: 38px; border-top: 2px solid #39FF14; border-left: 2px solid #39FF14; border-top-left-radius: 8px; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); transition: width 0.2s, height 0.2s, box-shadow 0.2s; }
+  .card:hover { border-color: rgba(57,255,20,0.30); box-shadow: 0 0 0 1px rgba(57,255,20,0.15), 0 8px 32px rgba(0,0,0,0.40); }
+  .card:hover::before { width: 80px; height: 80px; box-shadow: 0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.50), 0 0 48px rgba(57,255,20,0.25); }
+  .card-outcome { position: relative; background: #111; border: 1px solid #242424; border-radius: 8px; padding: 32px; transition: border-color 0.2s, box-shadow 0.2s; }
+  .card-outcome::before { content: ''; position: absolute; top: -1px; left: -1px; width: 38px; height: 38px; border-top: 2px solid #39FF14; border-left: 2px solid #39FF14; border-top-left-radius: 8px; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); transition: width 0.2s, height 0.2s, box-shadow 0.2s; }
+  .card-outcome:hover { border-color: rgba(57,255,20,0.30); box-shadow: 0 0 0 1px rgba(57,255,20,0.15), 0 8px 32px rgba(0,0,0,0.40); }
+  .card-outcome:hover::before { width: 80px; height: 80px; box-shadow: 0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.50), 0 0 48px rgba(57,255,20,0.25); }
+
+  /* PERK CARD */
+  .perk-card { display: flex; gap: 14px; background: #111; border: 1px solid #242424; border-radius: 8px; padding: 24px; transition: border-color 0.2s; }
+  .perk-card:hover { border-color: rgba(57,255,20,0.20); }
+  .perk-dot { flex: none; width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; background: #39FF14; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); }
+
+  /* TERM underline */
+  .term { color: inherit; border-bottom: 1px dashed rgba(57,255,20,0.6); cursor: help; transition: color 0.15s; }
+  .term:hover { color: #39FF14; }
+
+  /* TOOLTIP */
+  #tip-box { position: fixed; z-index: 200; pointer-events: none; animation: akFade 0.14s ease; display: none; }
+  #tip-box.visible { display: block; }
+  .tip-inner { position: relative; background: #191919; border: 1px solid rgba(57,255,20,0.32); border-radius: 8px; padding: 14px 16px; box-shadow: 0 0 0 1px rgba(57,255,20,0.08), 0 12px 34px rgba(0,0,0,0.65); width: 272px; }
+  .tip-title { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #39FF14; text-shadow: 0 0 6px rgba(57,255,20,0.5); margin-bottom: 7px; }
+  .tip-body { font-family: 'DM Sans', sans-serif; font-size: 13.5px; line-height: 1.5; color: #C8C8C8; }
+  .tip-arrow { position: absolute; left: 50%; bottom: -5px; width: 9px; height: 9px; transform: translateX(-50%) rotate(45deg); background: #191919; border-right: 1px solid rgba(57,255,20,0.32); border-bottom: 1px solid rgba(57,255,20,0.32); }
+
+  /* BOOKING MODAL */
+  #book-overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(8,8,8,0.84); backdrop-filter: blur(6px); }
+  #book-overlay.visible { display: flex; }
+  .book-modal { position: relative; width: 100%; max-width: 460px; background: #111; border: 1px solid #242424; border-radius: 8px; padding: 38px 36px; animation: akFade 0.18s ease; }
+  .book-modal::before { content: ''; position: absolute; top: -1px; left: -1px; width: 48px; height: 48px; border-top: 2px solid #39FF14; border-left: 2px solid #39FF14; border-top-left-radius: 8px; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); }
+  #book-notify-msg { margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center; min-height: 18px; display: none; }
+  #book-notify-msg.visible { display: block; }
+
+  /* LOGIN MODAL */
+  #login-overlay { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(8,8,8,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); animation: akFadeIn 0.18s ease; display: none; }
+  #login-overlay.visible { display: flex; }
+  .login-modal { position: relative; width: 100%; max-width: 420px; background: #111; border: 1px solid #242424; border-radius: 8px; padding: 38px 36px; }
+  .login-modal::before { content: ''; position: absolute; top: -1px; left: -1px; width: 48px; height: 48px; border-top: 2px solid #39FF14; border-left: 2px solid #39FF14; border-top-left-radius: 8px; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); }
+  .modal-close { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid #242424; border-radius: 4px; color: #787878; font-size: 15px; cursor: pointer; line-height: 1; transition: all 0.15s; }
+  .modal-close:hover { color: #39FF14; border-color: #39FF14; }
+  .form-label { display: block; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #787878; margin-bottom: 8px; }
+  .form-input { width: 100%; background: #080808; border: 1px solid #242424; border-radius: 4px; padding: 13px 14px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: #fff; outline: none; transition: all 0.15s; margin-bottom: 18px; }
+  .form-input:focus { border-color: #39FF14; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.4); }
+  .btn-sign-in { width: 100%; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #080808; background: #39FF14; border: none; border-radius: 4px; padding: 15px 0; cursor: pointer; box-shadow: 0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5), 0 0 48px rgba(57,255,20,0.25); transition: transform 0.15s; }
+  .btn-sign-in:hover { transform: translateY(-1px); }
+  #auth-msg { margin-top: 16px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39FF14; text-shadow: 0 0 6px rgba(57,255,20,0.4); display: none; }
+  #auth-msg.visible { display: block; }
+
+  /* SECTIONS */
+  .section-inner { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+  .section-eyebrow { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #39FF14; text-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); margin-bottom: 18px; }
+  .section-h2 { margin: 0; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 42px; line-height: 1.12; color: #fff; text-wrap: pretty; }
+  .section-p { margin: 22px 0 0; font-family: 'DM Sans', sans-serif; font-size: 18px; line-height: 1.6; color: #C8C8C8; text-wrap: pretty; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
+
+  /* COUNTDOWN */
+  .countdown-unit { flex: 1; text-align: center; background: #111; border: 1px solid #242424; border-radius: 4px; padding: 20px 0; }
+  .countdown-num { font-family: 'Exo 2', sans-serif; font-weight: 900; font-size: 48px; line-height: 1; color: #39FF14; text-shadow: 0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5), 0 0 48px rgba(57,255,20,0.25); }
+  .countdown-label { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.1em; color: #787878; margin-top: 9px; }
+
+  /* STATUS BAR */
+  .status-bar { position: relative; height: 3px; border-radius: 2px; background: #191919; overflow: hidden; }
+  .status-shimmer { position: absolute; inset: 0; background: linear-gradient(90deg, transparent, #39FF14, transparent); background-size: 160px 100%; box-shadow: 0 0 8px rgba(57,255,20,0.6); animation: akShimmer 1.8s linear infinite; }
+  .status-shimmer-slow { position: absolute; inset: 0; background: linear-gradient(90deg, transparent, #39FF14, transparent); background-size: 160px 100%; box-shadow: 0 0 8px rgba(57,255,20,0.6); animation: akShimmer 2.3s linear infinite; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { gap: 12px; }
+    .nav-link { display: none; }
+    .nav-links .nav-link:last-of-type { display: none; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .section-h2 { font-size: 28px; }
+    #hero h1 { font-size: 64px !important; }
+    .section-inner { padding: 0 20px; }
+  }
+
+  /* ── SPLASH ── */
+  #spx {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    background: #080808; overflow: hidden;
+  }
+  #spx-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  #spx-radial {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 65% 60% at 50% 50%,
+      rgba(57,255,20,0.11) 0%, rgba(57,255,20,0.04) 45%, transparent 70%);
+    animation: spxRadialPulse 2.4s ease-in-out 0.52s 2 alternate;
+  }
+  #spx-ak {
+    position: absolute;
+    font-family: 'Exo 2', sans-serif; font-weight: 900;
+    font-size: clamp(130px, 35vmin, 340px);
+    line-height: 1; letter-spacing: -0.03em; color: #39FF14;
+    text-shadow:
+      0 0 24px #39FF14,
+      0 0 70px rgba(57,255,20,0.65),
+      0 0 140px rgba(57,255,20,0.38),
+      0 0 260px rgba(57,255,20,0.18);
+    animation: spxAK 3.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  #spx-logo {
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0;
+    animation: spxLogo 2.4s cubic-bezier(0.4, 0, 0.2, 1) 2.6s forwards;
+  }
+  #spx-logo img {
+    width: min(440px, 74vw); height: auto;
+    filter:
+      drop-shadow(0 0 28px rgba(57,255,20,0.42))
+      drop-shadow(0 0 72px rgba(57,255,20,0.18));
+    image-rendering: -webkit-optimize-contrast;
+  }
+  #spx-tagline {
+    margin-top: 20px;
+    font-family: 'Exo 2', sans-serif; font-weight: 700;
+    font-size: clamp(10px, 2vw, 13px); letter-spacing: 0.32em;
+    text-transform: uppercase; color: #787878;
+    opacity: 0;
+    animation: spxTagline 1.2s ease 3.5s forwards;
+  }
+
+  @keyframes spxAK {
+    0%   { opacity: 0; transform: scale(0.7) translateY(20px); }
+    16%  { opacity: 1; transform: scale(1) translateY(0);
+           text-shadow: 0 0 24px #39FF14, 0 0 70px rgba(57,255,20,0.65),
+                        0 0 140px rgba(57,255,20,0.38), 0 0 260px rgba(57,255,20,0.18); }
+    42%  { opacity: 1; transform: scale(1.015) translateY(0);
+           text-shadow: 0 0 36px #39FF14, 0 0 100px rgba(57,255,20,0.78),
+                        0 0 200px rgba(57,255,20,0.52), 0 0 360px rgba(57,255,20,0.24); }
+    64%  { opacity: 1; transform: scale(1) translateY(0);
+           text-shadow: 0 0 24px #39FF14, 0 0 70px rgba(57,255,20,0.65),
+                        0 0 140px rgba(57,255,20,0.38), 0 0 260px rgba(57,255,20,0.18); }
+    88%  { opacity: 0; transform: scale(1.06) translateY(-12px); }
+    100% { opacity: 0; }
+  }
+  @keyframes spxRadialPulse {
+    from { opacity: 0.6; transform: scale(0.94); }
+    to   { opacity: 1;   transform: scale(1.06); }
+  }
+  @keyframes spxLogo {
+    0%   { opacity: 0; transform: scale(0.86) translateY(18px); }
+    30%  { opacity: 1; transform: scale(1) translateY(0); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes spxTagline {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spxExit {
+    0%   { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hidden static forms for Netlify build-time detection -->
+<form name="notify" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+  <input type="text" name="bot-field">
+  <input type="email" name="email">
+  <input type="text" name="source">
+</form>
+<form name="consultation" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+  <input type="text" name="bot-field">
+  <input type="email" name="email">
+  <input type="text" name="company">
+  <input type="text" name="topic">
+  <input type="text" name="source">
+</form>
+
+<!-- SPLASH -->
+<div id="spx">
+  <div id="spx-grid"></div>
+  <div id="spx-radial"></div>
+  <div id="spx-ak">AK</div>
+  <div id="spx-logo">
+    <img src="assets/ak-logo.png"
+         srcset="assets/ak-logo@2x.png 2x, assets/ak-logo@4x.png 4x"
+         alt="AndieKobbieTech Solutions"
+         width="440" height="264">
+    <div id="spx-tagline">AndieKobbieTech Solutions</div>
+  </div>
+</div>
+
+<!-- CIRCUIT BACKGROUND -->
+<div style="position:fixed; inset:0; pointer-events:none; background-image:linear-gradient(rgba(57,255,20,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,20,0.025) 1px, transparent 1px); background-size:48px 48px; z-index:0;"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#top" class="nav-logo"><img src="assets/ak-mark2.png" srcset="assets/ak-mark2@2x.png 2x, assets/ak-mark2@4x.png 4x" alt="AndieKobbieTech" width="80" height="40" style="image-rendering:-webkit-optimize-contrast;"></a>
+  <div class="nav-links">
+    <a href="#about" class="nav-link">The Alternative</a>
+    <a href="#credits" class="nav-link">Cloud Credits</a>
+    <a href="#perks" class="nav-link">Perks</a>
+    <a href="#stories" class="nav-link">Outcomes</a>
+    <button class="btn-primary" onclick="openBooking()">Book a Consultation</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="top" style="position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px 40px 80px;">
+  <div style="position:absolute; inset:0; background:radial-gradient(ellipse 55% 45% at 50% 42%, rgba(57,255,20,0.08), transparent 70%); pointer-events:none;"></div>
+  <img id="hero-logo-tap" src="assets/ak-logo.png" srcset="assets/ak-logo@2x.png 2x, assets/ak-logo@4x.png 4x" alt="AndieKobbieTech" width="150" height="90" style="position:relative; width:150px; height:auto; margin-bottom:30px; filter:drop-shadow(0 0 16px rgba(80,200,70,0.42)); image-rendering:-webkit-optimize-contrast;">
+  <div style="position:relative; display:inline-flex; align-items:center; gap:8px; font-family:'Exo 2',sans-serif; font-weight:700; font-size:12px; letter-spacing:0.2em; text-transform:uppercase; color:#39FF14; text-shadow:0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); margin-bottom:26px;">
+    <span style="width:7px; height:7px; border-radius:50%; background:#39FF14; box-shadow:0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); animation:akNode 2.4s ease-in-out infinite;"></span>
+    Coming Soon
+  </div>
+  <h1 id="hero" style="position:relative; margin:0; font-family:'Exo 2',sans-serif; font-weight:900; font-size:112px; line-height:0.96; letter-spacing:0.01em;">
+    <span style="color:#39FF14; text-shadow:0 0 12px #39FF14, 0 0 32px rgba(57,255,20,0.55), 0 0 72px rgba(57,255,20,0.28), 0 0 120px rgba(57,255,20,0.12);">AK</span><span style="color:#fff;">Cloud</span>
+  </h1>
+  <p style="position:relative; margin:32px auto 0; max-width:680px; font-family:'DM Sans',sans-serif; font-size:20px; line-height:1.55; color:#C8C8C8; text-wrap:pretty;">
+    Your <span class="term" data-term="sovereign">sovereign</span> cloud <span class="term" data-term="msp">MSP</span>. Fully UK compliant today, EU next. The smarter alternative to expensive <span class="term" data-term="hyperscaler">hyperscalers</span>, built on their distribution and <span class="term" data-term="compute">compute</span>, with <span class="term" data-term="byoc">bring your own cloud</span> and <span class="term" data-term="byod">bring your own device</span>.
+  </p>
+
+  <!-- COUNTDOWN -->
+  <div style="position:relative; margin-top:46px; width:100%; max-width:560px;">
+    <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#787878; margin-bottom:16px;">Estimated Launch, T Minus</div>
+    <div style="display:flex; gap:12px;">
+      <div class="countdown-unit"><div class="countdown-num" id="cd-dd">00</div><div class="countdown-label">DAYS</div></div>
+      <div class="countdown-unit"><div class="countdown-num" id="cd-hh">00</div><div class="countdown-label">HOURS</div></div>
+      <div class="countdown-unit"><div class="countdown-num" id="cd-mm">00</div><div class="countdown-label">MINS</div></div>
+      <div class="countdown-unit"><div class="countdown-num" id="cd-ss">00</div><div class="countdown-label">SECS</div></div>
+    </div>
+  </div>
+
+  <div style="position:relative; display:flex; gap:14px; margin-top:40px; flex-wrap:wrap; justify-content:center;">
+    <button class="btn-primary-lg" onclick="openBooking()">Book a Consultation</button>
+  </div>
+  <div style="position:relative; margin-top:30px; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#787878; letter-spacing:0.04em;">powered by ANDIEKOBBIETECH<span style="color:#39FF14;">.</span></div>
+</section>
+
+<!-- CIRCUIT RULE -->
+<div class="circuit-rule"><div class="circuit-line"><div class="circuit-pulse"></div></div></div>
+
+<!-- THE ALTERNATIVE -->
+<section id="about" style="position:relative; z-index:1; max-width:1180px; margin:0 auto; box-sizing:border-box; padding:96px 40px; scroll-margin-top:88px;">
+  <div class="section-eyebrow">The Sovereign Alternative</div>
+  <h2 class="section-h2" style="max-width:780px;">Hyperscaler power. Sovereign control. Without the hyperscaler invoice.</h2>
+  <p class="section-p" style="max-width:680px;">AKCloud is a <span class="term" data-term="msp">managed service provider</span> for founders and organisations that want the reach of Azure, AWS and GCP without the runaway bills or the loss of data <span class="term" data-term="sovereign">sovereignty</span>. We run your infrastructure on UK regions, govern it to compliance standards, and let you keep your own cloud accounts and your own devices.</p>
+  <div class="grid-3">
+    <div class="card">
+      <h3 style="margin:0; font-family:'Exo 2',sans-serif; font-weight:600; font-size:19px; color:#fff;">Sovereign by default</h3>
+      <p style="margin:12px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">Your data stays in UK regions. Fully UK compliant today, with EU residency arriving next. Governance and audit trails built in, not bolted on.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin:0; font-family:'Exo 2',sans-serif; font-weight:600; font-size:19px; color:#fff;">Hyperscaler distribution</h3>
+      <p style="margin:12px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">We <span class="term" data-term="leverage">leverage</span> the distribution and raw <span class="term" data-term="compute">compute</span> of Azure, AWS and GCP at managed rates, so you get their scale and tooling without paying their full retail price.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin:0; font-family:'Exo 2',sans-serif; font-weight:600; font-size:19px; color:#fff;"><span class="term" data-term="byoc">BYOC</span> and <span class="term" data-term="byod">BYOD</span></h3>
+      <p style="margin:12px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">Bring your own cloud and bring your own device. Keep your accounts, credits and hardware. We provide the architecture, security and day to day management on top.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CIRCUIT RULE -->
+<div class="circuit-rule"><div class="circuit-line"><div class="circuit-pulse" style="animation-delay: -1.5s;"></div></div></div>
+
+<!-- CLOUD CREDITS -->
+<section id="credits" style="position:relative; z-index:1; box-sizing:border-box; padding:96px 0; background:#0c0c0c; border-top:1px solid #242424; border-bottom:1px solid #242424; scroll-margin-top:88px;">
+  <div class="section-inner">
+    <div class="section-eyebrow">What Are Cloud Credits</div>
+    <h2 class="section-h2" style="max-width:820px;">Free infrastructure funding the hyperscalers hand to startups. Most founders never claim it.</h2>
+    <p class="section-p" style="max-width:720px;"><span class="term" data-term="credits">Cloud credits</span> are grants of <span class="term" data-term="compute">compute</span>, storage and AI capacity, often worth one thousand to one hundred and fifty thousand dollars or more, that Microsoft, AWS and Google give to early stage companies. They let you run servers, databases and GPU workloads for free instead of burning your runway on infrastructure. AKCloud gets you qualified, approved at the highest tier, and builds <span class="term" data-term="production">production</span> systems that run on those credits.</p>
+    <div class="grid-3">
+      <div style="background:#111; border:1px solid #242424; border-radius:8px; padding:30px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.08em; color:#39FF14; text-shadow:0 0 6px rgba(57,255,20,0.5); margin-bottom:16px;">&gt; qualify</div>
+        <h3 style="margin:0; font-family:'Exo 2',sans-serif; font-weight:600; font-size:19px; color:#fff;">Map the right programs</h3>
+        <p style="margin:12px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">We match you to Microsoft for Startups, AWS Activate, Google for Startups and F6S, and tell you exactly what each one wants to see to approve you, even pre incorporation.</p>
+      </div>
+      <div style="background:#111; border:1px solid #242424; border-radius:8px; padding:30px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.08em; color:#39FF14; text-shadow:0 0 6px rgba(57,255,20,0.5); margin-bottom:16px;">&gt; claim</div>
+        <h3 style="margin:0; font-family:'Exo 2',sans-serif; font-weight:600; font-size:19px; color:#fff;">Approved at the top tier</h3>
+        <p style="margin:12px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">We prepare your application and architecture narrative so you unlock the maximum credit tier, not the entry level grant most founders settle for.</p>
+      </div>
+      <div style="background:#111; border:1px solid #242424; border-radius:8px; padding:30px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.08em; color:#39FF14; text-shadow:0 0 6px rgba(57,255,20,0.5); margin-bottom:16px;">&gt; build</div>
+        <h3 style="margin:0; font-family:'Exo 2',sans-serif; font-weight:600; font-size:19px; color:#fff;">Run <span class="term" data-term="production">production</span> on credits</h3>
+        <p style="margin:12px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">We architect compliant, scalable infrastructure that runs on your credit balance, so you launch and grow with near zero cloud spend.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERKS -->
+<section id="perks" style="position:relative; z-index:1; max-width:1180px; margin:0 auto; box-sizing:border-box; padding:96px 40px; scroll-margin-top:88px;">
+  <div class="section-eyebrow">Perks That Come With Credits</div>
+  <h2 class="section-h2" style="max-width:760px;">Credits are the entry point. The programs are where the real leverage is.</h2>
+  <div class="grid-3" style="margin-top:48px;">
+    <div class="perk-card"><span class="perk-dot"></span><div><div style="font-family:'Exo 2',sans-serif; font-weight:600; font-size:16px; color:#fff;">Up to $150k in credits</div><div style="margin-top:6px; font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.55; color:#787878;">Across Azure, AWS and GCP, stacked where the programs allow.</div></div></div>
+    <div class="perk-card"><span class="perk-dot"></span><div><div style="font-family:'Exo 2',sans-serif; font-weight:600; font-size:16px; color:#fff;"><span class="term" data-term="architecture">Architecture reviews</span></div><div style="margin-top:6px; font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.55; color:#787878;">Free technical support and design reviews from a Microsoft Solutions Partner.</div></div></div>
+    <div class="perk-card"><span class="perk-dot"></span><div><div style="font-family:'Exo 2',sans-serif; font-weight:600; font-size:16px; color:#fff;">Investor and <span class="term" data-term="f6s">F6S</span> network</div><div style="margin-top:6px; font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.55; color:#787878;">Warm intros and accelerator access through partner ecosystems.</div></div></div>
+    <div class="perk-card"><span class="perk-dot"></span><div><div style="font-family:'Exo 2',sans-serif; font-weight:600; font-size:16px; color:#fff;">Discounted tooling</div><div style="margin-top:6px; font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.55; color:#787878;">GitHub, OpenAI, <span class="term" data-term="datastores">datastores</span> and dev tools bundled into the programs.</div></div></div>
+    <div class="perk-card"><span class="perk-dot"></span><div><div style="font-family:'Exo 2',sans-serif; font-weight:600; font-size:16px; color:#fff;">Co-sell and marketplace</div><div style="margin-top:6px; font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.55; color:#787878;">Get listed and co-sold through the hyperscaler marketplaces.</div></div></div>
+    <div class="perk-card"><span class="perk-dot"></span><div><div style="font-family:'Exo 2',sans-serif; font-weight:600; font-size:16px; color:#fff;">Mentorship and go-to-market</div><div style="margin-top:6px; font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.55; color:#787878;">Structured guidance from founders who have shipped on the same rails.</div></div></div>
+  </div>
+</section>
+
+<!-- CIRCUIT RULE -->
+<div class="circuit-rule"><div class="circuit-line"><div class="circuit-pulse" style="animation-delay: -2.2s;"></div></div></div>
+
+<!-- OUTCOMES -->
+<section id="stories" style="position:relative; z-index:1; box-sizing:border-box; padding:96px 0; background:#0c0c0c; border-top:1px solid #242424; border-bottom:1px solid #242424; scroll-margin-top:88px;">
+  <div class="section-inner">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+      <div>
+        <div class="section-eyebrow">Early Outcomes</div>
+        <h2 class="section-h2" style="max-width:680px;">What founders unlock when the credits land.</h2>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#787878; letter-spacing:0.04em;">representative scenarios, replace at launch</span>
+    </div>
+    <div class="grid-3">
+      <div class="card-outcome">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; color:#787878; margin-bottom:18px;">case-01 // ai</div>
+        <div style="font-family:'Exo 2',sans-serif; font-weight:900; font-size:40px; line-height:1; color:#39FF14; text-shadow:0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5), 0 0 48px rgba(57,255,20,0.25);">12 mo</div>
+        <p style="margin:16px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">A pre-seed AI startup secured tier-two Azure credits and ran GPU inference for a year at zero infrastructure cost, shipping to first customers before raising.</p>
+      </div>
+      <div class="card-outcome">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; color:#787878; margin-bottom:18px;">case-02 // fintech</div>
+        <div style="font-family:'Exo 2',sans-serif; font-weight:900; font-size:40px; line-height:1; color:#39FF14; text-shadow:0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5), 0 0 48px rgba(57,255,20,0.25);">pre-inc</div>
+        <p style="margin:16px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">A fintech still pre-incorporation was mapped to AWS Activate and F6S, approved within weeks, and stood up a compliant payments stack on credits alone.</p>
+      </div>
+      <div class="card-outcome">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; color:#787878; margin-bottom:18px;">case-03 // public</div>
+        <div style="font-family:'Exo 2',sans-serif; font-weight:900; font-size:40px; line-height:1; color:#39FF14; text-shadow:0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5), 0 0 48px rgba(57,255,20,0.25);">-40%</div>
+        <p style="margin:16px 0 0; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#C8C8C8;">A public sector pilot migrated off a costly hyperscaler contract onto a sovereign UK region, cutting annual cloud spend by roughly forty percent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="position:relative; z-index:1; max-width:1180px; margin:0 auto; box-sizing:border-box; padding:64px 40px 56px;">
+  <div style="display:flex; gap:14px; flex-wrap:wrap; margin-bottom:40px;">
+    <div style="flex:1; min-width:240px; display:flex; flex-direction:column; gap:10px; padding:18px 20px; background:#111; border:1px solid #242424; border-radius:8px;">
+      <div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.04em; color:#C8C8C8;">Microsoft Solutions Partner</span><span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#787878; letter-spacing:0.06em;">VERIFYING</span></div>
+      <div class="status-bar"><div class="status-shimmer"></div></div>
+    </div>
+    <div style="flex:1; min-width:240px; display:flex; flex-direction:column; gap:10px; padding:18px 20px; background:#111; border:1px solid #242424; border-radius:8px;">
+      <div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.04em; color:#C8C8C8;">F6S Program</span><span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#787878; letter-spacing:0.06em;">EXPLORING</span></div>
+      <div class="status-bar"><div class="status-shimmer-slow"></div></div>
+    </div>
+    <div style="flex:1; min-width:240px; display:flex; flex-direction:column; gap:10px; padding:18px 20px; background:#111; border:1px solid #242424; border-radius:8px;">
+      <div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.04em; color:#C8C8C8;">Compliance</span><span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#39FF14; text-shadow:0 0 6px rgba(57,255,20,0.5); letter-spacing:0.06em;">UK LIVE</span></div>
+      <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#787878;">UK compliant &middot; EU soon &middot; ISO aligned</div>
+    </div>
+  </div>
+  <div style="height:1px; background:#242424; margin-bottom:28px;"></div>
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+    <img src="assets/ak-logo.png" srcset="assets/ak-logo@2x.png 2x, assets/ak-logo@4x.png 4x" alt="AndieKobbieTech" width="80" height="48" style="height:48px; width:auto; display:block; filter:drop-shadow(0 0 10px rgba(80,200,70,0.35)); image-rendering:-webkit-optimize-contrast;">
+    <span style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:#787878; letter-spacing:0.04em;">AKCloud is launching soon &middot; portal powered by Odoo</span>
+  </div>
+</footer>
+
+<!-- GLOSSARY TOOLTIP -->
+<div id="tip-box">
+  <div class="tip-inner">
+    <div class="tip-title" id="tip-title"></div>
+    <div class="tip-body" id="tip-body"></div>
+    <div class="tip-arrow"></div>
+  </div>
+</div>
+
+<!-- BOOKING MODAL -->
+<div id="book-overlay" onclick="closeBookingIfBackdrop(event)">
+  <div class="book-modal">
+    <button class="modal-close" onclick="closeBooking()">&times;</button>
+    <div style="display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
+      <img src="assets/ak-mark2.png" srcset="assets/ak-mark2@2x.png 2x, assets/ak-mark2@4x.png 4x" alt="AKCloud" width="72" height="36" style="height:36px; width:auto; filter:drop-shadow(0 0 8px rgba(80,200,70,0.4)); image-rendering:-webkit-optimize-contrast;">
+    </div>
+    <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#39FF14; text-shadow:0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); margin-bottom:12px;">Book a Consultation</div>
+    <h3 style="margin:0 0 12px; font-family:'Exo 2',sans-serif; font-weight:700; font-size:24px; color:#fff; line-height:1.2;">Let's talk cloud.</h3>
+    <p id="book-sub" style="margin:0 0 26px; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#787878;">Our calendar opens at launch. Drop your email and we'll send you a booking link the moment we go live.</p>
+    <div id="book-form">
+      <form name="notify" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onsubmit="return submitNotify(event)">
+        <p class="hidden-visually"><label>Don't fill this: <input name="bot-field"></label></p>
+        <label class="form-label">Your email</label>
+        <input type="email" name="email" placeholder="you@company.com" class="form-input" id="book-email" required>
+        <input type="hidden" name="source" value="notify-me-launch">
+        <button type="submit" class="btn-sign-in">Notify Me at Launch</button>
+      </form>
+    </div>
+    <div id="book-notify-msg"></div>
+    <div style="margin-top:22px; padding-top:18px; border-top:1px solid #242424; text-align:center; font-family:'JetBrains Mono',monospace; font-size:11px; color:#787878; letter-spacing:0.03em;">powered by ANDIEKOBBIETECH<span style="color:#39FF14;">.</span> &middot; consultations via Odoo</div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="login-overlay" onclick="closeLoginIfBackdrop(event)">
+  <div class="login-modal" id="login-modal">
+    <button class="modal-close" onclick="closeLogin()">&times;</button>
+    <div style="display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
+      <img src="assets/ak-mark2.png" srcset="assets/ak-mark2@2x.png 2x, assets/ak-mark2@4x.png 4x" alt="AndieKobbieTech" width="72" height="36" style="height:36px; width:auto; filter:drop-shadow(0 0 8px rgba(80,200,70,0.4)); image-rendering:-webkit-optimize-contrast;">
+    </div>
+    <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#39FF14; text-shadow:0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); margin-bottom:12px;">Client Portal</div>
+    <h3 style="margin:0 0 26px; font-family:'Exo 2',sans-serif; font-weight:700; font-size:26px; color:#fff;">Sign in to <span style="color:#39FF14; text-shadow:0 0 8px rgba(57,255,20,0.5);">AK</span>Cloud</h3>
+    <label class="form-label">Email</label>
+    <input type="email" placeholder="you@company.com" class="form-input" id="login-email">
+    <label class="form-label">Password</label>
+    <input type="password" placeholder="••••••••" class="form-input" id="login-password">
+    <button class="btn-sign-in" onclick="signIn()">Sign In</button>
+    <div id="auth-msg"></div>
+    <div style="margin-top:22px; padding-top:18px; border-top:1px solid #242424; text-align:center; font-family:'JetBrains Mono',monospace; font-size:11px; color:#787878; letter-spacing:0.03em;">secured by ANDIEKOBBIETECH<span style="color:#39FF14;">.</span> &middot; portal powered by Odoo</div>
+  </div>
+</div>
+
+<script>
+  // ── SPLASH ──
+  (function(){
+    var spx = document.getElementById('spx');
+    if (!spx) return;
+    document.body.style.overflow = 'hidden';
+    // Start exit fade at 4.8s (logo has been fully visible since ~3.2s)
+    setTimeout(function(){
+      spx.style.animation = 'spxExit 0.9s ease forwards';
+    }, 4800);
+    // Remove from layout at 5.75s
+    setTimeout(function(){
+      spx.style.display = 'none';
+      document.body.style.overflow = '';
+    }, 5750);
+  })();
+
+  // ── COUNTDOWN ──
+  const LAUNCH_DAYS = 47;
+  const target = Date.now() + LAUNCH_DAYS * 24 * 3600 * 1000;
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    const s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+    document.getElementById('cd-dd').textContent = pad(Math.floor(s / 86400));
+    document.getElementById('cd-hh').textContent = pad(Math.floor((s % 86400) / 3600));
+    document.getElementById('cd-mm').textContent = pad(Math.floor((s % 3600) / 60));
+    document.getElementById('cd-ss').textContent = pad(s % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // ── GLOSSARY ──
+  const GLOSSARY = {
+    msp: { t: "MSP", b: "Managed Service Provider. A company that runs, secures and maintains your cloud and IT systems for you, so you do not need to hire an in-house infrastructure team." },
+    hyperscaler: { t: "Hyperscaler", b: "The giant global cloud providers, Microsoft Azure, Amazon AWS and Google Cloud, that rent out computing power from enormous data centres." },
+    sovereign: { t: "Sovereign cloud", b: "Your data and systems stay inside one country's borders and follow its laws. Here that means the UK, so nothing leaves UK jurisdiction." },
+    compute: { t: "Compute", b: "Raw computing power: the processors and memory that actually run your apps, websites, databases and AI models." },
+    credits: { t: "Cloud credits", b: "Free funding from the hyperscalers that you spend on their services instead of cash, often worth thousands to over a hundred thousand pounds for eligible startups." },
+    leverage: { t: "Leverage", b: "To make full use of something you can already access, turning it into a real, measurable advantage." },
+    f6s: { t: "F6S", b: "A global platform that connects startups with accelerators, grants, perks and investors. Pronounced eff-six-ess." },
+    production: { t: "Production vs staging", b: "Production is the live system your real customers use. Staging is a private copy where changes are tested safely first, before they go live." },
+    architecture: { t: "Architecture review", b: "An expert check of how your cloud system is designed, to catch security, cost and reliability problems before they cause damage." },
+    datastores: { t: "Datastores", b: "Where an app keeps its information: the databases and storage that save and retrieve your records, files and data." },
+    byoc: { t: "BYOC", b: "Bring Your Own Cloud. You keep your own cloud accounts and credits; we provide the architecture and management on top." },
+    byod: { t: "BYOD", b: "Bring Your Own Device. Your team uses its own laptops and phones, secured and managed to company standards." },
+  };
+
+  const tipBox = document.getElementById('tip-box');
+  const tipTitle = document.getElementById('tip-title');
+  const tipBody = document.getElementById('tip-body');
+  let tipPinned = false;
+  let activeTerm = null;
+
+  function showTip(key, rect) {
+    const g = GLOSSARY[key];
+    if (!g) return;
+    activeTerm = key;
+    tipTitle.textContent = g.t;
+    tipBody.textContent = g.b;
+    const cx = rect.left + rect.width / 2;
+    const ty = rect.top + window.scrollY;
+    tipBox.style.left = cx + 'px';
+    tipBox.style.top = (rect.top + window.scrollY) + 'px';
+    tipBox.style.transform = 'translate(-50%, calc(-100% - 12px))';
+    tipBox.classList.add('visible');
+  }
+
+  function hideTip() {
+    if (!tipPinned) {
+      tipBox.classList.remove('visible');
+      activeTerm = null;
+    }
+  }
+
+  document.querySelectorAll('.term').forEach(el => {
+    el.addEventListener('mouseenter', e => {
+      const key = el.dataset.term;
+      showTip(key, el.getBoundingClientRect());
+    });
+    el.addEventListener('mouseleave', e => {
+      if (!tipPinned) hideTip();
+    });
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const key = el.dataset.term;
+      if (activeTerm === key && tipPinned) {
+        tipBox.classList.remove('visible');
+        activeTerm = null;
+        tipPinned = false;
+      } else {
+        tipPinned = true;
+        showTip(key, el.getBoundingClientRect());
+      }
+    });
+  });
+
+  document.addEventListener('click', () => {
+    tipPinned = false;
+    tipBox.classList.remove('visible');
+    activeTerm = null;
+  });
+  window.addEventListener('scroll', () => {
+    tipPinned = false;
+    tipBox.classList.remove('visible');
+    activeTerm = null;
+  }, true);
+
+  // ── BOOKING ──
+  function openBooking() {
+    const url = localStorage.getItem('ak_booking_url');
+    if (url && url.trim()) {
+      window.open(url.trim(), '_blank', 'noopener,noreferrer');
+      return;
+    }
+    // Odoo not yet configured — show notify-me modal
+    const ov = document.getElementById('book-overlay');
+    ov.classList.add('visible');
+    document.getElementById('book-notify-msg').classList.remove('visible');
+    document.getElementById('book-notify-msg').textContent = '';
+    document.getElementById('book-email').value = '';
+    document.getElementById('book-form').style.display = 'block';
+    setTimeout(() => document.getElementById('book-email').focus(), 80);
+  }
+  function closeBooking() {
+    document.getElementById('book-overlay').classList.remove('visible');
+  }
+  function closeBookingIfBackdrop(e) {
+    if (e.target === document.getElementById('book-overlay')) closeBooking();
+  }
+  let notifyTimer;
+  async function submitNotify(event) {
+    event.preventDefault();
+    const form = event.target;
+    const email = document.getElementById('book-email').value.trim();
+    const msg = document.getElementById('book-notify-msg');
+    if (!email || !email.includes('@')) {
+      msg.textContent = 'please enter a valid email address.';
+      msg.style.color = '#ff5555';
+      msg.classList.add('visible');
+      return false;
+    }
+    // Always keep a local copy as a fallback
+    const list = JSON.parse(localStorage.getItem('ak_notify_list') || '[]');
+    if (!list.find(function(e){ return (e.email||e) === email; })) {
+      list.push({ email: email, ts: Date.now() });
+      localStorage.setItem('ak_notify_list', JSON.stringify(list));
+    }
+    // Submit to Netlify Forms via fetch (so the page doesn't reload)
+    try {
+      const body = new URLSearchParams(new FormData(form)).toString();
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body
+      });
+      if (!res.ok) throw new Error('Netlify rejected submission: ' + res.status);
+      document.getElementById('book-form').style.display = 'none';
+      msg.style.color = '#39FF14';
+      msg.textContent = '\u2713 confirmed. we\u2019ll reach out the moment booking opens.';
+      msg.classList.add('visible');
+    } catch (err) {
+      // Submission failed but the local copy is still saved
+      console.warn('[AKcloud] Netlify form submission failed; saved locally:', err);
+      document.getElementById('book-form').style.display = 'none';
+      msg.style.color = '#39FF14';
+      msg.textContent = '\u2713 saved. we\u2019ll reach out the moment booking opens.';
+      msg.classList.add('visible');
+    }
+    return false;
+  }
+
+  // ── LOGIN MODAL ──
+  function openLogin() {
+    document.getElementById('login-overlay').classList.add('visible');
+    document.getElementById('auth-msg').classList.remove('visible');
+    document.getElementById('auth-msg').textContent = '';
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
+  }
+  function closeLogin() {
+    document.getElementById('login-overlay').classList.remove('visible');
+  }
+  function closeLoginIfBackdrop(e) {
+    if (e.target === document.getElementById('login-overlay')) closeLogin();
+  }
+  let authTimer;
+  function signIn() {
+    const msg = document.getElementById('auth-msg');
+    msg.textContent = 'connecting to portal...';
+    msg.classList.add('visible');
+    clearTimeout(authTimer);
+    authTimer = setTimeout(() => {
+      msg.textContent = 'portal opens at launch. you are on the list.';
+    }, 1200);
+  }
+
+  // ESC closes modals
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLogin(); closeBooking(); } });
+
+  (function(){
+    var _r=atob('L2FkbWluLmh0bWw=');
+    var _w=atob('YW5kaWVrb2JiaWU=');
+    var _SK='ak_cfg',_TK='ak_ts',_SES='ak_ses';
+
+    function _h(s){var n=0x811c9dc5>>>0;for(var i=0;i<s.length;i++){n^=s.charCodeAt(i);n=Math.imul(n,0x01000193)>>>0;}return n.toString(36);}
+    function _ld(){try{return JSON.parse(localStorage.getItem(_SK)||'{}');}catch(e){return{};}}
+    function _sv(d){localStorage.setItem(_SK,JSON.stringify(Object.assign(_ld(),d)));}
+
+    var _E={
+      isFirst:function(){return!_ld().ph;},
+      isMobile:function(){return('ontouchstart' in window)||window.innerWidth<900;},
+      ok:function(u,p){var s=_ld();return s.ph?s.ph===_h(u+':'+p):(u==='admin'&&p==='admin');},
+      set:function(u,p){_sv({ph:_h(u+':'+p),un:u,rdy:1});},
+      gtSeq:function(){try{return JSON.parse(localStorage.getItem(_TK));}catch(e){return null;}},
+      stSeq:function(q){localStorage.setItem(_TK,JSON.stringify(q));},
+      hasSeq:function(){return!!localStorage.getItem(_TK);},
+      mkSes:function(){sessionStorage.setItem(_SES,'s'+Date.now().toString(36)+Math.random().toString(36).slice(2));},
+      clrSes:function(){sessionStorage.removeItem(_SES);}
+    };
+
+    var _tr=[],_tc=null,_tp=0;
+
+    function _q(id){return document.getElementById(id);}
+    function _ov(){return _q('_d0');}
+
+    function _open(){
+      _ov().style.display='flex';
+      _q('_d1').style.display='block';
+      _q('_d2').style.display='none';
+      _q('_dc').textContent='';
+      _q('_da').value='';_q('_db').value='';
+      setTimeout(function(){_q('_da').focus();},80);
+    }
+    function _close(){
+      _ov().style.display='none';
+      _tr=[];_tc=null;_tp=0;
+    }
+    function _bdrop(e){if(e.target===_ov())_close();}
+    function _gmsg(t,ok){var el=_q('_dc');el.textContent=t;el.style.color=ok?'#39FF14':'#ff4444';}
+
+    function _sub(){
+      var u=_q('_da').value.trim(),p=_q('_db').value;
+      if(!u||!p){_gmsg('enter credentials');return;}
+      if(!_E.ok(u,p)){_gmsg('access denied');_q('_db').value='';return;}
+      if(_E.isFirst()){
+        _q('_d1').style.display='none';_q('_d2').style.display='block';
+        if(_E.isMobile()){
+          _q('_d2lbl').textContent='> device.setup';
+          _q('_d2ttl').textContent='Set Tap Sequence';
+          _q('_d2dsc').textContent='Tap 5 zones in your secret order, then repeat to confirm.';
+          _q('_dh').style.display='none';_q('_di').style.display='block';_treset();
+        }else{
+          _q('_dh').style.display='block';_q('_di').style.display='none';
+          setTimeout(function(){_q('_dd').focus();},80);
+        }
+      }else{_E.mkSes();_close();window.location.href=_r;}
+    }
+
+    function _psave(){
+      var u=_q('_dd').value.trim(),p=_q('_de').value,p2=_q('_df').value,el=_q('_dg');
+      if(!u||!p){el.textContent='fill all fields';el.style.color='#ff4444';return;}
+      if(p!==p2){el.textContent='passwords do not match';el.style.color='#ff4444';return;}
+      if(p.length<6){el.textContent='min 6 characters';el.style.color='#ff4444';return;}
+      _E.set(u,p);_E.mkSes();
+      el.textContent='saved — entering\u2026';el.style.color='#39FF14';
+      setTimeout(function(){_close();window.location.href=_r;},900);
+    }
+
+    function _dots(arr){
+      var el=_q('_dj');el.innerHTML='';
+      for(var i=0;i<5;i++){var d=document.createElement('div');d.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(i<arr.length?'#39FF14':'#242424')+(i<arr.length?';box-shadow:0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.5)':'')+';';el.appendChild(d);}
+    }
+    function _treset(){
+      _tr=[];_tc=null;_tp=0;_dots([]);
+      _q('_dk').textContent='Tap 5 zones in your chosen order';_q('_dk').style.color='#787878';
+      document.querySelectorAll('._tz').forEach(function(b){b.style.borderColor='#242424';b.style.color='#787878';b.style.background='#191919';});
+    }
+    function _tz(z){
+      if(_tp===0){
+        _tr.push(z);_dots(_tr);
+        var btn=document.querySelector('._tz[data-z="'+z+'"]');
+        if(btn){btn.style.borderColor='#39FF14';btn.style.color='#39FF14';btn.style.background='rgba(57,255,20,0.08)';}
+        if(_tr.length===5){
+          _tp=1;
+          setTimeout(function(){
+            _q('_dk').textContent='Repeat the same sequence to confirm';_q('_dk').style.color='#C8C8C8';
+            _tc=[];_dots([]);
+            document.querySelectorAll('._tz').forEach(function(b){b.style.borderColor='#242424';b.style.color='#787878';b.style.background='#191919';});
+          },300);
+        }
+      }else if(_tp===1&&_tc!==null){
+        _tc.push(z);_dots(_tc);
+        if(_tc.length===5){
+          if(_tr.join('')===_tc.join('')){
+            _E.stSeq(_tr);_q('_dk').textContent='Sequence saved \u2713 entering\u2026';_q('_dk').style.color='#39FF14';
+            _E.mkSes();setTimeout(function(){_close();window.location.href=_r;},900);
+          }else{
+            _q('_dk').textContent='Did not match \u2014 try again';_q('_dk').style.color='#ff4444';
+            setTimeout(_treset,1400);
+          }
+        }
+      }
+    }
+
+    window._G=_open;window._C=_close;window._BD=_bdrop;window._SB=_sub;window._PS=_psave;window._TZ=_tz;window._TC=_treset;
+
+    (function(){
+      var ix='',lt=0;
+      document.addEventListener('keydown',function(e){
+        if(e.key==='Escape'&&_ov()&&_ov().style.display!=='none'){_close();return;}
+        if(!e.shiftKey||e.key.length!==1){if(!e.shiftKey){ix='';lt=0;}return;}
+        var now=Date.now(),gap=lt?now-lt:300;lt=now;
+        if(lt&&(gap<80||gap>600))ix='';
+        var ch=e.key.toLowerCase();
+        if(ch===_w[ix.length]){ix+=ch;if(ix===_w){ix='';lt=0;_open();}}
+        else{ix=ch===_w[0]?ch:'';}
+      });
+    })();
+
+    (function(){
+      var logo=document.getElementById('hero-logo-tap');
+      if(!logo)return;
+      var n=0,t;
+      logo.addEventListener('touchstart',function(e){
+        e.preventDefault();n++;clearTimeout(t);
+        if(n>=5){n=0;_open();return;}
+        t=setTimeout(function(){n=0;},2200);
+      },{passive:false});
+    })();
+
+    (function(){
+      if(!_E.isMobile())return;
+      var buf=[],lt=0,timer;
+      function gz(x,y){return(x<window.innerWidth/2?0:1)+(y<window.innerHeight/2?0:2);}
+      document.addEventListener('touchstart',function(e){
+        if(_ov()&&_ov().style.display!=='none')return;
+        if(document.getElementById('login-overlay').classList.contains('visible'))return;
+        var now=Date.now(),gap=lt?now-lt:300;lt=now;
+        if(!_E.hasSeq())return;
+        if(gap>800)buf=[];
+        var t=e.touches[0];buf.push(gz(t.clientX,t.clientY));
+        clearTimeout(timer);
+        if(buf.length===5){
+          var s=_E.gtSeq();
+          if(s&&buf.join('')===s.join('')){buf=[];_E.mkSes();window.location.href=_r;}
+          else buf=[];return;
+        }
+        timer=setTimeout(function(){buf=[];},4000);
+      },{passive:true});
+    })();
+
+    document.addEventListener('DOMContentLoaded',function(){
+      var ov=document.createElement('div');
+      ov.id='_d0';
+      ov.setAttribute('style','position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(8,8,8,0.94);backdrop-filter:blur(10px);');
+      ov.addEventListener('click',function(e){if(e.target===ov)_close();});
+      var INP='width:100%;background:#080808;border:1px solid #242424;border-radius:4px;padding:12px 13px;font-family:\'DM Sans\',sans-serif;font-size:14px;color:#fff;outline:none;box-sizing:border-box;transition:border-color 0.15s,box-shadow 0.15s;';
+      var LBL='display:block;font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;margin-bottom:6px;';
+      var CORNER='position:absolute;top:-1px;left:-1px;width:44px;height:44px;border-top:2px solid #39FF14;border-left:2px solid #39FF14;border-top-left-radius:8px;box-shadow:0 0 6px #39FF14,0 0 14px rgba(57,255,20,0.55);pointer-events:none;';
+      var CARD='position:relative;width:100%;max-width:390px;background:#111;border:1px solid #242424;border-radius:8px;padding:36px 34px;';
+      ov.innerHTML=
+        '<div id="_d1" style="'+CARD+'">'+
+          '<div style="'+CORNER+'"></div>'+
+          '<button onclick="_C()" style="position:absolute;top:14px;right:14px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid #242424;border-radius:4px;color:#787878;font-size:15px;cursor:pointer;line-height:1;transition:all 0.15s;" onmouseenter="this.style.color=\'#39FF14\';this.style.borderColor=\'#39FF14\'" onmouseleave="this.style.color=\'#787878\';this.style.borderColor=\'#242424\'">&times;</button>'+
+          '<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;letter-spacing:0.18em;color:#39FF14;text-shadow:0 0 6px rgba(57,255,20,0.5);margin-bottom:16px;">&gt; sys.connect</div>'+
+          '<div style="font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:20px;color:#fff;margin-bottom:22px;">Secure Access</div>'+
+          '<label style="'+LBL+'">Identifier</label>'+
+          '<input id="_da" type="text" autocomplete="off" spellcheck="false" style="'+INP+'margin-bottom:14px;" onfocus="this.style.borderColor=\'#39FF14\';this.style.boxShadow=\'0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.3)\'" onblur="this.style.borderColor=\'#242424\';this.style.boxShadow=\'none\'">'+
+          '<label style="'+LBL+'">Key</label>'+
+          '<input id="_db" type="password" autocomplete="off" style="'+INP+'margin-bottom:20px;" onfocus="this.style.borderColor=\'#39FF14\';this.style.boxShadow=\'0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.3)\'" onblur="this.style.borderColor=\'#242424\';this.style.boxShadow=\'none\'" onkeydown="if(event.key===\'Enter\')_SB()">'+
+          '<button onclick="_SB()" style="width:100%;font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#080808;background:#39FF14;border:none;border-radius:4px;padding:13px;cursor:pointer;box-shadow:0 0 8px #39FF14,0 0 24px rgba(57,255,20,0.45);transition:transform 0.15s;" onmouseenter="this.style.transform=\'translateY(-1px)\'" onmouseleave="this.style.transform=\'none\'">Connect</button>'+
+          '<div id="_dc" style="margin-top:12px;font-family:\'JetBrains Mono\',monospace;font-size:11px;text-align:center;min-height:16px;text-shadow:0 0 6px rgba(57,255,20,0.4);"></div>'+
+        '</div>'+
+        '<div id="_d2" style="'+CARD+'display:none;">'+
+          '<div style="'+CORNER+'"></div>'+
+          '<div id="_d2lbl" style="font-family:\'JetBrains Mono\',monospace;font-size:10px;letter-spacing:0.18em;color:#39FF14;text-shadow:0 0 6px rgba(57,255,20,0.5);margin-bottom:16px;">&gt; first.run.setup</div>'+
+          '<div id="_d2ttl" style="font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:18px;color:#fff;margin-bottom:8px;">Configure Access</div>'+
+          '<div id="_d2dsc" style="font-family:\'DM Sans\',sans-serif;font-size:14px;color:#787878;line-height:1.55;margin-bottom:22px;">Set a new identifier and key for this device.</div>'+
+          '<div id="_dh">'+
+            '<label style="'+LBL+'">New Identifier</label>'+
+            '<input id="_dd" type="text" autocomplete="off" style="'+INP+'margin-bottom:12px;" onfocus="this.style.borderColor=\'#39FF14\';this.style.boxShadow=\'0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.3)\'" onblur="this.style.borderColor=\'#242424\';this.style.boxShadow=\'none\'">'+
+            '<label style="'+LBL+'">New Key</label>'+
+            '<input id="_de" type="password" autocomplete="new-password" style="'+INP+'margin-bottom:12px;" onfocus="this.style.borderColor=\'#39FF14\';this.style.boxShadow=\'0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.3)\'" onblur="this.style.borderColor=\'#242424\';this.style.boxShadow=\'none\'">'+
+            '<label style="'+LBL+'">Confirm Key</label>'+
+            '<input id="_df" type="password" autocomplete="new-password" style="'+INP+'margin-bottom:20px;" onfocus="this.style.borderColor=\'#39FF14\';this.style.boxShadow=\'0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.3)\'" onblur="this.style.borderColor=\'#242424\';this.style.boxShadow=\'none\'" onkeydown="if(event.key===\'Enter\')_PS()">'+
+            '<button onclick="_PS()" style="width:100%;font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#080808;background:#39FF14;border:none;border-radius:4px;padding:13px;cursor:pointer;box-shadow:0 0 8px #39FF14,0 0 24px rgba(57,255,20,0.45);transition:transform 0.15s;" onmouseenter="this.style.transform=\'translateY(-1px)\'" onmouseleave="this.style.transform=\'none\'">Save &amp; Continue</button>'+
+            '<div id="_dg" style="margin-top:12px;font-family:\'JetBrains Mono\',monospace;font-size:11px;text-align:center;min-height:16px;text-shadow:0 0 6px rgba(57,255,20,0.4);"></div>'+
+          '</div>'+
+          '<div id="_di" style="display:none;">'+
+            '<div style="font-family:\'DM Sans\',sans-serif;font-size:14px;color:#C8C8C8;line-height:1.6;margin-bottom:16px;">Tap 5 zones in your secret order, then repeat to confirm.</div>'+
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">'+
+              '<button class="_tz" data-z="0" onclick="_TZ(0)" style="background:#191919;border:1px solid #242424;border-radius:6px;padding:20px 0;font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;cursor:pointer;transition:all 0.12s;">&#8598; Zone</button>'+
+              '<button class="_tz" data-z="1" onclick="_TZ(1)" style="background:#191919;border:1px solid #242424;border-radius:6px;padding:20px 0;font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;cursor:pointer;transition:all 0.12s;">&#8599; Zone</button>'+
+              '<button class="_tz" data-z="2" onclick="_TZ(2)" style="background:#191919;border:1px solid #242424;border-radius:6px;padding:20px 0;font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;cursor:pointer;transition:all 0.12s;">&#8600; Zone</button>'+
+              '<button class="_tz" data-z="3" onclick="_TZ(3)" style="background:#191919;border:1px solid #242424;border-radius:6px;padding:20px 0;font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;cursor:pointer;transition:all 0.12s;">&#8601; Zone</button>'+
+            '</div>'+
+            '<div id="_dj" style="display:flex;gap:8px;justify-content:center;margin-bottom:14px;"></div>'+
+            '<div id="_dk" style="font-family:\'JetBrains Mono\',monospace;font-size:11px;text-align:center;margin-bottom:16px;min-height:16px;color:#787878;"></div>'+
+            '<button onclick="_TC()" style="width:100%;font-family:\'Exo 2\',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;background:transparent;border:1px solid #242424;border-radius:4px;padding:10px;cursor:pointer;transition:all 0.15s;" onmouseenter="this.style.borderColor=\'#39FF14\';this.style.color=\'#39FF14\'" onmouseleave="this.style.borderColor=\'#242424\';this.style.color=\'#787878\'">Clear &amp; Retry</button>'+
+          '</div>'+
+        '</div>';
+      document.body.appendChild(ov);
+    });
+  })();
+</script>
+</body>
+</html>

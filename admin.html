@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brand Assets — AKCloud Admin</title>
+<script>
+  // Auth guard — runs before page renders
+  (function(){
+    const SES = 'ak_ses';
+    if (!sessionStorage.getItem(SES)) {
+      // No valid session — redirect silently
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.display = 'none';
+      });
+      window.location.replace('/');
+    }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #080808; font-family: 'DM Sans', sans-serif; color: #C8C8C8; }
+  ::selection { background: rgba(57,255,20,0.25); color: #fff; }
+
+  @keyframes akTrace { from { transform: translateX(-100%); } to { transform: translateX(600%); } }
+  @keyframes akNode { 0%, 100% { opacity: 0.35; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.15); } }
+  @keyframes akFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; height: 64px; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; background: rgba(8,8,8,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid #242424; }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { height: 36px; width: auto; image-rendering: -webkit-optimize-contrast; filter: drop-shadow(0 0 6px rgba(80,200,70,0.35)); }
+  .nav-title { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #787878; }
+  .nav-back { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #787878; text-decoration: none; transition: color 0.15s; }
+  .nav-back:hover { color: #39FF14; }
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+  .btn-logout { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #787878; background: transparent; border: 1px solid #242424; border-radius: 4px; padding: 7px 14px; cursor: pointer; transition: all 0.15s; }
+  .btn-logout:hover { color: #ff5555; border-color: #ff5555; }
+  .odoo-status { display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; }
+  .odoo-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .odoo-dot.live { background: #39FF14; box-shadow: 0 0 6px #39FF14; }
+  .odoo-dot.off { background: #3a3a3a; }
+
+  .page { max-width: 1180px; margin: 0 auto; padding: 96px 40px 80px; }
+  .eyebrow { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #39FF14; text-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); margin-bottom: 14px; }
+  .page-title { margin: 0 0 8px; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 36px; color: #fff; line-height: 1.1; }
+  .page-sub { margin: 0 0 64px; font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.6; color: #787878; max-width: 520px; }
+
+  .section-head { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #787878; margin: 0 0 20px; padding-bottom: 12px; border-bottom: 1px solid #242424; }
+
+  .asset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 56px; }
+
+  .asset-card { position: relative; background: #111; border: 1px solid #242424; border-radius: 8px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+  .asset-card::before { content: ''; position: absolute; top: -1px; left: -1px; width: 36px; height: 36px; border-top: 2px solid #39FF14; border-left: 2px solid #39FF14; border-top-left-radius: 8px; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); transition: width 0.2s, height 0.2s; pointer-events: none; }
+  .asset-card:hover { border-color: rgba(57,255,20,0.3); box-shadow: 0 0 0 1px rgba(57,255,20,0.12), 0 8px 32px rgba(0,0,0,0.4); }
+  .asset-card:hover::before { width: 72px; height: 72px; }
+
+  .asset-preview { display: flex; align-items: center; justify-content: center; height: 160px; background: #0d0d0d; border-bottom: 1px solid #242424; padding: 24px; }
+  .asset-preview.dark-bg { background: #191919; }
+  .asset-preview img { max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: -webkit-optimize-contrast; }
+
+  .asset-info { padding: 18px 20px; }
+  .asset-name { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 4px; }
+  .asset-meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #787878; letter-spacing: 0.04em; margin-bottom: 14px; }
+
+  .dl-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .dl-btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; background: transparent; border: 1px solid #242424; border-radius: 4px; padding: 7px 12px; cursor: pointer; color: #C8C8C8; transition: all 0.15s; }
+  .dl-btn:hover { color: #39FF14; border-color: #39FF14; box-shadow: inset 0 0 0 1px #39FF14, 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.4); }
+  .dl-btn.primary { color: #080808; background: #39FF14; border-color: #39FF14; box-shadow: 0 0 8px #39FF14, 0 0 20px rgba(57,255,20,0.4); }
+  .dl-btn.primary:hover { box-shadow: 0 0 12px #39FF14, 0 0 32px rgba(57,255,20,0.55); transform: translateY(-1px); }
+
+  .font-card { background: #111; border: 1px solid #242424; border-radius: 8px; padding: 24px 28px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; transition: border-color 0.2s; }
+  .font-card:hover { border-color: rgba(57,255,20,0.2); }
+  .font-preview-text { font-size: 28px; font-weight: 700; color: #fff; line-height: 1; }
+  .font-details { flex: 1; min-width: 200px; }
+  .font-name { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 2px; }
+  .font-role { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #39FF14; text-shadow: 0 0 6px rgba(57,255,20,0.4); letter-spacing: 0.04em; margin-bottom: 6px; }
+  .font-weights { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #787878; }
+
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 56px; }
+  .color-swatch { background: #111; border: 1px solid #242424; border-radius: 8px; overflow: hidden; }
+  .swatch-block { height: 56px; }
+  .swatch-info { padding: 12px 14px; }
+  .swatch-name { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 12px; color: #fff; margin-bottom: 2px; }
+  .swatch-hex { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #787878; letter-spacing: 0.05em; }
+
+  .circuit-rule { max-width: 1180px; margin: 0 auto 56px; padding: 0 40px; }
+  .circuit-line { position: relative; height: 1px; width: 100%; background: #242424; overflow: hidden; }
+  .circuit-pulse { position: absolute; top: 0; left: 0; height: 100%; width: 14%; background: linear-gradient(90deg, transparent, #39FF14, transparent); box-shadow: 0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5); animation: akTrace 4s linear infinite; }
+
+  .toast { position: fixed; bottom: 32px; right: 32px; z-index: 999; background: #191919; border: 1px solid rgba(57,255,20,0.4); border-radius: 6px; padding: 12px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #39FF14; text-shadow: 0 0 6px rgba(57,255,20,0.4); box-shadow: 0 0 0 1px rgba(57,255,20,0.1), 0 8px 24px rgba(0,0,0,0.6); opacity: 0; transform: translateY(8px); transition: all 0.22s ease; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  .waitlist-table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .waitlist-table thead th { padding: 10px 14px; text-align: left; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #787878; border-bottom: 1px solid #242424; white-space: nowrap; }
+  .waitlist-table tbody tr { border-bottom: 1px solid #191919; transition: background 0.12s; }
+  .waitlist-table tbody tr:last-child { border-bottom: none; }
+  .waitlist-table tbody tr:hover { background: rgba(57,255,20,0.04); }
+  .waitlist-table tbody td { padding: 11px 14px; color: #C8C8C8; }
+  .waitlist-table tbody td.td-email { color: #fff; }
+  .waitlist-table tbody td.td-ts { color: #787878; }
+  .waitlist-table tbody td.td-num { color: #3a3a3a; }
+  .waitlist-empty { padding: 36px 0; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3a3a3a; letter-spacing: 0.04em; }
+  .waitlist-scroll { max-height: 320px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #242424 transparent; }
+  .waitlist-scroll::-webkit-scrollbar { width: 4px; }
+  .waitlist-scroll::-webkit-scrollbar-track { background: transparent; }
+  .waitlist-scroll::-webkit-scrollbar-thumb { background: #242424; border-radius: 2px; }
+
+  @media (max-width: 640px) {
+    .page { padding: 88px 20px 60px; }
+    nav { padding: 0 20px; }
+    .asset-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div style="position:fixed; inset:0; pointer-events:none; background-image:linear-gradient(rgba(57,255,20,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,20,0.02) 1px, transparent 1px); background-size:48px 48px; z-index:0;"></div>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="assets/ak-mark2.png" srcset="assets/ak-mark2@2x.png 2x, assets/ak-mark2@4x.png 4x" alt="AKCloud" width="72" height="36">
+    <span class="nav-title">Admin Panel</span>
+  </a>
+  <div class="nav-right">
+    <div class="odoo-status" id="odoo-status-dot"><span class="odoo-dot off" id="odoo-ind"></span><span id="odoo-status-label" style="color:#3a3a3a;">Odoo · not configured</span></div>
+    <a href="/" class="nav-back">← Site</a>
+    <button class="btn-logout" onclick="adminLogout()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="page" style="position:relative; z-index:1; animation: akFade 0.3s ease;">
+
+  <div class="eyebrow">Admin Panel</div>
+  <h1 class="page-title">Brand Asset Library</h1>
+  <p class="page-sub">Download all logos, marks and fonts at the highest available quality. All image assets exported at 4× resolution for retina and print use.</p>
+
+  <!-- ── LOGOS ── -->
+  <div class="section-head">Logos &amp; Marks</div>
+  <div class="asset-grid">
+
+    <div class="asset-card">
+      <div class="asset-preview">
+        <img src="assets/ak-logo.png" srcset="assets/ak-logo@2x.png 2x, assets/ak-logo@4x.png 4x" alt="AKCloud Full Logo" style="max-height:90px; filter:drop-shadow(0 0 12px rgba(80,200,70,0.35));">
+      </div>
+      <div class="asset-info">
+        <div class="asset-name">AKCloud Full Logo</div>
+        <div class="asset-meta">PNG · Transparent BG · 4× export</div>
+        <div class="dl-group">
+          <a class="dl-btn primary" href="assets/ak-logo@4x.png" download="AKCloud-logo-4x.png">↓ 4× PNG</a>
+          <a class="dl-btn" href="assets/ak-logo@2x.png" download="AKCloud-logo-2x.png">2× PNG</a>
+          <a class="dl-btn" href="assets/ak-logo.png" download="AKCloud-logo.png">1× PNG</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card">
+      <div class="asset-preview dark-bg">
+        <img src="assets/ak-mark2.png" srcset="assets/ak-mark2@2x.png 2x, assets/ak-mark2@4x.png 4x" alt="AK Mark" style="max-height:80px; filter:drop-shadow(0 0 10px rgba(80,200,70,0.4));">
+      </div>
+      <div class="asset-info">
+        <div class="asset-name">AK Mark (Horizontal)</div>
+        <div class="asset-meta">PNG · Transparent BG · 4× export</div>
+        <div class="dl-group">
+          <a class="dl-btn primary" href="assets/ak-mark2@4x.png" download="AKCloud-mark-4x.png">↓ 4× PNG</a>
+          <a class="dl-btn" href="assets/ak-mark2@2x.png" download="AKCloud-mark-2x.png">2× PNG</a>
+          <a class="dl-btn" href="assets/ak-mark2.png" download="AKCloud-mark.png">1× PNG</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── COLOUR PALETTE ── -->
+  <div class="circuit-rule" style="max-width:none; padding:0; margin:0 0 32px;"><div class="circuit-line"><div class="circuit-pulse"></div></div></div>
+  <div class="section-head">Colour Palette</div>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#39FF14;"></div>
+      <div class="swatch-info"><div class="swatch-name">Primary — Neon Green</div><div class="swatch-hex">#39FF14</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#1FCC00;"></div>
+      <div class="swatch-info"><div class="swatch-name">Primary Dim</div><div class="swatch-hex">#1FCC00</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#080808; border-bottom:1px solid #242424;"></div>
+      <div class="swatch-info"><div class="swatch-name">Neutral (BG)</div><div class="swatch-hex">#080808</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#111111; border-bottom:1px solid #242424;"></div>
+      <div class="swatch-info"><div class="swatch-name">Surface 1</div><div class="swatch-hex">#111111</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#191919; border-bottom:1px solid #242424;"></div>
+      <div class="swatch-info"><div class="swatch-name">Surface 2</div><div class="swatch-hex">#191919</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#242424; border-bottom:1px solid #3a3a3a;"></div>
+      <div class="swatch-info"><div class="swatch-name">Border</div><div class="swatch-hex">#242424</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#C8C8C8;"></div>
+      <div class="swatch-info"><div class="swatch-name">Text Hi</div><div class="swatch-hex">#C8C8C8</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#787878;"></div>
+      <div class="swatch-info"><div class="swatch-name">Text Mid</div><div class="swatch-hex">#787878</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#FFFFFF;"></div>
+      <div class="swatch-info"><div class="swatch-name">Secondary (White)</div><div class="swatch-hex">#FFFFFF</div></div>
+    </div>
+  </div>
+  <div style="margin-bottom:48px;">
+    <button class="dl-btn primary" onclick="copyPalette()">↓ Copy Palette JSON</button>
+  </div>
+
+  <!-- ── TYPOGRAPHY ── -->
+  <div class="circuit-rule" style="max-width:none; padding:0; margin:0 0 32px;"><div class="circuit-line"><div class="circuit-pulse" style="animation-delay:-1.8s;"></div></div></div>
+  <div class="section-head">Typography</div>
+
+  <div class="font-card">
+    <div class="font-details">
+      <div class="font-name">Exo 2</div>
+      <div class="font-role">Display · Headings · Labels · Buttons</div>
+      <div class="font-weights">Weights: 400 / 600 / 700 / 900</div>
+    </div>
+    <div style="font-family:'Exo 2',sans-serif;">
+      <div class="font-preview-text" style="font-weight:900; color:#39FF14; text-shadow:0 0 8px rgba(57,255,20,0.4);">AKCloud</div>
+      <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; color:#787878; margin-top:4px; letter-spacing:0.1em; text-transform:uppercase;">DISPLAY WEIGHT 900</div>
+    </div>
+    <div class="dl-group">
+      <a class="dl-btn primary" href="https://fonts.google.com/specimen/Exo+2" target="_blank" rel="noopener">↗ Google Fonts</a>
+      <button class="dl-btn" onclick="downloadGFont('Exo+2:wght@400;600;700;900', 'Exo2')">↓ Download TTF</button>
+    </div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-details">
+      <div class="font-name">DM Sans</div>
+      <div class="font-role">Body Copy · Descriptions · Form Fields</div>
+      <div class="font-weights">Weights: 400 / 500 / 700</div>
+    </div>
+    <div>
+      <div class="font-preview-text" style="font-family:'DM Sans',sans-serif; font-weight:400; color:#C8C8C8; font-size:22px;">Sovereign cloud for founders.</div>
+      <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; color:#787878; margin-top:4px; letter-spacing:0.1em; text-transform:uppercase;">BODY WEIGHT 400</div>
+    </div>
+    <div class="dl-group">
+      <a class="dl-btn primary" href="https://fonts.google.com/specimen/DM+Sans" target="_blank" rel="noopener">↗ Google Fonts</a>
+      <button class="dl-btn" onclick="downloadGFont('DM+Sans:wght@400;500;700', 'DM-Sans')">↓ Download TTF</button>
+    </div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-details">
+      <div class="font-name">JetBrains Mono</div>
+      <div class="font-role">Technical Data · Code · System Labels</div>
+      <div class="font-weights">Weights: 400 / 500 / 700</div>
+    </div>
+    <div>
+      <div class="font-preview-text" style="font-family:'JetBrains Mono',monospace; font-weight:400; color:#39FF14; text-shadow:0 0 6px rgba(57,255,20,0.35); font-size:22px;">&gt; sys.init()</div>
+      <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; color:#787878; margin-top:4px; letter-spacing:0.1em; text-transform:uppercase;">MONO WEIGHT 400</div>
+    </div>
+    <div class="dl-group">
+      <a class="dl-btn primary" href="https://fonts.google.com/specimen/JetBrains+Mono" target="_blank" rel="noopener">↗ Google Fonts</a>
+      <button class="dl-btn" onclick="downloadGFont('JetBrains+Mono:wght@400;500;700', 'JetBrains-Mono')">↓ Download TTF</button>
+    </div>
+  </div>
+
+  <!-- ── ODOO INTEGRATION ── -->
+  <div class="circuit-rule" style="max-width:none; padding:0; margin:0 0 32px;"><div class="circuit-line"><div class="circuit-pulse" style="animation-delay:-0.8s;"></div></div></div>
+  <div class="section-head">Odoo Backend Connection</div>
+  <div style="background:#111; border:1px solid #242424; border-radius:8px; padding:28px 32px; margin-bottom:20px; position:relative;">
+    <div style="position:absolute;top:-1px;left:-1px;width:36px;height:36px;border-top:2px solid #39FF14;border-left:2px solid #39FF14;border-top-left-radius:8px;box-shadow:0 0 6px #39FF14,0 0 14px rgba(57,255,20,0.55);pointer-events:none;"></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+      <div>
+        <label style="display:block;font-family:'Exo 2',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;margin-bottom:8px;">Odoo Instance URL</label>
+        <input id="odoo-url" type="url" placeholder="https://odoo.yourdomain.com" style="width:100%;background:#080808;border:1px solid #242424;border-radius:4px;padding:11px 13px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff;outline:none;box-sizing:border-box;transition:border-color 0.15s,box-shadow 0.15s;" onfocus="this.style.borderColor='#39FF14';this.style.boxShadow='0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.25)'" onblur="this.style.borderColor='#242424';this.style.boxShadow='none'">
+      </div>
+      <div>
+        <label style="display:block;font-family:'Exo 2',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;margin-bottom:8px;">Database Name</label>
+        <input id="odoo-db" type="text" placeholder="odoo_production" style="width:100%;background:#080808;border:1px solid #242424;border-radius:4px;padding:11px 13px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff;outline:none;box-sizing:border-box;transition:border-color 0.15s,box-shadow 0.15s;" onfocus="this.style.borderColor='#39FF14';this.style.boxShadow='0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.25)'" onblur="this.style.borderColor='#242424';this.style.boxShadow='none'">
+      </div>
+      <div>
+        <label style="display:block;font-family:'Exo 2',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;margin-bottom:8px;">Admin Username / Email</label>
+        <input id="odoo-user" type="email" placeholder="admin@yourdomain.com" style="width:100%;background:#080808;border:1px solid #242424;border-radius:4px;padding:11px 13px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff;outline:none;box-sizing:border-box;transition:border-color 0.15s,box-shadow 0.15s;" onfocus="this.style.borderColor='#39FF14';this.style.boxShadow='0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.25)'" onblur="this.style.borderColor='#242424';this.style.boxShadow='none'">
+      </div>
+      <div>
+        <label style="display:block;font-family:'Exo 2',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;margin-bottom:8px;">API Key <span style="font-weight:400;color:#3a3a3a;letter-spacing:0;">(Settings → Technical → API Keys)</span></label>
+        <input id="odoo-key" type="password" placeholder="••••••••••••••••" style="width:100%;background:#080808;border:1px solid #242424;border-radius:4px;padding:11px 13px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff;outline:none;box-sizing:border-box;transition:border-color 0.15s,box-shadow 0.15s;" onfocus="this.style.borderColor='#39FF14';this.style.boxShadow='0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.25)'" onblur="this.style.borderColor='#242424';this.style.boxShadow='none'">
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+      <button onclick="odooSave()" style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#080808;background:#39FF14;border:none;border-radius:4px;padding:11px 22px;cursor:pointer;box-shadow:0 0 8px #39FF14,0 0 20px rgba(57,255,20,0.4);transition:transform 0.15s;" onmouseenter="this.style.transform='translateY(-1px)'" onmouseleave="this.style.transform='none'">Save Config</button>
+      <button onclick="odooTest()" style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C8C8;background:transparent;border:1px solid #242424;border-radius:4px;padding:10px 22px;cursor:pointer;transition:all 0.15s;" onmouseenter="this.style.borderColor='#39FF14';this.style.color='#39FF14'" onmouseleave="this.style.borderColor='#242424';this.style.color='#C8C8C8'">Test Connection</button>
+      <div id="odoo-result" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.03em;min-height:18px;"></div>
+    </div>
+  </div>
+  <div style="background:#0d0d0d; border:1px solid #1a1a1a; border-radius:6px; padding:16px 20px; margin-bottom:56px;">
+    <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#39FF14;margin-bottom:10px;">Netlify Deployment Notes</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.65;color:#787878;">
+        1. Enable CORS on Odoo in <code style="color:#C8C8C8;">odoo.conf</code>:<br>
+        <code style="color:#39FF14;">cors_headers = *</code><br>
+        Or use a reverse proxy with CORS headers.<br><br>
+        2. Odoo must be HTTPS — mixed content blocked.
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.65;color:#787878;">
+        3. For bookings: install <code style="color:#C8C8C8;">appointment</code> module.<br>
+        Booking URL: <code style="color:#39FF14;">{odoo_url}/web#action=appointment</code><br><br>
+        4. Credentials stored in localStorage — per-device. Re-enter on new browsers.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOOKING LINK CONFIG ── -->
+  <div class="section-head">Consultation Booking Link</div>
+  <div style="background:#111; border:1px solid #242424; border-radius:8px; padding:24px 28px; margin-bottom:56px; display:flex; gap:20px; align-items:flex-end; flex-wrap:wrap;">
+    <div style="flex:1; min-width:260px;">
+      <label style="display:block;font-family:'Exo 2',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;margin-bottom:8px;">Booking URL <span style="font-weight:400;color:#3a3a3a;">(Odoo appointment or Calendly)</span></label>
+      <input id="booking-url" type="url" placeholder="https://odoo.yourdomain.com/web#action=appointment" style="width:100%;background:#080808;border:1px solid #242424;border-radius:4px;padding:11px 13px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#fff;outline:none;box-sizing:border-box;transition:border-color 0.15s,box-shadow 0.15s;" onfocus="this.style.borderColor='#39FF14';this.style.boxShadow='0 0 6px #39FF14,0 0 12px rgba(57,255,20,0.25)'" onblur="this.style.borderColor='#242424';this.style.boxShadow='none'">
+    </div>
+    <button onclick="bookingSave()" style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#080808;background:#39FF14;border:none;border-radius:4px;padding:11px 22px;cursor:pointer;box-shadow:0 0 8px #39FF14,0 0 20px rgba(57,255,20,0.4);white-space:nowrap;transition:transform 0.15s;" onmouseenter="this.style.transform='translateY(-1px)'" onmouseleave="this.style.transform='none'">Save &amp; Apply</button>
+    <div id="booking-result" style="width:100%;font-family:'JetBrains Mono',monospace;font-size:12px;min-height:14px;"></div>
+  </div>
+
+  <!-- ── LAUNCH WAITLIST ── -->
+  <div class="circuit-rule" style="max-width:none; padding:0; margin:0 0 32px;"><div class="circuit-line"><div class="circuit-pulse" style="animation-delay:-2.4s;"></div></div></div>
+  <div class="section-head">Launch Waitlist <span id="wl-count" style="font-weight:400; color:#39FF14; text-shadow:0 0 6px rgba(57,255,20,0.5);"></span></div>
+  <div style="background:#111; border:1px solid #242424; border-radius:8px; overflow:hidden; margin-bottom:20px; position:relative;">
+    <div style="position:absolute;top:-1px;left:-1px;width:36px;height:36px;border-top:2px solid #39FF14;border-left:2px solid #39FF14;border-top-left-radius:8px;box-shadow:0 0 6px #39FF14,0 0 14px rgba(57,255,20,0.55);pointer-events:none;"></div>
+    <div class="waitlist-scroll" id="wl-scroll">
+      <table class="waitlist-table">
+        <thead>
+          <tr>
+            <th style="width:36px;">#</th>
+            <th>Email</th>
+            <th>Date &amp; Time</th>
+          </tr>
+        </thead>
+        <tbody id="wl-body"></tbody>
+      </table>
+      <div class="waitlist-empty" id="wl-empty" style="display:none;">no signups yet — emails captured by the "Notify Me at Launch" form appear here.</div>
+    </div>
+  </div>
+  <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:56px; align-items:center;">
+    <button onclick="exportWaitlistCSV()" style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#080808;background:#39FF14;border:none;border-radius:4px;padding:11px 22px;cursor:pointer;box-shadow:0 0 8px #39FF14,0 0 20px rgba(57,255,20,0.4);transition:transform 0.15s;" onmouseenter="this.style.transform='translateY(-1px)'" onmouseleave="this.style.transform='none'">↓ Export CSV</button>
+    <button onclick="copyWaitlistEmails()" style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C8C8;background:transparent;border:1px solid #242424;border-radius:4px;padding:10px 22px;cursor:pointer;transition:all 0.15s;" onmouseenter="this.style.borderColor='#39FF14';this.style.color='#39FF14'" onmouseleave="this.style.borderColor='#242424';this.style.color='#C8C8C8'">Copy Emails</button>
+    <button onclick="refreshWaitlist()" style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C8C8;background:transparent;border:1px solid #242424;border-radius:4px;padding:10px 22px;cursor:pointer;transition:all 0.15s;" onmouseenter="this.style.borderColor='#39FF14';this.style.color='#39FF14'" onmouseleave="this.style.borderColor='#242424';this.style.color='#C8C8C8'">⟳ Refresh</button>
+    <div style="flex:1;"></div>
+    <button onclick="clearWaitlist()" style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#787878;background:transparent;border:1px solid #242424;border-radius:4px;padding:10px 18px;cursor:pointer;transition:all 0.15s;" onmouseenter="this.style.borderColor='#ff5555';this.style.color='#ff5555'" onmouseleave="this.style.borderColor='#242424';this.style.color='#787878'">Clear All</button>
+  </div>
+
+  <!-- ── USAGE GUIDE ── -->
+  <div style="margin-top:56px; padding:28px 32px; background:#111; border:1px solid #242424; border-radius:8px; position:relative;">
+    <div style="position:absolute; top:-1px; left:-1px; width:40px; height:40px; border-top:2px solid #39FF14; border-left:2px solid #39FF14; border-top-left-radius:8px; box-shadow:0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55);"></div>
+    <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#39FF14; text-shadow:0 0 6px rgba(57,255,20,0.5); margin-bottom:14px;">Quick Reference</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:16px;">
+      <div>
+        <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; color:#fff; margin-bottom:6px;">Brand Name</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.7; color:#C8C8C8;">ANDIE → white, wt 900<br>KOBBIE → #39FF14, wt 900<br>TECH. → white, wt 900<br>Trailing period is part of mark</div>
+      </div>
+      <div>
+        <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; color:#fff; margin-bottom:6px;">Logo Minimum Sizes</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.7; color:#C8C8C8;">Full logo: 120px wide min<br>AK Mark: 32px high min<br>Always on dark surfaces<br>Min bg: #191919</div>
+      </div>
+      <div>
+        <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:13px; color:#fff; margin-bottom:6px;">Green Usage Rules</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.7; color:#C8C8C8;">CTAs, active states, icons<br>Never as background fill<br>Always carries glow shadow<br>WCAG AA: 10.6:1 on dark</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── SESSION & AUTH ──
+  function adminLogout() {
+    sessionStorage.removeItem('ak_ses');
+    window.location.replace('/');
+  }
+
+  // ── TOAST ──
+  function toast(msg, ok) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.style.color = ok === false ? '#ff5555' : '#39FF14';
+    el.style.borderColor = ok === false ? 'rgba(255,85,85,0.4)' : 'rgba(57,255,20,0.4)';
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2800);
+  }
+
+  // ── PALETTE ──
+  const PALETTE = {
+    "primary": "#39FF14", "primary-dim": "#1FCC00",
+    "primary-mute": "rgba(57,255,20,0.12)", "secondary": "#FFFFFF",
+    "neutral": "#080808", "surface-1": "#111111", "surface-2": "#191919",
+    "border": "#242424", "text-hi": "#C8C8C8", "text-mid": "#787878", "text-lo": "#3A3A3A"
+  };
+
+  function copyPalette() {
+    navigator.clipboard.writeText(JSON.stringify(PALETTE, null, 2))
+      .then(() => toast('Palette JSON copied to clipboard'))
+      .catch(() => toast('Copy failed — try manually'));
+  }
+
+  function downloadGFont(spec, name) {
+    const url = `https://fonts.google.com/download?family=${encodeURIComponent(spec.replace(/\+/g,' ').split(':')[0])}`;
+    const a = document.createElement('a');
+    a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    toast(`Opening ${name} download page…`);
+  }
+
+  // ── ODOO CONFIG ──
+  function odooLoad() {
+    try { return JSON.parse(localStorage.getItem('ak_odoo') || '{}'); } catch { return {}; }
+  }
+
+  function odooSave() {
+    const cfg = {
+      url:  document.getElementById('odoo-url').value.trim().replace(/\/$/, ''),
+      db:   document.getElementById('odoo-db').value.trim(),
+      user: document.getElementById('odoo-user').value.trim(),
+      key:  document.getElementById('odoo-key').value.trim(),
+    };
+    if (!cfg.url) { setOdooResult('Enter the Odoo URL first', false); return; }
+    localStorage.setItem('ak_odoo', JSON.stringify(cfg));
+    toast('Odoo config saved');
+    setOdooResult('Config saved — test the connection below', true);
+    updateOdooStatusDot(false); // dot stays grey until tested
+  }
+
+  function setOdooResult(msg, ok) {
+    const el = document.getElementById('odoo-result');
+    el.textContent = msg;
+    el.style.color = ok ? '#39FF14' : '#ff5555';
+  }
+
+  async function odooTest() {
+    const cfg = odooLoad();
+    if (!cfg.url || !cfg.db || !cfg.user || !cfg.key) {
+      setOdooResult('Save config first — all fields required', false); return;
+    }
+    setOdooResult('Testing connection…', true);
+    try {
+      const res = await fetch(`${cfg.url}/web/dataset/call_kw`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0', method: 'call', id: 1,
+          params: {
+            model: 'res.users', method: 'search_read',
+            args: [[['login', '=', cfg.user]]],
+            kwargs: { fields: ['name'], limit: 1, context: {} }
+          }
+        }),
+        credentials: 'include',
+      });
+      // For API key auth we use basic auth header instead
+      const res2 = await fetch(`${cfg.url}/web/session/get_session_info`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(cfg.user + ':' + cfg.key),
+        },
+        body: JSON.stringify({ jsonrpc: '2.0', method: 'call', id: 1, params: {} }),
+      });
+      if (res2.ok) {
+        setOdooResult('✓ Connection successful', true);
+        updateOdooStatusDot(true);
+        toast('Odoo connected');
+      } else {
+        throw new Error('HTTP ' + res2.status);
+      }
+    } catch (e) {
+      // CORS errors look like network failures — still means Odoo responded
+      if (e.message === 'Failed to fetch') {
+        setOdooResult('CORS blocked — Odoo reached but needs cors_headers=* in odoo.conf', false);
+        toast('CORS issue — see notes below', false);
+      } else {
+        setOdooResult('Connection failed: ' + e.message, false);
+        toast('Connection failed', false);
+      }
+      updateOdooStatusDot(false);
+    }
+  }
+
+  function updateOdooStatusDot(live) {
+    const dot = document.getElementById('odoo-ind');
+    const lbl = document.getElementById('odoo-status-label');
+    const cfg = odooLoad();
+    if (live) {
+      dot.className = 'odoo-dot live';
+      lbl.style.color = '#39FF14';
+      lbl.textContent = 'Odoo · connected';
+    } else if (cfg.url) {
+      dot.className = 'odoo-dot off';
+      lbl.style.color = '#787878';
+      lbl.textContent = 'Odoo · configured · untested';
+    } else {
+      dot.className = 'odoo-dot off';
+      lbl.style.color = '#3a3a3a';
+      lbl.textContent = 'Odoo · not configured';
+    }
+  }
+
+  // ── BOOKING URL ──
+  function bookingSave() {
+    const url = document.getElementById('booking-url').value.trim();
+    if (!url) { document.getElementById('booking-result').textContent = 'Enter a URL'; return; }
+    localStorage.setItem('ak_booking_url', url);
+    document.getElementById('booking-result').style.color = '#39FF14';
+    document.getElementById('booking-result').textContent = '✓ Saved — "Book a Consultation" now opens this URL';
+    toast('Booking URL saved');
+  }
+
+  // ── WAITLIST ──
+  function getWaitlist() {
+    try { return JSON.parse(localStorage.getItem('ak_notify_list') || '[]'); } catch { return []; }
+  }
+
+  function fmtDate(ts) {
+    if (!ts) return '—';
+    const d = new Date(ts);
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) +
+           ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function renderWaitlist(list) {
+    const tbody = document.getElementById('wl-body');
+    const empty = document.getElementById('wl-empty');
+    const countEl = document.getElementById('wl-count');
+    tbody.innerHTML = '';
+    if (!list.length) {
+      empty.style.display = 'block';
+      countEl.textContent = '';
+      return;
+    }
+    empty.style.display = 'none';
+    countEl.textContent = '— ' + list.length + ' signup' + (list.length !== 1 ? 's' : '');
+    list.forEach(function(entry, i) {
+      const email = typeof entry === 'string' ? entry : entry.email;
+      const ts    = typeof entry === 'string' ? null  : entry.ts;
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td class="td-num">' + (i + 1) + '</td>' +
+        '<td class="td-email">' + escHtml(email) + '</td>' +
+        '<td class="td-ts">' + fmtDate(ts) + '</td>';
+      tbody.appendChild(tr);
+    });
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function refreshWaitlist() {
+    renderWaitlist(getWaitlist());
+    toast('Waitlist refreshed');
+  }
+
+  function clearWaitlist() {
+    if (!confirm('Delete all ' + getWaitlist().length + ' waitlist entries? This cannot be undone.')) return;
+    localStorage.removeItem('ak_notify_list');
+    renderWaitlist([]);
+    toast('Waitlist cleared');
+  }
+
+  function exportWaitlistCSV() {
+    const list = getWaitlist();
+    if (!list.length) { toast('No emails to export', false); return; }
+    const rows = [['#', 'Email', 'Date', 'Time (UTC)']];
+    list.forEach(function(entry, i) {
+      const email = typeof entry === 'string' ? entry : entry.email;
+      const ts    = typeof entry === 'string' ? null  : entry.ts;
+      const d     = ts ? new Date(ts) : null;
+      rows.push([
+        i + 1,
+        email,
+        d ? d.toISOString().slice(0, 10) : '',
+        d ? d.toISOString().slice(11, 16) : ''
+      ]);
+    });
+    const csv = rows.map(function(r){ return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(','); }).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'akcloud-waitlist-' + new Date().toISOString().slice(0,10) + '.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('CSV downloaded — ' + list.length + ' email' + (list.length !== 1 ? 's' : ''));
+  }
+
+  function copyWaitlistEmails() {
+    const list = getWaitlist();
+    if (!list.length) { toast('No emails to copy', false); return; }
+    const emails = list.map(function(e){ return typeof e === 'string' ? e : e.email; }).join('\n');
+    navigator.clipboard.writeText(emails)
+      .then(function(){ toast('Copied ' + list.length + ' email' + (list.length !== 1 ? 's' : '') + ' to clipboard'); })
+      .catch(function(){ toast('Copy failed — try Export CSV instead', false); });
+  }
+
+  // ── INIT: pre-fill saved values on page load ──
+  document.addEventListener('DOMContentLoaded', () => {
+    const cfg = odooLoad();
+    if (cfg.url)  document.getElementById('odoo-url').value = cfg.url;
+    if (cfg.db)   document.getElementById('odoo-db').value = cfg.db;
+    if (cfg.user) document.getElementById('odoo-user').value = cfg.user;
+    if (cfg.key)  document.getElementById('odoo-key').value = cfg.key;
+    updateOdooStatusDot(false);
+
+    const bk = localStorage.getItem('ak_booking_url');
+    if (bk) document.getElementById('booking-url').value = bk;
+
+    renderWaitlist(getWaitlist());
+  });
+</script>
+</body>
+</html>

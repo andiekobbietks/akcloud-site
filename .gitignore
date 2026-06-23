@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log
+yarn-debug.log
+pnpm-debug.log
+
+# Netlify
+.netlify/
+.netlify-deploy-key
+
+# Environment files (NEVER commit secrets)
+.env
+.env.*
+!.env.example
+
+# Editor / OS junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts
+dist/
+build/
+.cache/
+
+# Local data
+*.log
+*.sqlite
+*.sqlite-journal
+
+# Large media you don't want in git (commitas you go)
+uploads/pasted-*.png

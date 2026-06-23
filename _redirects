@@ -1,0 +1,9 @@
+# Clean URLs — strip .html extensions
+# (Optional. Leave commented if you prefer .html in URLs.)
+
+# /admin         /admin.html         200
+# /tos           /tos.html           200
+# /privacy       /privacy.html       200
+
+# Function proxy (handled in netlify.toml already; this is fallback)
+/api/*  /.netlify/functions/:splat  200

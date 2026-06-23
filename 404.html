@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 — Lost in the cloud | AKcloud</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&family=DM+Sans:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #080808; color: #C8C8C8; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .wrap { max-width: 640px; width: 100%; text-align: center; }
+    .code { font-family: 'JetBrains Mono', monospace; font-size: 14px; letter-spacing: 0.2em; color: #39FF14; text-shadow: 0 0 8px rgba(57,255,20,0.55); margin-bottom: 18px; }
+    h1 { font-family: 'Exo 2', sans-serif; font-weight: 900; font-size: clamp(48px, 12vw, 96px); margin: 0 0 8px; line-height: 1; color: #fff; letter-spacing: -0.02em; }
+    .glitch { position: relative; display: inline-block; }
+    .glitch::before, .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; right: 0; }
+    .glitch::before { color: #39FF14; transform: translate(-2px, 0); mix-blend-mode: screen; opacity: 0.7; }
+    .glitch::after  { color: #ff5555; transform: translate(2px, 0);  mix-blend-mode: screen; opacity: 0.5; }
+    p { font-size: 16px; line-height: 1.6; color: #787878; margin: 0 0 32px; }
+    .btn { display: inline-block; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #080808; background: #39FF14; border: none; border-radius: 4px; padding: 14px 28px; text-decoration: none; box-shadow: 0 0 8px #39FF14, 0 0 24px rgba(57,255,20,0.5); transition: transform 0.15s; }
+    .btn:hover { transform: translateY(-1px); }
+    .meta { margin-top: 32px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #3A3A3A; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="code">STATUS // 404 // SIGNAL_LOST</div>
+    <h1><span class="glitch" data-text="404">404</span></h1>
+    <p>The page you requested has drifted outside our sovereign perimeter. Either the URL mistyped, or the resource has been relocated.</p>
+    <a href="/" class="btn">Return to Base</a>
+    <div class="meta">AKcloud · powered by ANDIEKOBBIETECH.</div>
+  </div>
+</body>
+</html>

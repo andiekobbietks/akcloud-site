@@ -193,6 +193,8 @@
     flex-direction: column;
     align-items: center;
     gap: 0;
+    overflow: hidden;
+    max-width: 95vw;
   }
   #spx-wordmark {
     display: flex;
@@ -220,6 +222,24 @@
     opacity: 0;
     transform: translateX(-60px);
     animation: spxCloudIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 1.6s forwards;
+  }
+  @media (max-width: 600px) {
+    #spx-ak, #spx-cloud {
+      font-size: clamp(64px, 18vmin, 120px);
+    }
+    #spx-pre-word {
+      font-size: 11px !important;
+      margin-top: 14px;
+    }
+    #spx-powered {
+      gap: 8px;
+    }
+    #spx-powered img {
+      height: 20px;
+    }
+    #spx-powered span {
+      font-size: 9px;
+    }
   }
   #spx-pre-word {
     margin-top: 24px;

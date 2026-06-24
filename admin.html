@@ -653,8 +653,8 @@
     if (cfg.key)  document.getElementById('odoo-key').value = cfg.key;
     updateOdooStatusDot(false);
 
-    const bk = localStorage.getItem('ak_booking_url') || 'https://andiekobbie.odoo.com/appointment/discovery-consultation-more-1';
-    document.getElementById('booking-url').value = bk;
+    const bk = localStorage.getItem('ak_booking_url');
+    document.getElementById('booking-url').value = bk || 'https://andiekobbie.odoo.com/appointment/discovery-consultation-more-1';
 
     const list = await getWaitlist();
     renderWaitlist(list);

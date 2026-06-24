@@ -717,8 +717,28 @@
   window.addEventListener('scroll', () => { if (tipPinned) hideTip(); }, { passive: true });
 
   // ── BOOKING ──
-  function openBooking() {
-    const url = localStorage.getItem('ak_booking_url') || 'https://andiekobbie.odoo.com/appointment/discovery-consultation-more-1';
+  const DEFAULT_BOOKING_URL = 'https://andiekobbie.odoo.com/appointment/discovery-consultation-more-1';
+  let cachedBookingUrl = null;
+
+  async function getBookingUrl() {
+    if (cachedBookingUrl) return cachedBookingUrl;
+    const local = localStorage.getItem('ak_booking_url');
+    if (local) { cachedBookingUrl = local; return local; }
+    try {
+      const res = await fetch('config.json');
+      const data = await res.json();
+      if (data.booking_url) {
+        cachedBookingUrl = data.booking_url;
+        localStorage.setItem('ak_booking_url', data.booking_url);
+        return data.booking_url;
+      }
+    } catch {}
+    cachedBookingUrl = DEFAULT_BOOKING_URL;
+    return DEFAULT_BOOKING_URL;
+  }
+
+  async function openBooking() {
+    const url = await getBookingUrl();
     if (url && url.trim()) {
       window.open(url.trim(), '_blank', 'noopener,noreferrer');
       return;

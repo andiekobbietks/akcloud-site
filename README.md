@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/ak-mark2@2x.png" alt="AKcloud Logo" width="120" style="filter: drop-shadow(0 0 12px rgba(57,255,20,0.5));">
+  <img src="assets/ak-mark2@2x.png" alt="AKcloud Logo" width="120" style="background:#080808; padding:16px 24px; border-radius:12px; filter: drop-shadow(0 0 12px rgba(57,255,20,0.5));">
 </p>
 
 <h1 align="center">AKcloud</h1>

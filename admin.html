@@ -514,13 +514,34 @@
   }
 
   // ── BOOKING URL ──
-  function bookingSave() {
+  async function bookingSave() {
     const url = document.getElementById('booking-url').value.trim();
     if (!url) { document.getElementById('booking-result').textContent = 'Enter a URL'; return; }
     localStorage.setItem('ak_booking_url', url);
+    const user = localStorage.getItem('ak_admin_user') || '';
+    const pass = localStorage.getItem('ak_admin_pass') || '';
+    if (user && pass) {
+      try {
+        const res = await fetch('/api/save-config', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa(user + ':' + pass),
+          },
+          body: JSON.stringify({ booking_url: url }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          document.getElementById('booking-result').style.color = '#39FF14';
+          document.getElementById('booking-result').textContent = '✓ Saved globally — all visitors will get this URL';
+          toast('Booking URL saved globally');
+          return;
+        }
+      } catch {}
+    }
     document.getElementById('booking-result').style.color = '#39FF14';
-    document.getElementById('booking-result').textContent = '✓ Saved — "Book a Consultation" now opens this URL';
-    toast('Booking URL saved');
+    document.getElementById('booking-result').textContent = '✓ Saved locally — deploy to make global';
+    toast('Booking URL saved locally');
   }
 
   // ── WAITLIST ──

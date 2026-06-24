@@ -718,7 +718,7 @@
 
   // ── BOOKING ──
   function openBooking() {
-    const url = localStorage.getItem('ak_booking_url');
+    const url = localStorage.getItem('ak_booking_url') || 'https://andiekobbie.odoo.com/appointment/discovery-consultation-more-1';
     if (url && url.trim()) {
       window.open(url.trim(), '_blank', 'noopener,noreferrer');
       return;

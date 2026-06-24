@@ -186,15 +186,13 @@
     .section-inner { padding: 0 20px; }
   }
 
-  /* ── SPLASH: AK + CLOUD + presents intro ── */
+  /* ── SPLASH: AK + CLOUD + presents + powered-by ── */
   #spx-presents {
     position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0;
-    opacity: 0;
-    animation: spxPresFade 3.2s cubic-bezier(0.4,0,0.2,1) forwards;
   }
   #spx-wordmark {
     display: flex;
@@ -212,44 +210,62 @@
       0 0 140px rgba(57,255,20,0.38),
       0 0 260px rgba(57,255,20,0.18);
     opacity: 0;
-    transform: scale(0.7) translateY(20px);
-    animation: spxAKIn 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 0.2s forwards;
+    transform: scale(1.15);
+    animation: spxAKIn 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
   }
   #spx-cloud {
     font-family: 'Exo 2', sans-serif; font-weight: 900;
     font-size: clamp(120px, 28vmin, 280px);
     line-height: 1; letter-spacing: -0.03em; color: #fff;
     opacity: 0;
-    transform: translateX(50px);
-    animation: spxCloudIn 0.9s cubic-bezier(0.34, 1.4, 0.64, 1) 1.2s forwards;
+    transform: translateX(-60px);
+    animation: spxCloudIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 1.6s forwards;
   }
   #spx-pre-word {
-    margin-top: 18px;
+    margin-top: 24px;
     font-family: 'JetBrains Mono', monospace; font-weight: 500;
     font-size: clamp(11px, 2vw, 15px);
     letter-spacing: 0.55em; text-transform: lowercase;
-    color: #787878;
+    color: #C8C8C8;
     overflow: hidden; white-space: nowrap;
     width: 0;
     border-right: 2px solid #39FF14;
     box-sizing: content-box;
     animation:
-      spxType 0.7s steps(8,end) 2.2s both,
-      spxCursor 0.6s step-end 2.2s 3,
-      spxCursorOff 0s 3.65s both;
+      spxType 0.9s steps(8,end) 3.0s both,
+      spxCursor 0.53s step-end 3.0s 3,
+      spxCursorOff 0s 4.6s both;
   }
-  @keyframes spxPresFade {
-    0%    { opacity: 0; }
-    6%    { opacity: 1; }
-    82%   { opacity: 1; }
-    100%  { opacity: 0; }
+  #spx-powered {
+    position: absolute;
+    bottom: clamp(40px, 8vh, 80px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: spxPoweredIn 1.2s ease 5.0s forwards;
+  }
+  #spx-powered img {
+    height: 28px;
+    width: auto;
+    filter: drop-shadow(0 0 6px rgba(80,200,70,0.35));
+    image-rendering: -webkit-optimize-contrast;
+  }
+  #spx-powered span {
+    font-family: 'JetBrains Mono', monospace; font-weight: 400;
+    font-size: 11px; letter-spacing: 0.06em;
+    color: #787878;
+  }
+  #spx-powered span em {
+    font-style: normal; color: #C8C8C8;
   }
   @keyframes spxAKIn {
-    0%   { opacity: 0; transform: scale(0.7) translateY(20px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
+    0%   { opacity: 0; transform: scale(1.15); }
+    60%  { opacity: 1; transform: scale(0.97); }
+    100% { opacity: 1; transform: scale(1); }
   }
   @keyframes spxCloudIn {
-    0%   { opacity: 0; transform: translateX(50px); }
+    0%   { opacity: 0; transform: translateX(-60px); }
     100% { opacity: 1; transform: translateX(0); }
   }
   @keyframes spxType {
@@ -262,6 +278,10 @@
   }
   @keyframes spxCursorOff {
     to { border-color: transparent; }
+  }
+  @keyframes spxPoweredIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   /* ── SPLASH ── */
@@ -337,6 +357,10 @@
       <div id="spx-cloud">Cloud</div>
     </div>
     <div id="spx-pre-word">presents</div>
+  </div>
+  <div id="spx-powered">
+    <img src="assets/ak-logo.png" alt="AndieKobbieTech" width="140" height="84">
+    <span>powered by <em>ANDIEKOBBIE</em>TECH<span style="color:#39FF14;">.</span></span>
   </div>
 </div>
 
@@ -568,11 +592,11 @@
     var spx = document.getElementById('spx');
     if (!spx) return;
     document.body.style.overflow = 'hidden';
-    // Start exit fade at 5.8s (presents typewriter done by ~3.6s)
+    // Start exit fade at 7.0s (powered-by fully visible by ~6.2s)
     setTimeout(function(){
-      spx.style.animation = 'spxExit 0.9s ease forwards';
-    }, 5800);
-    // Remove from layout at 6.8s
+      spx.style.animation = 'spxExit 1.0s ease forwards';
+    }, 7000);
+    // Remove from layout at 8.0s
     setTimeout(function(){
       spx.style.display = 'none';
       document.body.style.overflow = '';

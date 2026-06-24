@@ -5,7 +5,7 @@
 <h1 align="center">AKcloud</h1>
 
 <p align="center">
-  <strong>Sovereign Cloud MSP — Landing Site & Client Acquisition Pipeline</strong><br>
+  <strong>Sovereign Cloud MSP: Landing Site & Client Acquisition Pipeline</strong><br>
   <em>Built end-to-end: from first wireframe to deployed production with real integrations</em>
 </p>
 
@@ -21,14 +21,14 @@
 
 ## What I Built
 
-A complete client acquisition pipeline for a sovereign cloud MSP — zero frameworks, zero build steps, full data sovereignty.
+A complete client acquisition pipeline for a sovereign cloud MSP: zero frameworks, zero build steps, full data sovereignty.
 
 | Feature | Implementation |
 |---|---|
-| **Animated Landing Page** | Custom CSS animations — phosphorescent circuit board aesthetic, AK zoom-in intro, typewriter effects |
-| **Interactive Glossary** | Hover/tap tooltips explaining cloud terminology (MSP, sovereign, hyperscaler, etc.) — accessibility-first |
+| **Animated Landing Page** | Custom CSS animations: phosphorescent circuit board aesthetic, AK zoom-in intro, typewriter effects |
+| **Interactive Glossary** | Hover/tap tooltips explaining cloud terminology (MSP, sovereign, hyperscaler, etc.): accessibility-first |
 | **Email Waitlist** | Netlify Forms with webhook processing → Resend email notifications → Slack/Discord alerts |
-| **Appointment Booking** | Odoo XML-RPC serverless proxy ready — opens Odoo booking page when configured |
+| **Appointment Booking** | Odoo XML-RPC serverless proxy ready: opens Odoo booking page when configured |
 | **Admin Panel** | Live waitlist data, Odoo configuration, booking management, CSV export |
 | **Security Hardened** | HSTS, CSP headers, noindex admin routes, environment-based secrets |
 
@@ -42,12 +42,12 @@ A complete client acquisition pipeline for a sovereign cloud MSP — zero framew
 
 ## Screenshots
 
-### Landing Page — Hero View
+### Landing Page: Hero View
 <p align="center">
   <img src="screenshots/hero.png" alt="AKcloud Landing Page" width="800" style="border-radius: 8px; border: 1px solid #242424;">
 </p>
 
-*Full landing page with nav, countdown timer, and "Coming Soon" badge. Pure HTML/CSS — no JavaScript frameworks.*
+*Full landing page with nav, countdown timer, and "Coming Soon" badge. Pure HTML/CSS: no JavaScript frameworks.*
 
 ### Interactive Glossary Tooltips
 <p align="center">
@@ -64,7 +64,7 @@ A sovereign cloud MSP needed a professional landing page that:
 
 1. **Captures leads** without depending on third-party form services
 2. **Books discovery consultations** directly into their Odoo CRM
-3. **Keeps client data sovereign** — not trapped in SaaS platforms
+3. **Keeps client data sovereign**: not trapped in SaaS platforms
 4. **Works without JavaScript frameworks** or build pipelines
 
 **Result:** Zero-dependency stack that deploys in 30 seconds, handles real bookings, and maintains full data sovereignty.
@@ -75,7 +75,7 @@ A sovereign cloud MSP needed a professional landing page that:
 
 | Layer | Stack |
 |---|---|
-| Frontend | Vanilla HTML/CSS/JS — no build step, no frameworks |
+| Frontend | Vanilla HTML/CSS/JS: no build step, no frameworks |
 | Hosting | Netlify (static + serverless) |
 | Forms | Netlify Forms with webhook processing |
 | Backend | Netlify Functions (Node.js) |
@@ -106,9 +106,9 @@ A sovereign cloud MSP needed a professional landing page that:
 
 - **End-to-end ownership**: From first wireframe to deployed production site with real integrations
 - **No-code to code bridge**: Started with drag-and-drop, identified limits, built custom solution
-- **Problem-solving**: Client needed sovereign data control — built Odoo integration that keeps data in their infrastructure
+- **Problem-solving**: Client needed sovereign data control, built Odoo integration that keeps data in their infrastructure
 - **B2B delivery mindset**: Every decision optimized for client trust (security headers, transparent booking flow)
-- **Automation**: Email notifications, waitlist management, booking confirmation — all automated via serverless functions
+- **Automation**: Email notifications, waitlist management, booking confirmation, all automated via serverless functions
 
 ---
 

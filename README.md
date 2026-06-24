@@ -28,7 +28,7 @@ A complete client acquisition pipeline for a sovereign cloud MSP — zero framew
 | **Animated Landing Page** | Custom CSS animations — phosphorescent circuit board aesthetic, AK zoom-in intro, typewriter effects |
 | **Interactive Glossary** | Hover/tap tooltips explaining cloud terminology (MSP, sovereign, hyperscaler, etc.) — accessibility-first |
 | **Email Waitlist** | Netlify Forms with webhook processing → Resend email notifications → Slack/Discord alerts |
-| **Appointment Booking** | Odoo XML-RPC integration — serverless proxy keeps API keys server-side |
+| **Appointment Booking** | Odoo XML-RPC serverless proxy ready — opens Odoo booking page when configured |
 | **Admin Panel** | Live waitlist data, Odoo configuration, booking management, CSV export |
 | **Security Hardened** | HSTS, CSP headers, noindex admin routes, environment-based secrets |
 

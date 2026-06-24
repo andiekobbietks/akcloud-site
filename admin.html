@@ -524,8 +524,38 @@
   }
 
   // ── WAITLIST ──
-  function getWaitlist() {
+  function getWaitlistLocal() {
     try { return JSON.parse(localStorage.getItem('ak_notify_list') || '[]'); } catch { return []; }
+  }
+
+  async function fetchWaitlistRemote() {
+    const user = localStorage.getItem('ak_admin_user') || '';
+    const pass = localStorage.getItem('ak_admin_pass') || '';
+    if (!user || !pass) return null;
+    try {
+      const res = await fetch('/api/get-waitlist', {
+        headers: { 'Authorization': 'Basic ' + btoa(user + ':' + pass) }
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.submissions || [];
+    } catch { return null; }
+  }
+
+  async function getWaitlist() {
+    const local = getWaitlistLocal();
+    const remote = await fetchWaitlistRemote();
+    if (!remote) return local;
+    const seen = new Set(local.map(e => (typeof e === 'string' ? e : e.email)));
+    const merged = [...local];
+    remote.forEach(e => {
+      const email = e.email || '';
+      if (email && !seen.has(email)) {
+        merged.push({ email, ts: e.created_at ? new Date(e.created_at).getTime() : null, source: 'netlify' });
+        seen.add(email);
+      }
+    });
+    return merged;
   }
 
   function fmtDate(ts) {
@@ -563,31 +593,35 @@
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  function refreshWaitlist() {
-    renderWaitlist(getWaitlist());
+  async function refreshWaitlist() {
+    const list = await getWaitlist();
+    renderWaitlist(list);
     toast('Waitlist refreshed');
   }
 
   function clearWaitlist() {
-    if (!confirm('Delete all ' + getWaitlist().length + ' waitlist entries? This cannot be undone.')) return;
+    const list = getWaitlistLocal();
+    if (!confirm('Delete all ' + list.length + ' local waitlist entries? This cannot be undone.')) return;
     localStorage.removeItem('ak_notify_list');
     renderWaitlist([]);
-    toast('Waitlist cleared');
+    toast('Local waitlist cleared');
   }
 
-  function exportWaitlistCSV() {
-    const list = getWaitlist();
+  async function exportWaitlistCSV() {
+    const list = await getWaitlist();
     if (!list.length) { toast('No emails to export', false); return; }
-    const rows = [['#', 'Email', 'Date', 'Time (UTC)']];
+    const rows = [['#', 'Email', 'Date', 'Time (UTC)', 'Source']];
     list.forEach(function(entry, i) {
       const email = typeof entry === 'string' ? entry : entry.email;
       const ts    = typeof entry === 'string' ? null  : entry.ts;
       const d     = ts ? new Date(ts) : null;
+      const src   = entry.source || 'local';
       rows.push([
         i + 1,
         email,
         d ? d.toISOString().slice(0, 10) : '',
-        d ? d.toISOString().slice(11, 16) : ''
+        d ? d.toISOString().slice(11, 16) : '',
+        src
       ]);
     });
     const csv = rows.map(function(r){ return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(','); }).join('\r\n');
@@ -601,8 +635,8 @@
     toast('CSV downloaded — ' + list.length + ' email' + (list.length !== 1 ? 's' : ''));
   }
 
-  function copyWaitlistEmails() {
-    const list = getWaitlist();
+  async function copyWaitlistEmails() {
+    const list = await getWaitlist();
     if (!list.length) { toast('No emails to copy', false); return; }
     const emails = list.map(function(e){ return typeof e === 'string' ? e : e.email; }).join('\n');
     navigator.clipboard.writeText(emails)
@@ -611,7 +645,7 @@
   }
 
   // ── INIT: pre-fill saved values on page load ──
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
     const cfg = odooLoad();
     if (cfg.url)  document.getElementById('odoo-url').value = cfg.url;
     if (cfg.db)   document.getElementById('odoo-db').value = cfg.db;
@@ -622,7 +656,8 @@
     const bk = localStorage.getItem('ak_booking_url');
     if (bk) document.getElementById('booking-url').value = bk;
 
-    renderWaitlist(getWaitlist());
+    const list = await getWaitlist();
+    renderWaitlist(list);
   });
 </script>
 </body>

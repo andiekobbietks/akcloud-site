@@ -109,7 +109,7 @@ Critical axe-core violations fail the initial gate. All violations, including se
 ## Known limitations and next increments
 
 - Visual screenshots are captured and retained, but approved pixel baselines are not committed yet.
-- Chromium is the first browser engine. Add Firefox and WebKit after Chromium stabilises.
+- Chromium, Firefox and WebKit run in the pull-request suite. Chromium is used for the post-deploy public smoke test.
 - Accessibility currently blocks critical issues while collecting the full WCAG finding set for triage.
 - The Decap editor is tested through its fallback route; a real OAuth session is not automated.
 - Odoo is deliberately outside this static-site test harness. Test its public booking journey only after the Odoo Community 19 service is provisioned and `BOOKING_URL` is configured.

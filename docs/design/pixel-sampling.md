@@ -36,7 +36,7 @@ identify -verbose screenshots/tip.png
 sha256sum screenshots/*
 ```
 
-The repository's two screenshot payloads currently have JPEG signatures even though their filenames end in `.png`. Keep that finding in the asset inventory.
+The repository's two screenshot payloads currently have JPEG signatures even though their filenames end in `.png`. Visual inspection also confirms that both captures still show the older AKCloud wordmark/copy, rather than the current AKTOps rebrand. They are historical UI references, not current-state screenshots. Keep both the format mismatch and branding age in the asset inventory.
 
 ### 2. Inspect candidate regions
 
@@ -79,6 +79,7 @@ A screenshot sample is evidence of a rendered result, not automatically a token.
 - [x] Extract source-defined palette values from `DESIGN.md`, `index.html` and `404.html`.
 - [x] Build a visual swatch atlas with component and effect specimens.
 - [x] Record the screenshot extension/signature mismatch.
+- [x] Inspect the screenshots and identify them as AKCloud-era historical captures.
 - [ ] Produce coordinate-based raster samples from the original image files.
 - [ ] Compare screenshot samples against the live rendered site at known viewport sizes.
 - [ ] Add a generated machine-readable token export after the source tokens are centralised.

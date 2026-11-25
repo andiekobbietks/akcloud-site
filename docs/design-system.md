@@ -102,7 +102,7 @@ The [visual atlas](design/visual-atlas.svg) makes the source-defined palette, ty
 
 The atlas is deliberately labelled as a source-token visualisation. It is not a screenshot-derived colour histogram. For reproducible raster measurements, use the [pixel sampling protocol](design/pixel-sampling.md). That protocol records file signatures, hashes, dimensions, sample coordinates and colour values, and distinguishes flat token colours from glow/compositing artefacts.
 
-The current repository screenshot files named `screenshots/hero.png` and `screenshots/tip.png` have JPEG signatures despite their `.png` extensions. Treat this as asset-format hygiene debt and verify all references before any rename or conversion.
+The current repository screenshot files named `screenshots/hero.png` and `screenshots/tip.png` have JPEG signatures despite their `.png` extensions. Both are AKCloud-era captures with the previous wordmark/copy, not screenshots of the current AKTOps rebrand. Treat their format and branding age as asset-provenance debt and verify all references before any rename or replacement.
 
 ## 7. Accessibility and responsive constraints
 

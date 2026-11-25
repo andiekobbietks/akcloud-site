@@ -17,7 +17,7 @@
 
 # Force HTTPS (Netlify does this by default; this is belt-and-braces)
 [[redirects]]
-  from = "http://akcloud.netlify.app/*"
+  # Legacy Netlify hostname retained until a new AKTOps domain is configured.\n  from = "http://akcloud.netlify.app/*"
   to   = "https://akcloud.netlify.app/:splat"
   status = 301
   force = false
@@ -37,7 +37,7 @@
     Referrer-Policy           = "strict-origin-when-cross-origin"
     Permissions-Policy        = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-    Content-Security-Policy   = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://akcloud.netlify.app"
+    Content-Security-Policy   = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://akcloud.netlify.app /* legacy deployment origin */"
 
 [[headers]]
   for = "/assets/*"

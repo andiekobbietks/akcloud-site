@@ -4,7 +4,8 @@ This document records the research and reasoning behind the initial AKTOps hosti
 
 For the current product and deployment plan, see:
 - [Odoo Community on OCI — architecture decision](docs/architecture/odoo-community-oci-booking.md)
-- [Odoo Community on OCI — implementation plan](docs/implementation/odoo-community-oci-booking-plan.md)
+- [Odoo Community via Elestio BYOVM — implementation plan](docs/implementation/odoo-community-oci-booking-plan.md)
+- [Elestio BYOVM + OCI provisioning runbook](docs/implementation/elestio-byovm-oci-runbook.md)
 - [Project README](README.md)
 
 ---

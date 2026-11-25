@@ -55,19 +55,23 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 
 ## Screenshots
 
-### Landing Page: Hero View
+### Historical reference: Landing hero (AKCloud-era)
 <p align="center">
   <img src="screenshots/hero.png" alt="AKTOps Landing Page" width="800" style="border-radius: 8px; border: 1px solid #242424;">
 </p>
 
-*Landing page with responsive navigation, early-access status and a consultation/onboarding call to action. Pure HTML/CSS/JS without a frontend framework.*
+*Historical capture of the earlier AKCloud-branded landing page. It is retained as a visual reference for layout and glow treatment, not as a screenshot of the current AKTOps copy or wordmark.*
 
-### Interactive Glossary Tooltips
+### Historical reference: Glossary tooltip (AKCloud-era)
 <p align="center">
   <img src="screenshots/tip.png" alt="Glossary Tooltip Feature" width="800" style="border-radius: 8px; border: 1px solid #242424;">
 </p>
 
-*Hover any underlined term to see a plain-English explanation. Built for non-technical founders evaluating cloud services. Accessibility: works on touch devices, respects `prefers-reduced-motion`.*
+*Historical capture of the earlier glossary presentation. The underlying tooltip pattern remains a useful reference; verify the current page before treating this image as a current-state screenshot.*
+
+---
+
+**Screenshot provenance:** both images are historical AKCloud-era captures. Their payloads are JPEG-encoded despite the `.png` extensions, and their wordmark/copy predates the current AKTOps rebrand. They are retained as historical visual references until fresh, current-brand screenshots are captured.
 
 ---
 

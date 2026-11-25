@@ -13,7 +13,7 @@ For the current product and deployment plan, see:
 
 AKTOps needs a maintainable, secure and affordable operational platform that can support its own service delivery and, where appropriate, smaller client environments. The question is not how to reproduce a large enterprise Odoo hosting platform. It is how to choose the smallest architecture that meets the actual workload, customer requirements and recovery expectations while preserving a credible path to scale.
 
-The initial use case is AKTOps's own booking and operational workflow, using Odoo Community Edition hosted on Oracle Cloud Infrastructure (OCI). The public-facing website remains separately hosted; Odoo is the booking system of record.
+The initial use case is AKTOps's own booking and operational workflow, using Odoo Community Edition 19 managed through Elestio BYOVM on an OCI VM owned by AKTOps. The public-facing website remains separately hosted; Odoo is the booking system of record.
 
 ## 1. Customer and workload context
 
@@ -64,18 +64,23 @@ The ERP Magic page is an architectural reference only. This repository does not 
 
 ### Selected initial approach
 
-- **ERP edition:** Odoo Community Edition.
-- **Hosting:** OCI Ampere A1, subject to verifying available tenancy capacity.
-- **Isolation:** a dedicated LXD system container for the Odoo workload.
+- **ERP edition:** Odoo Community Edition 19.
+- **Management/provisioning:** Elestio BYOVM.
+- **Infrastructure:** OCI Compute VM in the AKTOps tenancy; OCI remains the cloud provider and bills the infrastructure.
+- **Isolation:** dedicated VM for the Odoo service, subject to the selected Elestio template's requirements.
 - **Application:** one Odoo instance.
-- **Database:** one PostgreSQL instance, initially colocated inside the isolated guest.
-- **Booking:** an independently authored AKTOps Odoo addon. OCA AGPL-3 booking code is excluded from the selected product path.
+- **Database:** PostgreSQL, private and not internet-exposed.
+- **Booking:** independently authored AKTOps Odoo addon. OCA AGPL-3 booking code is excluded from the selected product path.
 - **Public website:** existing static website on Netlify.
 - **Ingress:** HTTPS reverse proxy and controlled public DNS for a booking hostname.
-- **Backups:** encrypted, off-host backups of both PostgreSQL and the Odoo filestore, with restore testing.
-- **Operations:** monitoring for service health, CPU, memory, disk, certificates, backup age and mail delivery.
+- **Backups:** confirm Elestio's database and filestore backup coverage; maintain independent encrypted off-VM backups and restore tests.
+- **Operations:** confirm Elestio monitoring, patching, update and incident responsibilities.
 
-The previously discussed A1 tenancy capacity is up to 4 OCPU and 24 GB RAM. A proposed Odoo guest target of 2 OCPU, 8 GB RAM and 80 GB storage is a planning estimate, not a confirmed free allocation. Actual capacity must be checked against existing workloads before provisioning. A smaller 2 OCPU / 4 GB / 47 GB guest should be treated as a constrained pilot until measured.
+### BYOVM sizing and cost constraint
+
+Elestio's published free BYOVM ceiling is one VM with no more than 2 vCPU, 4 GB RAM and 80 GB storage. The previously discussed OCI A1 capacity of up to 4 OCPU and 24 GB RAM exceeds that free-tier ceiling at full size. Elestio publishes paid pricing based on VM resources, but OCI Ampere OCPU must be mapped to Elestio's billable vCPU definition before calculating the actual cost. OCI infrastructure charges are separate.
+
+Before provisioning, confirm that Odoo Community 19 is selectable on a BYOVM target and that the selected OCI architecture (ARM64 for Ampere A1) is supported. Do not assume the A1 configuration qualifies for free BYOVM.
 
 ### Why not multi-server yet?
 

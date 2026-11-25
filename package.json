@@ -5,7 +5,8 @@
   "description": "AKTOps IT operations, cloud infrastructure and DevSecOps website — Netlify-deployed with Forms and Functions",
   "scripts": {
     "dev": "netlify dev",
-    "build": "echo \"Static site — no build step needed\" && exit 0"
+    "build": "npm test",
+    "test": "node --test"
   },
   "devDependencies": {
     "netlify-cli": "^17.0.0"

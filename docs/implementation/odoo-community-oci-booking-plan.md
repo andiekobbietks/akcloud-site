@@ -1,128 +1,121 @@
-# AKTOps Odoo Community on OCI: implementation plan
+# Implementation plan: Odoo Community 19 via Elestio BYOVM on OCI
 
-**Status:** Proposed delivery plan  
-**Architecture decision:** Odoo Community Edition on OCI with an independently authored AKTOps booking addon  
-**Related document:** [Architecture decision](../architecture/odoo-community-oci-booking.md)
+**Status:** planned; no OCI VM or Elestio service has been provisioned  
+**Target:** Elestio-managed Odoo Community 19 running on AKTOps-owned OCI infrastructure  
+**Architecture decision:** [Odoo Community via Elestio BYOVM](../architecture/odoo-community-oci-booking.md)  
+**Provisioning runbook:** [Elestio BYOVM + OCI runbook](elestio-byovm-oci-runbook.md)
 
-## Delivery principles
+## Phase 0 — feasibility and cost confirmation
 
-- Use Odoo Community Edition, not Enterprise Appointments.
-- Keep the Netlify marketing site separate from the Odoo system of record.
-- Do not incorporate OCA AGPL-3 booking code or dependencies into the selected booking implementation.
-- Keep AK Build orchestration, policy rules and proprietary assurance logic private.
-- Keep the existing Elestio BYOVM collaboration-services plan separate from Odoo.
-- Work on reviewed feature branches; never describe planned work as delivered.
+**Deliverable:** verified deployment target and cost decision.
 
-## Phase 0: baseline and design verification
+1. Confirm Odoo Community Edition 19 is available in the Elestio catalogue.
+2. Confirm the Odoo 19 template can be deployed to BYOVM / existing VM.
+3. Confirm OCI Ampere A1 ARM64 support if that is the chosen VM architecture.
+4. Confirm Elestio's current BYOVM free-tier ceiling: 2 vCPU, 4 GB RAM, 80 GB disk.
+5. Record that the previously discussed 4 OCPU / 24 GB OCI A1 configuration exceeds that ceiling at full size.
+6. Confirm how Elestio counts OCI Ampere OCPU for paid BYOVM pricing; use the live dashboard calculator rather than estimating from OCPU.
+7. Compare the smaller free-tier pilot, larger paid A1 VM and any supported x86_64 OCI alternative.
+8. Confirm OCI infrastructure costs separately from Elestio management charges.
 
-**Outputs:** confirmed workload, booking UX, data model and deployment inventory.
+**Gate:** no VM creation or paid service until template, architecture and pricing are confirmed.
 
-1. Record the current Netlify site, functions and environment variable names.
-2. Confirm the current booking CTA and public configuration flow.
-3. Define whether bookings are open self-service, invitation-only or both.
-4. Confirm the exact Odoo Community release and its LGPL-3.0 notices.
-5. Inspect OCI A1 capacity, LXD configuration, public IP, DNS, reverse proxy and firewall rules.
-6. Define data minimisation, retention, deletion, consent and operational ownership.
-7. Confirm the repository's third-party asset provenance before applying any repository-wide licence.
+## Phase 1 — OCI VM preparation
 
-**Exit gate:** architecture, data flows, capacity and licensing boundaries are approved before production changes.
+**Deliverable:** hardened, reachable VM meeting Elestio's current prerequisites.
 
-## Phase 1: Odoo Community proof of concept
+1. Select supported Ubuntu 20.04+ image; prefer a currently supported LTS release accepted by the template.
+2. Select VM shape and boot volume only after Phase 0.
+3. Assign a stable public IP.
+4. Configure OCI NSG/security list and host firewall using Elestio's minimum documented ports.
+5. Restrict SSH and Elestio tooling ports by source where supported.
+6. Do not expose PostgreSQL or open all TCP ports.
+7. Update the OS, verify sudo/root access, outbound connectivity and time synchronisation.
+8. Record the shape, architecture, OS, storage, region and firewall evidence without storing credentials.
 
-**Outputs:** isolated Odoo Community instance and a validated booking-domain design.
+**Gate:** VM passes baseline hardening and connectivity checks.
 
-1. Provision an isolated staging guest and PostgreSQL instance.
-2. Install the selected Odoo Community release from a pinned source revision.
-3. Do not install OCA Resource Booking or other AGPL-3 booking modules in the selected path.
-4. Define AKTOps booking models and lifecycle using documented Odoo extension points.
-5. Validate availability, timezone, resource calendars, slot duration, capacity and concurrency.
-6. Verify public/portal access boundaries, cancellation, rescheduling and audit history.
-7. Test email delivery and accessibility on mobile and keyboard-only navigation.
-8. Record each Odoo core and Python/JavaScript dependency with its exact version and licence.
+## Phase 2 — Elestio BYOVM onboarding
 
-**Exit gate:** the proof of concept demonstrates conflict-safe booking and access separation, with a reviewed dependency/licence inventory.
+**Deliverable:** OCI VM connected as an Elestio BYOVM target.
 
-## Phase 2: OCI production foundation
+1. Choose BYOVM in Elestio.
+2. Enter the provider/region/IP fields required by the dashboard.
+3. Use the current dashboard-provided SSH key instructions; do not rely on a stale copied key.
+4. Add the temporary deployment key with correct permissions.
+5. Run **Test my VM**.
+6. Review exact billing and eligibility before creating the service.
+7. Create the BYOVM target.
+8. Verify the temporary key is removed after setup and record the service ID/target name (never secrets).
 
-**Outputs:** isolated production guest, DNS/TLS, service supervision, backups and monitoring.
+**Gate:** Elestio reports the VM connected and supported.
 
-1. Create the dedicated `aktops-odoo` LXD system container on the OCI Ampere A1 host.
-2. Start with a target allocation of 2 OCPU, 8 GB RAM and 80 GB storage where actual capacity permits. If only 2 OCPU / 4 GB / 47 GB is available, keep the deployment at pilot scope and benchmark before public launch.
-3. Configure a private container address and reverse-proxy route for `booking.aktops.co.uk`.
-4. Configure HTTPS, request limits, security headers and trusted proxy settings.
-5. Bind PostgreSQL to loopback/private networking only and use a non-superuser Odoo database role.
-6. Configure Odoo systemd service, dedicated OS user, config-file permissions and log rotation.
-7. Configure encrypted off-guest database and filestore backups, plus a tested restore procedure.
-8. Add service, resource, certificate and backup monitoring.
+## Phase 3 — Odoo Community 19 deployment
 
-**Exit gate:** HTTPS access works, database/internal ports are private, and a clean restore succeeds.
+**Deliverable:** healthy Odoo instance with persistent storage.
 
-## Phase 3: independently authored booking implementation
+1. Select Odoo ERP & CRM template, Community edition, version 19.
+2. Deploy to the verified BYOVM target.
+3. Confirm Odoo, PostgreSQL and filestore persistence.
+4. Configure HTTPS, hostname and trusted proxy.
+5. Keep PostgreSQL private.
+6. Create individual administrator/staff identities; enable MFA where available.
+7. Configure transactional email and domain authentication.
+8. Confirm backup scope includes both PostgreSQL and filestore.
+9. Complete a restore test before production data is entered.
 
-**Outputs:** AKTOps-owned booking addon and tested visitor-to-staff lifecycle.
+**Gate:** Odoo is reachable over HTTPS, administrative access is controlled and recovery is demonstrated.
 
-1. Create `odoo/addons/aktops_booking_portal` as an independently authored module.
-2. Implement a public service catalogue containing only explicitly published services.
-3. Retrieve availability server-side; never trust a client-supplied slot or resource identifier.
-4. Create bookings through server-side business logic with transactional conflict checks.
-5. Validate and minimise name, email, phone and enquiry fields.
-6. Use expiring, unguessable tokens for confirmation and permitted booking changes.
-7. Add CSRF protection, rate limiting, anti-bot controls, safe error handling and abuse monitoring.
-8. Provide accessible responsive templates and explicit timezone display.
-9. Add automated tests for availability, invalid slots, duplicate submissions, concurrency, token expiry, permissions, cancellation and email output.
-10. Maintain a clean-room development record: requirements, independently written code, design decisions and dependency provenance. Do not copy AGPL source or adapt AGPL implementation details.
+## Phase 4 — independently authored booking addon
 
-**Licensing gate:** the addon licence and its relationship to Odoo's LGPL-3.0 code must be reviewed before distribution or commercial release. No licence choice can override third-party obligations.
+**Deliverable:** tested booking functionality without OCA AGPL booking code.
 
-## Phase 4: Netlify integration and legacy cleanup
+1. Create addon skeleton compatible with Odoo 19 Community.
+2. Implement services, durations, resources/staff, working hours and availability.
+3. Implement transactional conflict prevention and concurrency tests.
+4. Implement public booking, cancellation and rescheduling with scoped tokens.
+5. Implement authenticated staff management and audit events.
+6. Implement timezone-safe calendar events and notification templates.
+7. Add accessibility and mobile UX checks.
+8. Record source provenance, dependency versions and licence metadata.
+9. Review the addon licence and Odoo LGPL boundary before commercial distribution.
 
-**Outputs:** the public website routes to the OCI booking service without browser-held administrative credentials.
+**Gate:** functional, security, accessibility and concurrency tests pass.
 
-1. Configure `netlify/functions/get-config.js` to return only the public booking URL.
-2. Update the booking CTA to `https://booking.aktops.co.uk` only after the service is deployed and verified.
-3. Keep Odoo API keys, database credentials and administrative secrets out of browser JavaScript, localStorage, public JSON and Git.
-4. Do not reintroduce the removed client-side admin panel or unauthenticated XML-RPC booking function.
-5. Keep notification logs minimal and escape user-controlled content in outbound HTML.
-6. Remove stale Odoo Online URLs only after the new endpoint is live and tested.
-7. Correct README claims to describe only functionality that has actually passed acceptance tests.
+## Phase 5 — website integration
 
-**Exit gate:** the live website reaches the verified booking service; no privileged credentials are present in browser storage or public responses.
+**Deliverable:** website directs customers to the verified Odoo booking journey.
 
-## Phase 5: release hardening and launch
+1. Configure the public booking hostname.
+2. Update the website CTA only after the Odoo service passes acceptance.
+3. Ensure the browser receives only the public booking URL.
+4. Keep all privileged Odoo credentials server-side.
+5. Remove any stale Odoo Online URL after cutover.
+6. Test desktop/mobile booking journey and error states.
 
-**Outputs:** production release, operational runbook and rollback.
+**Gate:** end-to-end booking works without exposing admin credentials.
 
-1. Run functional, accessibility, mobile, security and concurrency tests.
-2. Load-test representative booking traffic and record CPU, RAM and database behaviour.
-3. Verify backup age, restore time and recovery point.
-4. Verify mail deliverability and domain authentication.
-5. Test deployment rollback to the previous Odoo/addon revision.
-6. Publish an operations runbook covering staff booking management, service hours, cancellations, backups, updates and incident response.
-7. Launch only after licensing review, security review and data-protection checks are signed off.
+## Phase 6 — operational readiness
 
-**Exit gate:** all acceptance criteria pass and rollback/restore are demonstrated.
+**Deliverable:** repeatable operations and recovery.
 
-## Risks and mitigations
+1. Confirm Elestio backup, monitoring, OS update and Odoo update scope.
+2. Maintain independent encrypted off-VM backups of database and filestore.
+3. Test restore and record RPO/RTO achieved.
+4. Monitor CPU, memory, disk, PostgreSQL, Odoo workers, TLS and backup age.
+5. Document update windows, rollback and incident escalation.
+6. Review personal data minimisation, retention and deletion.
+7. Complete security review and historical secret scan before launch.
 
-| Risk | Mitigation |
-|---|---|
-| Odoo addon is treated as automatically independent/proprietary | Review the actual code relationship and LGPL-3.0 terms with counsel |
-| AGPL code is copied or introduced transitively | Exclude AGPL booking modules; scan and review every dependency |
-| Booking race conditions | Transactional server-side availability checks and concurrency tests |
-| Public endpoint abuse | Rate limits, CSRF, token expiry, bot controls and monitoring |
-| Small guest runs out of memory or disk | Pilot first, benchmark and scale from measurements |
-| Data loss | Encrypted off-guest database and filestore backups; restore drills |
-| User data retained unnecessarily | Data minimisation, retention schedule and deletion procedure |
+## Cost and sizing note
 
-## Definition of done
+Elestio documents one free BYOVM service for a VM no larger than 2 vCPU, 4 GB RAM and 80 GB storage. The full OCI A1 configuration previously discussed (4 OCPU / 24 GB RAM) is outside that free-tier ceiling. Paid BYOVM pricing is based on VM specifications; Elestio publishes a formula, but OCI Ampere OCPU must be mapped to Elestio's billable vCPU definition by Elestio before estimating the actual charge. OCI infrastructure charges remain separate.
 
-- [ ] Odoo Community runs on OCI and is separate from Elestio BYOVM services.
-- [ ] Odoo core notices and exact dependency licences are recorded.
-- [ ] No OCA AGPL-3 booking implementation or transitive AGPL booking dependency is used.
-- [ ] The AKTOps booking addon has a documented independent development/provenance record.
-- [ ] The addon licence has been reviewed for compatibility with Odoo and the delivery model.
-- [ ] The visitor booking journey is tested, accessible and conflict-safe.
-- [ ] The AKTOps website routes to the verified booking hostname.
-- [ ] No browser-side Odoo credentials or legacy XML-RPC booking path exists.
-- [ ] Database and filestore backups have been restored successfully.
-- [ ] Monitoring, operations and rollback documentation are complete.
+## Not yet done
+
+- No OCI VM has been provisioned by this workflow.
+- No Elestio account/service has been created or connected.
+- No paid BYOVM option has been accepted.
+- No Odoo deployment has been installed.
+- No DNS or website booking link has been changed.
+- No credentials or private keys are stored in this repository.

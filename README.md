@@ -17,6 +17,7 @@
   <a href="#architecture">Architecture</a> •
   <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •
   <a href="docs/implementation/elestio-byovm-oci-runbook.md">Elestio BYOVM Runbook</a> •
+  <a href="docs/implementation/website-onboarding.md">Website Onboarding</a> •
   <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a> •
   <a href="LICENSING.md">Licensing</a> •
   <a href="SECURITY_REVIEW.md">Security Review</a>
@@ -32,8 +33,8 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 |---|---|
 | **Animated Landing Page** | Custom CSS animations: phosphorescent circuit board aesthetic, AK zoom-in intro, typewriter effects |
 | **Interactive Glossary** | Hover/tap tooltips explaining cloud terminology (MSP, sovereign, hyperscaler, etc.): accessibility-first |
-| **Email Waitlist** | Netlify Forms with webhook processing → Resend email notifications → Slack/Discord alerts |
-| **Appointment Booking** | Current site opens a configured external booking URL; migration to Odoo Community 19 via Elestio BYOVM on OCI is planned and documented |
+| **Onboarding Form** | Netlify Forms consultation request with name, work email, organisation, service area and optional context |
+| **Appointment Booking** | Uses a validated HTTPS `BOOKING_URL` only when configured; otherwise offers the onboarding request form. Odoo Community 19 via Elestio BYOVM on OCI remains planned |
 | **Admin Panel** | Disabled and removed during security remediation; replacement requires server-side authentication |
 | **Security** | Legacy admin and booking endpoints removed; remediation merged and deployment workflow successful |
 
@@ -52,7 +53,7 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
   <img src="screenshots/hero.png" alt="AKTOps Landing Page" width="800" style="border-radius: 8px; border: 1px solid #242424;">
 </p>
 
-*Full landing page with nav, countdown timer, and "Coming Soon" badge. Pure HTML/CSS: no JavaScript frameworks.*
+*Landing page with responsive navigation, early-access status and a consultation/onboarding call to action. Pure HTML/CSS/JS without a frontend framework.*
 
 ### Interactive Glossary Tooltips
 <p align="center">
@@ -67,12 +68,12 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 
 The service needed a professional landing page that:
 
-1. **Captures leads** without depending on third-party form services
+1. **Captures onboarding requests** through Netlify Forms
 2. **Provides a route to discovery consultations** through a separately hosted booking service
 3. **Keeps client data sovereign**: not trapped in SaaS platforms
 4. **Works without JavaScript frameworks** or build pipelines
 
-**Current state:** The static site and lead-notification function are in place. The Elestio-managed Odoo Community 19 service on an AKTOps-owned OCI BYOVM VM is a planned integration and is not yet represented as a live production booking system. Legacy admin and XML-RPC endpoints have been removed in the merged remediation. GitHub Actions build/deploy completed successfully; live route smoke tests and environment-variable review remain outstanding.
+**Current state:** The static site presents an onboarding request form until an explicit HTTPS booking URL is configured. Netlify Forms must be enabled and a live submission tested in the Netlify dashboard. The Elestio-managed Odoo Community 19 service on an AKTOps-owned OCI BYOVM VM is planned, not provisioned. The page does not pretend to save failed submissions locally or offer a fake client login. Legacy admin and XML-RPC endpoints have been removed in the merged remediation. GitHub Actions build/deploy completed successfully; live route smoke tests and environment-variable review remain outstanding.
 
 ---
 
@@ -82,9 +83,9 @@ The service needed a professional landing page that:
 |---|---|
 | Frontend | Vanilla HTML/CSS/JS: no build step, no frameworks |
 | Hosting | Netlify (static + serverless) |
-| Forms | Netlify Forms with webhook processing |
+| Forms | Netlify Forms consultation intake (dashboard notifications require configuration) |
 | Backend | Netlify Functions (Node.js) |
-| Booking | Planned: Odoo Community on OCI with an independently authored AKTOps booking addon |
+| Booking | Planned: Odoo Community 19 via Elestio BYOVM on OCI with an independently authored AKTOps booking addon |
 | Email | Resend API via serverless functions |
 | Configuration | Netlify environment variables for public configuration; Odoo credentials remain server-side |
 
@@ -113,7 +114,7 @@ OCI Compute VM (AKTOps tenancy)
   +--> independently authored AKTOps booking addon (planned)
 ```
 
-The booking service is a separate application running on AKTOps-owned OCI infrastructure and managed through Elestio BYOVM. The current website booking link still points to the legacy Odoo Online URL until the new service is deployed and verified.
+The booking service is a separate application running on AKTOps-owned OCI infrastructure and managed through Elestio BYOVM. Until `BOOKING_URL` is set in Netlify after Odoo deployment and acceptance testing, the website directs visitors to the onboarding request form. No Odoo tenant URL is hard-coded in the frontend.
 
 ---
 
@@ -139,7 +140,7 @@ netlify dev
 
 ## Skills Used
 
-`Netlify` · `Netlify Functions` · `Vanilla JavaScript` · `HTML/CSS` · `Odoo Community (planned)` · `OCI (planned)` · `DevSecOps` · `Client-Facing Delivery`
+`Netlify` · `Netlify Functions` · `Vanilla JavaScript` · `HTML/CSS` · `Netlify Forms` · `Odoo Community (planned)` · `OCI (planned)` · `DevSecOps` · `Client-Facing Delivery`
 
 ---
 

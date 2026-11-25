@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>IT Operations, Cloud Infrastructure & DevSecOps: Service Website</strong><br>
-  <em>Static service website with a documented path to self-hosted booking on OCI</em>
+  <em>Static service website with a documented path to Elestio-managed Odoo Community on OCI BYOVM</em>
 </p>
 
 <p align="center">
@@ -16,6 +16,7 @@
   <a href="#technical-approach">Technical Approach</a> •
   <a href="#architecture">Architecture</a> •
   <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •
+  <a href="docs/implementation/elestio-byovm-oci-runbook.md">Elestio BYOVM Runbook</a> •
   <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a> •
   <a href="LICENSING.md">Licensing</a> •
   <a href="SECURITY_REVIEW.md">Security Review</a>
@@ -32,7 +33,7 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 | **Animated Landing Page** | Custom CSS animations: phosphorescent circuit board aesthetic, AK zoom-in intro, typewriter effects |
 | **Interactive Glossary** | Hover/tap tooltips explaining cloud terminology (MSP, sovereign, hyperscaler, etc.): accessibility-first |
 | **Email Waitlist** | Netlify Forms with webhook processing → Resend email notifications → Slack/Discord alerts |
-| **Appointment Booking** | Current site opens a configured external booking URL; migration to Odoo Community on OCI is planned and documented |
+| **Appointment Booking** | Current site opens a configured external booking URL; migration to Odoo Community 19 via Elestio BYOVM on OCI is planned and documented |
 | **Admin Panel** | Disabled and removed during security remediation; replacement requires server-side authentication |
 | **Security** | Legacy admin and booking endpoints removed; remediation merged and deployment workflow successful |
 
@@ -71,7 +72,7 @@ The service needed a professional landing page that:
 3. **Keeps client data sovereign**: not trapped in SaaS platforms
 4. **Works without JavaScript frameworks** or build pipelines
 
-**Current state:** The static site and lead-notification function are in place. The OCI-hosted Odoo Community booking service is a planned integration and is not yet represented as a live production booking system. Legacy admin and XML-RPC endpoints have been removed in the merged remediation. GitHub Actions build/deploy completed successfully; live route smoke tests and environment-variable review remain outstanding.
+**Current state:** The static site and lead-notification function are in place. The Elestio-managed Odoo Community 19 service on an AKTOps-owned OCI BYOVM VM is a planned integration and is not yet represented as a live production booking system. Legacy admin and XML-RPC endpoints have been removed in the merged remediation. GitHub Actions build/deploy completed successfully; live route smoke tests and environment-variable review remain outstanding.
 
 ---
 
@@ -119,7 +120,7 @@ The booking service is a separate OCI-hosted application. The current website bo
 
 - **Frontend ownership**: Static AKTOps website and Netlify delivery
 - **No-code to code bridge**: Started with drag-and-drop, identified limits, built custom solution
-- **Architecture direction**: Odoo Community booking is planned for self-hosting on OCI
+- **Architecture direction**: Odoo Community 19 is planned through Elestio BYOVM on AKTOps-owned OCI infrastructure
 - **B2B delivery mindset**: Every decision optimized for client trust (security headers, transparent booking flow)
 - **Integration boundary**: Public website remains separate from the booking system and its database
 

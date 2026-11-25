@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>IT Operations, Cloud Infrastructure & DevSecOps: Service Website</strong><br>
-  <em>Built end-to-end: from first wireframe to deployed production with real integrations</em>
+  <em>Static service website with a documented path to self-hosted booking on OCI</em>
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
   <a href="#live-demo">Live Demo</a> •
   <a href="#screenshots">Screenshots</a> •
   <a href="#technical-approach">Technical Approach</a> •
-  <a href="#architecture">Architecture</a>
+  <a href="#architecture">Architecture</a> •\n  <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •\n  <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a>
 </p>
 
 ---
@@ -28,8 +28,8 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 | **Animated Landing Page** | Custom CSS animations: phosphorescent circuit board aesthetic, AK zoom-in intro, typewriter effects |
 | **Interactive Glossary** | Hover/tap tooltips explaining cloud terminology (MSP, sovereign, hyperscaler, etc.): accessibility-first |
 | **Email Waitlist** | Netlify Forms with webhook processing → Resend email notifications → Slack/Discord alerts |
-| **Appointment Booking** | Odoo XML-RPC serverless proxy ready: opens Odoo booking page when configured |
-| **Admin Panel** | Live waitlist data, Odoo configuration, booking management, CSV export |
+| **Appointment Booking** | Current site opens a configured external booking URL; migration to Odoo Community on OCI is planned and documented |
+| **Admin Panel** | Existing admin utilities; legacy Odoo credential/configuration handling requires review before production use |
 | **Security Hardened** | HSTS, CSP headers, noindex admin routes, environment-based secrets |
 
 ---
@@ -63,11 +63,11 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 The service needed a professional landing page that:
 
 1. **Captures leads** without depending on third-party form services
-2. **Books discovery consultations** directly into their Odoo CRM
+2. **Provides a route to discovery consultations** through a separately hosted booking service
 3. **Keeps client data sovereign**: not trapped in SaaS platforms
 4. **Works without JavaScript frameworks** or build pipelines
 
-**Result:** Zero-dependency stack that deploys in 30 seconds, handles real bookings, and maintains full data sovereignty.
+**Current state:** The static site and Netlify functions are in place. The OCI-hosted Odoo Community booking service is a planned integration and is not yet represented as a live production booking system.
 
 ---
 
@@ -79,36 +79,45 @@ The service needed a professional landing page that:
 | Hosting | Netlify (static + serverless) |
 | Forms | Netlify Forms with webhook processing |
 | Backend | Netlify Functions (Node.js) |
-| Booking | Odoo XML-RPC integration |
+| Booking | Planned: Odoo Community on OCI with OCA Resource Booking |
 | Email | Resend API via serverless functions |
-| Auth | Environment variables, Basic auth, OAuth2 for Odoo |
+| Configuration | Netlify environment variables for public configuration; Odoo credentials remain server-side |
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│   Landing Page  │────▶│  Netlify Forms   │────▶│  Email Notify   │
-│   (Static HTML) │     │  (Lead Capture)  │     │  (Resend API)   │
-└─────────────────┘     └──────────────────┘     └─────────────────┘
-         │
-         ▼
-┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  Booking Widget │────▶│ Serverless Func  │────▶│  Odoo Backend   │
-│  (Vanilla JS)   │     │  (XML-RPC Proxy) │     │  (CRM + Calendar)│
-└─────────────────┘     └──────────────────┘     └─────────────────┘
+Visitor
+  |
+  v
+AKTOps website (Netlify static HTML/CSS/JS)
+  |  booking link
+  v
+booking.aktops.co.uk
+  |
+  v
+OCI edge / HTTPS reverse proxy
+  |
+  v
+Dedicated LXD guest: Odoo 19 Community
+  |                         |
+  |                         +--> PostgreSQL (private only)
+  |
+  +--> OCA Resource Booking + AKTOps booking portal addon (planned)
 ```
+
+The booking service is a separate OCI-hosted application. The current website booking link still points to the legacy Odoo Online URL until the new service is deployed and verified.
 
 ---
 
 ## What This Demonstrates
 
-- **End-to-end ownership**: From first wireframe to deployed production site with real integrations
+- **Frontend ownership**: Static AKTOps website and Netlify delivery
 - **No-code to code bridge**: Started with drag-and-drop, identified limits, built custom solution
-- **Problem-solving**: Client needed sovereign data control, built Odoo integration that keeps data in their infrastructure
+- **Architecture direction**: Odoo Community booking is planned for self-hosting on OCI
 - **B2B delivery mindset**: Every decision optimized for client trust (security headers, transparent booking flow)
-- **Automation**: Email notifications, waitlist management, booking confirmation, all automated via serverless functions
+- **Integration boundary**: Public website remains separate from the booking system and its database
 
 ---
 
@@ -124,7 +133,7 @@ netlify dev
 
 ## Skills Used
 
-`n8n` · `Make` · `Power Automate` · `XML-RPC` · `Serverless Architecture` · `API Integration` · `Vanilla JavaScript` · `CSS Animations` · `Security Hardening` · `DevOps` · `Client-Facing Delivery`
+`Netlify` · `Netlify Functions` · `Vanilla JavaScript` · `HTML/CSS` · `Odoo Community (planned)` · `OCI (planned)` · `DevSecOps` · `Client-Facing Delivery`
 
 ---
 

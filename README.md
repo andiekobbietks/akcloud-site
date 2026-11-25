@@ -19,6 +19,8 @@
   <a href="docs/implementation/elestio-byovm-oci-runbook.md">Elestio BYOVM Runbook</a> •
   <a href="docs/implementation/website-onboarding.md">Website Onboarding</a> •
   <a href="docs/implementation/decap-cms.md">Decap CMS Guide</a> •
+  <a href="docs/design-system.md">Design System</a> •
+  <a href="docs/design/stitch-workflow.md">Google Stitch Workflow</a> •
   <a href="docs/implementation/cli-operations-runbook.md">CLI Operations Runbook</a> •
   <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a> •
   <a href="LICENSING.md">Licensing</a> •

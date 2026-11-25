@@ -173,7 +173,7 @@ For actual raster sampling, use the committed source images as separate evidence
 5. Compare raster samples with CSS literals and mark the result as exact, approximate or unexplained.
 6. Never promote a sampled pixel to a design token until it is confirmed as intentional.
 
-The current `screenshots/hero.png` and `screenshots/tip.png` payloads are JPEG-encoded despite their `.png` names. Treat this as an asset-format hygiene issue; do not assume PNG lossless sampling or rename the files without updating all references and verifying the build.
+The current `screenshots/hero.png` and `screenshots/tip.png` payloads are JPEG-encoded despite their `.png` names. Both images also retain the older AKCloud wordmark and copy, so they are historical design references rather than current AKTOps screenshots. Treat the extension mismatch and branding age as asset-provenance debt; do not assume PNG lossless sampling or rename the files without updating all references and verifying the build.
 
 ## 10. Related references
 

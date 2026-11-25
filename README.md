@@ -24,6 +24,7 @@
   <a href="docs/design/token-reference.md">Tokens & Components</a> •
   <a href="docs/design/pixel-sampling.md">Pixel Sampling</a> •
   <a href="docs/design/stitch-workflow.md">Google Stitch Workflow</a> •
+  <a href="docs/engineering/visual-assurance-ci.md">Visual Assurance CI/CD</a> •
   <a href="docs/implementation/cli-operations-runbook.md">CLI Operations Runbook</a> •
   <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a> •
   <a href="LICENSING.md">Licensing</a> •
@@ -89,6 +90,7 @@ The interface uses a phosphorescent circuit-board visual language: near-black su
 | [Token and component reference](docs/design/token-reference.md) | Colour, typography, spacing, shape, motion, responsive rules and component inventory |
 | [Pixel sampling protocol](docs/design/pixel-sampling.md) | Reproducible raster sampling method, image-format checks and evidence recording |
 | [Google Stitch workflow](docs/design/stitch-workflow.md) | Reusable visual brief, export hand-off and OpenCode implementation process |
+| [Visual assurance CI/CD](docs/engineering/visual-assurance-ci.md) | Playwright interaction coverage, accessibility audits, responsive checks and screenshot artifacts |
 | [OpenCode design skill](.opencode/skills/aktops-design/SKILL.md) | Repository-aware design implementation instructions |
 | [Canonical design contract](DESIGN.md) | Original design intent and token specification |
 

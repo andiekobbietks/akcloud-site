@@ -17,7 +17,8 @@
 
 # Force HTTPS (Netlify does this by default; this is belt-and-braces)
 [[redirects]]
-  # Legacy Netlify hostname retained until a new AKTOps domain is configured.\n  from = "http://akcloud.netlify.app/*"
+  # Legacy Netlify hostname retained until a new AKTOps domain is configured.
+  from = "http://akcloud.netlify.app/*"
   to   = "https://akcloud.netlify.app/:splat"
   status = 301
   force = false

@@ -69,7 +69,7 @@ The ERP Magic page is an architectural reference only. This repository does not 
 - **Isolation:** a dedicated LXD system container for the Odoo workload.
 - **Application:** one Odoo instance.
 - **Database:** one PostgreSQL instance, initially colocated inside the isolated guest.
-- **Booking:** OCA Resource Booking, with a proof of concept to validate its portal flow and compatibility before committing to custom public booking development.
+- **Booking:** an independently authored AKTOps Odoo addon. OCA AGPL-3 booking code is excluded from the selected product path.
 - **Public website:** existing static website on Netlify.
 - **Ingress:** HTTPS reverse proxy and controlled public DNS for a booking hostname.
 - **Backups:** encrypted, off-host backups of both PostgreSQL and the Odoo filestore, with restore testing.
@@ -89,24 +89,23 @@ The current use case does not establish a need for:
 
 Introducing these components now would add operational overhead, failure modes and cost without a demonstrated requirement. A single-node deployment is not highly available: the design must state this limitation honestly and mitigate it with off-host backups, tested restore procedures, monitoring and a documented recovery plan.
 
-## 4. Booking architecture and module research
+## 4. Booking architecture and licensing decision
 
-The intended booking foundation is Odoo Community with the Odoo Community Association (OCA) `resource_booking` addon on its matching Odoo 19.0 branch, subject to validation.
+The selected booking path is an independently authored AKTOps addon for Odoo Community. The product will not incorporate OCA `resource_booking` or another AGPL-3 booking implementation.
 
-The module's documented workflow includes resource booking types, availability calendars, pending bookings, tokenised portal slot selection and booking lifecycle handling. Its documented portal journey is invitation-led: staff create a pending booking and share a token link with the requester. This must not be assumed to provide a public service catalogue with unrestricted self-service booking.
+The OCA Calendar repository is marked AGPL-3.0 at repository level; OCA states that individual addon manifests can declare different licences, so every module must be checked at its exact revision. The OCA repository is therefore excluded from the selected implementation rather than assumed to be compatible with a proprietary addon.
 
-The proof of concept must establish:
-1. Compatibility with the selected Odoo Community release.
-2. Required OCA dependencies and pinned source revisions.
-3. Logged-out visitor behaviour for the tokenised portal.
-4. Resource availability and concurrent booking conflict handling.
-5. Calendar event creation, cancellation and modification behaviour.
-6. Email templates, public hostname and timezone correctness.
-7. Accessibility and mobile usability.
+The independent AKTOps proof of concept must validate:
+1. Odoo Community release compatibility and supported extension points.
+2. Booking models, service catalogue, resource availability and working hours.
+3. Server-side transactional conflict prevention under concurrent requests.
+4. Logged-out public booking, token expiry, cancellation and modification permissions.
+5. Calendar events, email templates, timezone correctness and accessibility.
+6. Exact third-party dependency versions, source provenance and licences.
 
-If invitation-led booking does not meet the customer journey, an AKTOps-owned addon may provide a public service catalogue and slot selection. It must use supported Odoo/OCA model methods and enforce availability and permissions server-side; it must not bypass the booking lifecycle by creating raw calendar events.
+The implementation must be developed from AKTOps requirements and independently authored designs. Do not copy or adapt AGPL source. Keep a clean-room provenance record and review the addon licence and its legal relationship to Odoo's LGPL-3.0 terms before distribution or commercial release.
 
-**Licensing:** the OCA `resource_booking` module is published under AGPL-3. Verify the licence of every dependency and obtain appropriate advice on obligations before modifying, distributing or offering a network-accessible modified service.
+**Licensing references:** Odoo Community Edition 19 is documented by Odoo as LGPL-3.0: https://www.odoo.com/documentation/19.0/legal/licenses.html. OCA Calendar repository licensing and per-module manifest guidance: https://github.com/OCA/calendar.
 
 ## 5. Security and operational requirements
 
@@ -146,7 +145,7 @@ No user-count threshold in the ERP Magic blueprint should be treated as an autom
 ## 7. Research questions and validation work
 
 1. **Workload sizing:** What are the real CPU, memory, database and storage requirements for AKTOps's booking workload under representative concurrency?
-2. **Booking UX:** Is the OCA invitation-led portal flow sufficient, or is a public self-service catalogue necessary?
+2. **Booking UX:** Does the independently authored public service catalogue and slot picker meet the required customer journey?
 3. **Recovery:** What recovery time objective (RTO) and recovery point objective (RPO) are appropriate for the booking service, and can the proposed backup schedule meet them?
 4. **Isolation:** Is a dedicated LXD guest sufficient for the current risk profile, and what host-level controls and update process are required?
 5. **Data protection:** What personal data is genuinely required for a booking, how long should it be retained, and how can deletion requests be fulfilled?
@@ -157,7 +156,7 @@ No user-count threshold in the ERP Magic blueprint should be treated as an autom
 
 - The ICP list is a working hypothesis, not validated market research.
 - The proposed OCI sizing has not been load-tested.
-- The OCA booking workflow must be proven against the exact Odoo/OCA revisions selected.
+- The independently authored booking addon has not yet been implemented or tested.
 - A single-host architecture does not provide high availability.
 - No production OCI deployment, DNS migration or live booking integration is claimed by this research document.
 - ERP Magic's published architecture is a vendor-authored reference; its stated user ranges are not independent performance benchmarks.
@@ -165,9 +164,10 @@ No user-count threshold in the ERP Magic blueprint should be treated as an autom
 ## References
 
 1. **ERP Magic, “The Blueprint”** — [https://www.erpmagic.com/the-blueprint](https://www.erpmagic.com/the-blueprint). Source for the vendor's published single-server and multi-server Odoo hosting patterns.
-2. **OCA Calendar repository** — [https://github.com/OCA/calendar](https://github.com/OCA/calendar). Source repository for Community Odoo calendar/resource booking addons; pin and inspect the exact release branch and commit used.
-3. **OCA Web repository** — [https://github.com/OCA/web](https://github.com/OCA/web). Source repository for web-related OCA dependencies; validate the matching release branch.
-4. **Odoo documentation** — [https://www.odoo.com/documentation/](https://www.odoo.com/documentation/). Consult the documentation matching the deployed Community version for production deployment and operations.
+2. **OCA Calendar repository** — [https://github.com/OCA/calendar](https://github.com/OCA/calendar). Consulted to confirm repository-level AGPL-3.0 licensing and the need to inspect each module manifest. OCA booking code is excluded from the selected product path.
+3. **Odoo 19 licensing documentation** — [https://www.odoo.com/documentation/19.0/legal/licenses.html](https://www.odoo.com/documentation/19.0/legal/licenses.html). States Odoo 19 Community Edition is LGPL-3.0.
+4. **OCA Web repository** — [https://github.com/OCA/web](https://github.com/OCA/web). Source repository for web-related OCA dependencies; validate the matching release branch.
+5. **Odoo documentation** — [https://www.odoo.com/documentation/](https://www.odoo.com/documentation/). Consult the documentation matching the deployed Community version for production deployment and operations.
 
 ---
 

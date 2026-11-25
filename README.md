@@ -14,7 +14,11 @@
   <a href="#live-demo">Live Demo</a> •
   <a href="#screenshots">Screenshots</a> •
   <a href="#technical-approach">Technical Approach</a> •
-  <a href="#architecture">Architecture</a> •\n  <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •\n  <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a>
+  <a href="#architecture">Architecture</a> •
+  <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •
+  <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a> •
+  <a href="LICENSING.md">Licensing</a> •
+  <a href="SECURITY_REVIEW.md">Security Review</a>
 </p>
 
 ---
@@ -29,8 +33,8 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 | **Interactive Glossary** | Hover/tap tooltips explaining cloud terminology (MSP, sovereign, hyperscaler, etc.): accessibility-first |
 | **Email Waitlist** | Netlify Forms with webhook processing → Resend email notifications → Slack/Discord alerts |
 | **Appointment Booking** | Current site opens a configured external booking URL; migration to Odoo Community on OCI is planned and documented |
-| **Admin Panel** | Existing admin utilities; legacy Odoo credential/configuration handling requires review before production use |
-| **Security Hardened** | HSTS, CSP headers, noindex admin routes, environment-based secrets |
+| **Admin Panel** | Disabled and removed during security remediation; replacement requires server-side authentication |
+| **Security** | Security review and remediation are documented; deployment verification remains outstanding |
 
 ---
 
@@ -67,7 +71,7 @@ The service needed a professional landing page that:
 3. **Keeps client data sovereign**: not trapped in SaaS platforms
 4. **Works without JavaScript frameworks** or build pipelines
 
-**Current state:** The static site and Netlify functions are in place. The OCI-hosted Odoo Community booking service is a planned integration and is not yet represented as a live production booking system.
+**Current state:** The static site and lead-notification function are in place. The OCI-hosted Odoo Community booking service is a planned integration and is not yet represented as a live production booking system. Legacy admin and XML-RPC endpoints have been removed on the security remediation branch; that branch still needs review and deployment.
 
 ---
 
@@ -79,7 +83,7 @@ The service needed a professional landing page that:
 | Hosting | Netlify (static + serverless) |
 | Forms | Netlify Forms with webhook processing |
 | Backend | Netlify Functions (Node.js) |
-| Booking | Planned: Odoo Community on OCI with OCA Resource Booking |
+| Booking | Planned: Odoo Community on OCI with an independently authored AKTOps booking addon |
 | Email | Resend API via serverless functions |
 | Configuration | Netlify environment variables for public configuration; Odoo credentials remain server-side |
 
@@ -104,7 +108,7 @@ Dedicated LXD guest: Odoo 19 Community
   |                         |
   |                         +--> PostgreSQL (private only)
   |
-  +--> OCA Resource Booking + AKTOps booking portal addon (planned)
+  +--> independently authored AKTOps booking addon (planned)
 ```
 
 The booking service is a separate OCI-hosted application. The current website booking link still points to the legacy Odoo Online URL until the new service is deployed and verified.

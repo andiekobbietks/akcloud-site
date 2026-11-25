@@ -31,23 +31,21 @@ export default async (request) => {
   // Netlify Forms wraps form data in { data: 'form=<urlencoded>', ... }
   // For the webhook, payload.data is a URL-encoded string.
   const params = new URLSearchParams(payload.data || '');
-  const formName = params.get('form-name') || params.get('form_name') || 'unknown';
-  const email = params.get('email') || '(no email)';
-  const company = params.get('company') || '';
-  const topic = params.get('topic') || '';
-  const source = params.get('source') || '';
+  const clean = (value, max = 300) => String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max);
+  const escapeHtml = (value) => clean(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  })[char]);
+  const formName = clean(params.get('form-name') || params.get('form_name') || 'unknown', 80).replace(/[^a-zA-Z0-9 _-]/g, '');
+  const email = clean(params.get('email') || '(no email)', 254);
+  const company = clean(params.get('company') || '');
+  const topic = clean(params.get('topic') || '');
+  const source = clean(params.get('source') || '');
 
   const siteName = process.env.SITE_NAME || 'AKcloud';
 
   const summary = {
     received_at: new Date().toISOString(),
     form: formName,
-    email,
-    company,
-    topic,
-    source,
-    ip: request.headers.get('x-forwarded-for') || 'unknown',
-    user_agent: request.headers.get('user-agent') || 'unknown',
   };
 
   // ── 1. Log to function output (visible in Netlify dashboard) ──
@@ -69,13 +67,12 @@ export default async (request) => {
           html: `
             <h2>New ${formName}</h2>
             <table style="border-collapse:collapse;">
-              <tr><td><b>Email</b></td><td style="padding-left:12px;">${email}</td></tr>
-              ${company ? `<tr><td><b>Company</b></td><td style="padding-left:12px;">${company}</td></tr>` : ''}
-              ${topic   ? `<tr><td><b>Topic</b></td><td style="padding-left:12px;">${topic}</td></tr>` : ''}
-              ${source  ? `<tr><td><b>Source</b></td><td style="padding-left:12px;">${source}</td></tr>` : ''}
+              <tr><td><b>Email</b></td><td style="padding-left:12px;">${escapeHtml(email)}</td></tr>
+              ${company ? `<tr><td><b>Company</b></td><td style="padding-left:12px;">${escapeHtml(company)}</td></tr>` : ''}
+              ${topic   ? `<tr><td><b>Topic</b></td><td style="padding-left:12px;">${escapeHtml(topic)}</td></tr>` : ''}
+              ${source  ? `<tr><td><b>Source</b></td><td style="padding-left:12px;">${escapeHtml(source)}</td></tr>` : ''}
               <tr><td><b>Time</b></td><td style="padding-left:12px;">${summary.received_at}</td></tr>
-              <tr><td><b>IP</b></td><td style="padding-left:12px;">${summary.ip}</td></tr>
-            </table>
+              </table>
           `,
         }),
       });

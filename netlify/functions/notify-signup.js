@@ -31,7 +31,7 @@ export default async (request) => {
   // Netlify Forms wraps form data in { data: 'form=<urlencoded>', ... }
   // For the webhook, payload.data is a URL-encoded string.
   const params = new URLSearchParams(payload.data || '');
-  const clean = (value, max = 300) => String(value || '').replace(/[\\u0000-\\u001f\\u007f]/g, ' ').trim().slice(0, max);
+  const clean = (value, max = 300) => String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max);
   const escapeHtml = (value) => clean(value).replace(/[&<>"']/g, (char) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
   })[char]);

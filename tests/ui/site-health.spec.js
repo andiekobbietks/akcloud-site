@@ -93,7 +93,7 @@ test('404 route returns a real 404 page with recovery action', async ({ page }) 
 });
 
 test('reduced-motion preference removes animation and transition effects', async ({ browser }) => {
-  const context = await browser.newContext({ reducedMotion: 'reduce' });
+  const context = await browser.newContext({ reducedMotion: 'reduce', baseURL: process.env.BASE_URL || 'http://127.0.0.1:4173' });
   const page = await context.newPage();
   await page.goto('/');
   await expect(page.locator('#spx')).toHaveCSS('display', 'none');

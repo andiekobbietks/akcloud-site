@@ -8,7 +8,7 @@
 
 ## Executive summary
 
-<badge color="warning">Remediation branch only</badge> The review identified several real security design weaknesses in the legacy browser admin and booking functions. The remediation branch removes those components and reduces personal data in signup logs. **The changes are not yet merged into `master` and have not been deployed to Netlify.** Until the pull request is merged and the Netlify deployment is verified, the public production site may still serve the legacy implementation.
+**Remediation branch only:** the review identified several real security design weaknesses in the legacy browser admin and booking functions. The remediation branch removes those components and reduces personal data in signup logs. **The changes are not yet merged into `master` and have not been deployed to Netlify.** Until the pull request is merged and the Netlify deployment is verified, the public production site may still serve the legacy implementation.
 
 No hard-coded production API key, private key or cloud credential value was confirmed in the inspected high-risk source excerpts. This is **not** a clean full-history secret-scan result: a dedicated automated full-history scanner has not been run in this review. If any credential was ever configured in Netlify or Odoo and may have been exposed, rotate it independently of this code change.
 

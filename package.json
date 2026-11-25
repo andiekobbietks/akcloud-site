@@ -1,17 +1,24 @@
 {
-  "name": "akcloud-site",
+  "name": "aktops-site",
   "version": "1.0.0",
   "private": true,
-  "description": "AKTOps IT operations, cloud infrastructure and DevSecOps website — Netlify-deployed with Forms and Functions",
+  "description": "AKTOps IT operations, cloud infrastructure and DevSecOps website",
   "scripts": {
     "dev": "netlify dev",
     "build": "npm test",
-    "test": "node --test"
+    "test": "node --test",
+    "test:ui": "playwright test",
+    "test:ui:headed": "playwright test --headed",
+    "test:visual": "playwright test tests/ui/visual-capture.spec.js",
+    "test:a11y": "playwright test tests/ui/accessibility.spec.js",
+    "test:all": "npm test && playwright test"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.56.1",
     "netlify-cli": "^17.0.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

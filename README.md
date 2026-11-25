@@ -36,7 +36,7 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 
 ## Live Demo
 
-**Existing deployment URL:** [akcloud.netlify.app](https://akcloud.netlify.app) (legacy AKTOps address; domain and deployment branding will be updated separately)
+**Existing deployment URL:** [akcloud.netlify.app](https://akcloud.netlify.app) (legacy AKCloud deployment hostname; domain and deployment branding will be updated separately)
 
 ---
 

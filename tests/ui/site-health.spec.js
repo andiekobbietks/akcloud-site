@@ -50,7 +50,8 @@ test('onboarding validates required fields and reports successful submission', a
   await expect(page.locator('#book-form')).toBeHidden();
 });
 
-test('glossary supports hover and click-to-pin interactions', async ({ page, isMobile }) => {
+test('glossary supports hover and click-to-pin interactions', async ({ page }, testInfo) => {
+  const isMobile = testInfo.project.name.includes('mobile');
   await page.goto('/');
   const term = page.locator('.term[data-term="sovereign"]').first();
   if (!isMobile) {

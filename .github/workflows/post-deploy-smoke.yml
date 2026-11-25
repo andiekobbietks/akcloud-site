@@ -1,0 +1,64 @@
+name: AKTOps post-deploy visual smoke
+
+on:
+  workflow_run:
+    workflows: ["Netlify Build and Deploy"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Public site URL to inspect
+        required: false
+        default: https://akcloud.netlify.app
+
+permissions:
+  contents: read
+
+jobs:
+  public-smoke:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+
+      - name: Wait for public deployment to become available
+        env:
+          BASE_URL: ${{ inputs.base_url || 'https://akcloud.netlify.app' }}
+        run: |
+          for attempt in $(seq 1 18); do
+            if curl --fail --silent --show-error "$BASE_URL/" -o /dev/null; then
+              echo "Public site responds at $BASE_URL"
+              exit 0
+            fi
+            echo "Waiting for deployment ($attempt/18)"
+            sleep 10
+          done
+          echo "Deployment did not become available in 3 minutes"
+          exit 1
+
+      - name: Run public-site smoke tests and capture screenshots
+        env:
+          BASE_URL: ${{ inputs.base_url || 'https://akcloud.netlify.app' }}
+        run: npx playwright test tests/ui/public-smoke.spec.js --project=chromium-desktop
+
+      - name: Upload public deployment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aktops-public-smoke-${{ github.run_number }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: warn
+          retention-days: 30

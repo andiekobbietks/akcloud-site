@@ -30,7 +30,9 @@ test('capture AKTOps visual states for review and regression evidence', async ({
   await expect(page.getByRole('dialog')).toBeVisible();
   await capture('07-onboarding-modal');
   await page.getByRole('button', { name: 'Close onboarding request' }).click();
+  await page.route('https://unpkg.com/**', route => route.abort());
   await page.goto('/admin/');
+  await expect(page.getByRole('heading', { name: 'AKTOps content studio' })).toBeVisible();
   await capture('08-decap-admin-fallback', true);
   await page.goto('/missing-visual-capture-route');
   await capture('09-not-found-404', true);

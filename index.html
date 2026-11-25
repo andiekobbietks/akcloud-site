@@ -134,7 +134,11 @@
   .tip-arrow { position: absolute; left: 50%; bottom: -5px; width: 9px; height: 9px; transform: translateX(-50%) rotate(45deg); background: #191919; border-right: 1px solid rgba(57,255,20,0.32); border-bottom: 1px solid rgba(57,255,20,0.32); }
 
   /* BOOKING MODAL */
-  #book-overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(8,8,8,0.84); backdrop-filter: blur(6px); }
+  #book-overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(8,8,8,0.84); backdrop-filter: blur(6px); overflow-y:auto; }
+  #book-overlay[hidden] { display:none !important; }
+  .honeypot { position:absolute !important; left:-10000px !important; width:1px !important; height:1px !important; overflow:hidden !important; }
+  .form-input:disabled { opacity:.65; cursor:wait; }
+  @media (max-width:600px) { .book-modal { padding:30px 22px; max-height:calc(100dvh - 32px); overflow-y:auto; } #book-overlay { padding:16px; align-items:flex-start; } }
   #book-overlay.visible { display: flex; }
   .book-modal { position: relative; width: 100%; max-width: 460px; background: #111; border: 1px solid #242424; border-radius: 8px; padding: 38px 36px; animation: akFade 0.18s ease; }
   .book-modal::before { content: ''; position: absolute; top: -1px; left: -1px; width: 48px; height: 48px; border-top: 2px solid #39FF14; border-left: 2px solid #39FF14; border-top-left-radius: 8px; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); }
@@ -142,10 +146,6 @@
   #book-notify-msg.visible { display: block; }
 
   /* LOGIN MODAL */
-  #login-overlay { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(8,8,8,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); animation: akFadeIn 0.18s ease; display: none; }
-  #login-overlay.visible { display: flex; }
-  .login-modal { position: relative; width: 100%; max-width: 420px; background: #111; border: 1px solid #242424; border-radius: 8px; padding: 38px 36px; }
-  .login-modal::before { content: ''; position: absolute; top: -1px; left: -1px; width: 48px; height: 48px; border-top: 2px solid #39FF14; border-left: 2px solid #39FF14; border-top-left-radius: 8px; box-shadow: 0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); }
   .modal-close { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid #242424; border-radius: 4px; color: #787878; font-size: 15px; cursor: pointer; line-height: 1; transition: all 0.15s; }
   .modal-close:hover { color: #39FF14; border-color: #39FF14; }
   .form-label { display: block; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #787878; margin-bottom: 8px; }
@@ -352,18 +352,11 @@
 </head>
 <body>
 
-<!-- Hidden static forms for Netlify build-time detection -->
-<form name="notify" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
-  <input type="text" name="bot-field">
-  <input type="email" name="email">
-  <input type="text" name="source">
-</form>
-<form name="consultation" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
-  <input type="text" name="bot-field">
-  <input type="email" name="email">
-  <input type="text" name="company">
-  <input type="text" name="topic">
-  <input type="text" name="source">
+<!-- Netlify Forms detection: fields mirror the visible onboarding form. -->
+<form name="consultation" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="consultation"><input type="text" name="bot-field">
+  <input type="text" name="name"><input type="email" name="email"><input type="text" name="company">
+  <input type="text" name="topic"><textarea name="message"></textarea><input type="text" name="source">
 </form>
 
 <!-- SPLASH -->
@@ -413,16 +406,7 @@
     Your <span class="term" data-term="sovereign">sovereign</span> cloud <span class="term" data-term="msp">MSP</span>. Fully UK compliant today, EU next. The smarter alternative to expensive <span class="term" data-term="hyperscaler">hyperscalers</span>, built on their distribution and <span class="term" data-term="compute">compute</span>, with <span class="term" data-term="byoc">bring your own cloud</span> and <span class="term" data-term="byod">bring your own device</span>.
   </p>
 
-  <!-- COUNTDOWN -->
-  <div style="position:relative; margin-top:46px; width:100%; max-width:560px;">
-    <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#787878; margin-bottom:16px;">Estimated Launch, T Minus</div>
-    <div style="display:flex; gap:12px;">
-      <div class="countdown-unit"><div class="countdown-num" id="cd-dd">00</div><div class="countdown-label">DAYS</div></div>
-      <div class="countdown-unit"><div class="countdown-num" id="cd-hh">00</div><div class="countdown-label">HOURS</div></div>
-      <div class="countdown-unit"><div class="countdown-num" id="cd-mm">00</div><div class="countdown-label">MINS</div></div>
-      <div class="countdown-unit"><div class="countdown-num" id="cd-ss">00</div><div class="countdown-label">SECS</div></div>
-    </div>
-  </div>
+  <div style="position:relative; margin-top:38px; padding:14px 18px; max-width:560px; border:1px solid #242424; border-radius:4px; color:#C8C8C8; font:12px 'JetBrains Mono',monospace; letter-spacing:.06em;"><span style="color:#39FF14;">●</span> EARLY ACCESS · ONBOARDING REQUESTS OPEN</div>
 
   <div style="position:relative; display:flex; gap:14px; margin-top:40px; flex-wrap:wrap; justify-content:center;">
     <button class="btn-primary-lg" onclick="openBooking()">Book a Consultation</button>
@@ -562,79 +546,45 @@
   </div>
 </div>
 
-<!-- BOOKING MODAL -->
-<div id="book-overlay" onclick="closeBookingIfBackdrop(event)">
+<!-- BOOKING / ONBOARDING REQUEST MODAL -->
+<div id="book-overlay" role="dialog" aria-modal="true" aria-labelledby="book-title" aria-describedby="book-sub" onclick="closeBookingIfBackdrop(event)" hidden>
   <div class="book-modal">
-    <button class="modal-close" onclick="closeBooking()">&times;</button>
-    <div style="display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
-      <img src="assets/ak-mark2.png" srcset="assets/ak-mark2@2x.png 2x, assets/ak-mark2@4x.png 4x" alt="AKTOps" width="72" height="36" style="height:36px; width:auto; filter:drop-shadow(0 0 8px rgba(80,200,70,0.4)); image-rendering:-webkit-optimize-contrast;">
-    </div>
-    <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#39FF14; text-shadow:0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); margin-bottom:12px;">Book a Consultation</div>
-    <h3 style="margin:0 0 12px; font-family:'Exo 2',sans-serif; font-weight:700; font-size:24px; color:#fff; line-height:1.2;">Let's talk cloud.</h3>
-    <p id="book-sub" style="margin:0 0 26px; font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; color:#787878;">Our calendar opens at launch. Drop your email and we'll send you a booking link the moment we go live.</p>
+    <button class="modal-close" type="button" aria-label="Close onboarding request" onclick="closeBooking()">&times;</button>
+    <div style="display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><img src="assets/ak-mark2.png" srcset="assets/ak-mark2@2x.png 2x, assets/ak-mark2@4x.png 4x" alt="AKTOps" width="72" height="36" style="height:36px;width:auto;"></div>
+    <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#39FF14;margin-bottom:12px;">Start a conversation</div>
+    <h3 id="book-title" style="margin:0 0 12px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:24px;color:#fff;">Tell us what you are building.</h3>
+    <p id="book-sub" style="margin:0 0 22px;font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;color:#C8C8C8;">Share a few details about your organisation and what you need. We will review your request and respond by email. No account or payment is required.</p>
     <div id="book-form">
-      <form name="notify" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onsubmit="return submitNotify(event)">
-        <p style="position:absolute;left:-9999px;opacity:0;height:0;width:0;pointer-events:none;"><label>Don't fill this: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-        <label class="form-label">Your email</label>
-        <input type="email" name="email" placeholder="you@company.com" class="form-input" id="book-email" required>
-        <input type="hidden" name="source" value="notify-me-launch">
-        <button type="submit" class="btn-sign-in">Notify Me at Launch</button>
+      <form name="consultation" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return submitNotify(event)">
+        <input type="hidden" name="form-name" value="consultation">
+        <p class="honeypot" aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <label class="form-label" for="lead-name">Your name</label><input type="text" name="name" id="lead-name" class="form-input" autocomplete="name" maxlength="100" required>
+        <label class="form-label" for="book-email">Work email</label><input type="email" name="email" id="book-email" class="form-input" autocomplete="email" maxlength="254" required>
+        <label class="form-label" for="lead-company">Organisation</label><input type="text" name="company" id="lead-company" class="form-input" autocomplete="organization" maxlength="150">
+        <label class="form-label" for="lead-need">What would you like help with?</label>
+        <select name="topic" id="lead-need" class="form-input" required><option value="">Choose an area</option><option>IT support and operations</option><option>Cloud infrastructure and migration</option><option>DevSecOps and security</option><option>AI implementation and assurance</option><option>Booking and business systems</option><option>Not sure yet</option></select>
+        <label class="form-label" for="lead-context">A little more context (optional)</label><textarea name="message" id="lead-context" class="form-input" rows="3" maxlength="2000" placeholder="What are you trying to achieve?"></textarea>
+        <input type="hidden" name="source" value="aktops-website-onboarding">
+        <button type="submit" class="btn-sign-in" id="lead-submit">Send onboarding request</button>
       </form>
     </div>
-    <div id="book-notify-msg"></div>
-    <div style="margin-top:22px; padding-top:18px; border-top:1px solid #242424; text-align:center; font-family:'JetBrains Mono',monospace; font-size:11px; color:#787878; letter-spacing:0.03em;">powered by ANDIEKOBBIETECH<span style="color:#39FF14;">.</span> &middot; consultations via Odoo</div>
-  </div>
-</div>
-
-<!-- LOGIN MODAL -->
-<div id="login-overlay" onclick="closeLoginIfBackdrop(event)">
-  <div class="login-modal" id="login-modal">
-    <button class="modal-close" onclick="closeLogin()">&times;</button>
-    <div style="display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
-      <img src="assets/ak-mark2.png" srcset="assets/ak-mark2@2x.png 2x, assets/ak-mark2@4x.png 4x" alt="AndieKobbieTech" width="72" height="36" style="height:36px; width:auto; filter:drop-shadow(0 0 8px rgba(80,200,70,0.4)); image-rendering:-webkit-optimize-contrast;">
-    </div>
-    <div style="font-family:'Exo 2',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#39FF14; text-shadow:0 0 6px #39FF14, 0 0 14px rgba(57,255,20,0.55); margin-bottom:12px;">Client Portal</div>
-    <h3 style="margin:0 0 26px; font-family:'Exo 2',sans-serif; font-weight:700; font-size:26px; color:#fff;">Sign in to <span style="color:#39FF14; text-shadow:0 0 8px rgba(57,255,20,0.5);">AKT</span>Ops</h3>
-    <label class="form-label">Email</label>
-    <input type="email" placeholder="you@company.com" class="form-input" id="login-email">
-    <label class="form-label">Password</label>
-    <input type="password" placeholder="••••••••" class="form-input" id="login-password">
-    <button class="btn-sign-in" onclick="signIn()">Sign In</button>
-    <div id="auth-msg"></div>
-    <div style="margin-top:22px; padding-top:18px; border-top:1px solid #242424; text-align:center; font-family:'JetBrains Mono',monospace; font-size:11px; color:#787878; letter-spacing:0.03em;">secured by ANDIEKOBBIETECH<span style="color:#39FF14;">.</span> &middot; portal powered by Odoo</div>
+    <div id="book-notify-msg" role="status" aria-live="polite"></div>
+    <div style="margin-top:22px;padding-top:18px;border-top:1px solid #242424;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:#787878;">AKTOps · powered by ANDIEKOBBIETECH<span style="color:#39FF14;">.</span></div>
   </div>
 </div>
 
 <script>
-  // ── SPLASH ──
   (function(){
-    var spx = document.getElementById('spx');
-    if (!spx) return;
+    const splash = document.getElementById('spx');
+    if (!splash) return;
+    const finish = () => { splash.style.display = 'none'; document.body.style.overflow = ''; };
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return finish();
     document.body.style.overflow = 'hidden';
-    // Start exit fade at 7.0s (powered-by fully visible by ~6.2s)
-    setTimeout(function(){
-      spx.style.animation = 'spxExit 1.0s ease forwards';
-    }, 7000);
-    // Remove from layout at 8.0s
-    setTimeout(function(){
-      spx.style.display = 'none';
-      document.body.style.overflow = '';
-    }, 6800);
+    window.setTimeout(() => {
+      splash.style.animation = 'spxExit 350ms ease forwards';
+      window.setTimeout(finish, 360);
+    }, 900);
   })();
-
-  // ── COUNTDOWN ──
-  const LAUNCH_DAYS = 47;
-  const target = Date.now() + LAUNCH_DAYS * 24 * 3600 * 1000;
-  function pad(n) { return String(n).padStart(2, '0'); }
-  function tick() {
-    const s = Math.max(0, Math.floor((target - Date.now()) / 1000));
-    document.getElementById('cd-dd').textContent = pad(Math.floor(s / 86400));
-    document.getElementById('cd-hh').textContent = pad(Math.floor((s % 86400) / 3600));
-    document.getElementById('cd-mm').textContent = pad(Math.floor((s % 3600) / 60));
-    document.getElementById('cd-ss').textContent = pad(s % 60);
-  }
-  tick();
-  setInterval(tick, 1000);
 
   // ── GLOSSARY ──
   const GLOSSARY = {
@@ -716,117 +666,75 @@
   // Scroll closes — passive for performance
   window.addEventListener('scroll', () => { if (tipPinned) hideTip(); }, { passive: true });
 
-  // ── BOOKING ──
-  const DEFAULT_BOOKING_URL = 'https://andiekobbie.odoo.com/appointment/discovery-consultation-more-1';
-  let cachedBookingUrl = null;
+  // Booking URL is supplied only after the Odoo service is deployed and configured.
+  const overlay = document.getElementById('book-overlay');
+  const leadForm = document.querySelector('#book-form form[name="consultation"]');
+  const leadMessage = document.getElementById('book-notify-msg');
+  let bookingConfig = { loaded: false, url: null };
 
-  async function getBookingUrl() {
-    if (cachedBookingUrl) return cachedBookingUrl;
-    const local = localStorage.getItem('ak_booking_url');
-    if (local) { cachedBookingUrl = local; return local; }
+  async function loadBookingConfig() {
     try {
-      const res = await fetch('/api/get-config');
-      const data = await res.json();
-      if (data.booking_url) {
-        cachedBookingUrl = data.booking_url;
-        localStorage.setItem('ak_booking_url', data.booking_url);
-        return data.booking_url;
-      }
-    } catch {}
-    cachedBookingUrl = DEFAULT_BOOKING_URL;
-    return DEFAULT_BOOKING_URL;
+      const response = await fetch('/api/get-config', { headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error('Configuration unavailable');
+      const data = await response.json();
+      bookingConfig.url = typeof data.booking_url === 'string' ? data.booking_url : null;
+    } catch {
+      bookingConfig.url = null;
+    } finally {
+      bookingConfig.loaded = true;
+    }
   }
+  loadBookingConfig();
 
-  async function openBooking() {
-    const url = await getBookingUrl();
-    if (url && url.trim()) {
-      window.open(url.trim(), '_blank', 'noopener,noreferrer');
+  function openBooking() {
+    if (bookingConfig.loaded && bookingConfig.url) {
+      window.location.assign(bookingConfig.url);
       return;
     }
-    // Odoo not yet configured — show notify-me modal
-    const ov = document.getElementById('book-overlay');
-    ov.classList.add('visible');
-    document.getElementById('book-notify-msg').classList.remove('visible');
-    document.getElementById('book-notify-msg').textContent = '';
-    document.getElementById('book-email').value = '';
+    overlay.hidden = false;
+    overlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    leadMessage.classList.remove('visible');
+    leadMessage.textContent = '';
+    leadForm.reset();
     document.getElementById('book-form').style.display = 'block';
-    setTimeout(() => document.getElementById('book-email').focus(), 80);
+    window.setTimeout(() => document.getElementById('lead-name').focus(), 50);
   }
   function closeBooking() {
-    document.getElementById('book-overlay').classList.remove('visible');
+    overlay.classList.remove('visible');
+    overlay.hidden = true;
+    document.body.style.overflow = '';
   }
-  function closeBookingIfBackdrop(e) {
-    if (e.target === document.getElementById('book-overlay')) closeBooking();
+  function closeBookingIfBackdrop(event) {
+    if (event.target === overlay) closeBooking();
   }
-  let notifyTimer;
   async function submitNotify(event) {
     event.preventDefault();
-    const form = event.target;
-    const email = document.getElementById('book-email').value.trim();
-    const msg = document.getElementById('book-notify-msg');
-    if (!email || !email.includes('@')) {
-      msg.textContent = 'please enter a valid email address.';
-      msg.style.color = '#ff5555';
-      msg.classList.add('visible');
-      return false;
-    }
-    // Always keep a local copy as a fallback
-    const list = JSON.parse(localStorage.getItem('ak_notify_list') || '[]');
-    if (!list.find(function(e){ return (e.email||e) === email; })) {
-      list.push({ email: email, ts: Date.now() });
-      localStorage.setItem('ak_notify_list', JSON.stringify(list));
-    }
-    // Submit to Netlify Forms via fetch (so the page doesn't reload)
+    if (!leadForm.reportValidity()) return false;
+    const button = document.getElementById('lead-submit');
+    button.disabled = true;
+    button.textContent = 'Sending request…';
+    leadMessage.classList.remove('visible');
     try {
-      const body = new URLSearchParams(new FormData(form)).toString();
-      const res = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body
-      });
-      if (!res.ok) throw new Error('Netlify rejected submission: ' + res.status);
+      const body = new URLSearchParams(new FormData(leadForm));
+      const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
+      if (!response.ok) throw new Error('Submission failed (' + response.status + ')');
       document.getElementById('book-form').style.display = 'none';
-      msg.style.color = '#39FF14';
-      msg.textContent = '\u2713 confirmed. we\u2019ll reach out the moment booking opens.';
-      msg.classList.add('visible');
-    } catch (err) {
-      // Submission failed but the local copy is still saved
-      console.warn('[AKTOps] Netlify form submission failed; saved locally:', err);
-      document.getElementById('book-form').style.display = 'none';
-      msg.style.color = '#39FF14';
-      msg.textContent = '\u2713 saved. we\u2019ll reach out the moment booking opens.';
-      msg.classList.add('visible');
+      leadMessage.style.color = '#39FF14';
+      leadMessage.textContent = 'Thank you. Your request has been submitted. We will respond using the email you provided.';
+      leadMessage.classList.add('visible');
+    } catch (error) {
+      console.error('[AKTOps] Onboarding submission failed:', error);
+      leadMessage.style.color = '#ff7777';
+      leadMessage.textContent = 'We could not submit your request. Please check your connection and try again. Your details have not been saved.';
+      leadMessage.classList.add('visible');
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Send onboarding request';
     }
     return false;
   }
-
-  // ── LOGIN MODAL ──
-  function openLogin() {
-    document.getElementById('login-overlay').classList.add('visible');
-    document.getElementById('auth-msg').classList.remove('visible');
-    document.getElementById('auth-msg').textContent = '';
-    document.getElementById('login-email').value = '';
-    document.getElementById('login-password').value = '';
-  }
-  function closeLogin() {
-    document.getElementById('login-overlay').classList.remove('visible');
-  }
-  function closeLoginIfBackdrop(e) {
-    if (e.target === document.getElementById('login-overlay')) closeLogin();
-  }
-  let authTimer;
-  function signIn() {
-    const msg = document.getElementById('auth-msg');
-    msg.textContent = 'connecting to portal...';
-    msg.classList.add('visible');
-    clearTimeout(authTimer);
-    authTimer = setTimeout(() => {
-      msg.textContent = 'portal opens at launch. you are on the list.';
-    }, 1200);
-  }
-
-  // ESC closes modals
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLogin(); closeBooking(); } });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && !overlay.hidden) closeBooking(); });
 
 </script>
 </body>

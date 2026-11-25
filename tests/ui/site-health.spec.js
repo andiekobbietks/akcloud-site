@@ -42,10 +42,20 @@ test('booking modal opens, focuses first field, closes with Escape and backdrop'
 test('onboarding validates required fields and reports successful submission', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Book a Consultation' }).first().click();
+  let postCount = 0;
+  page.on('request', request => {
+    if (request.method() === 'POST' && new URL(request.url()).pathname === '/') postCount += 1;
+  });
+  const submit = page.getByRole('button', { name: 'Send onboarding request' });
+  await submit.click();
+  await expect(page.locator('#lead-name')).toBeFocused();
+  expect(await page.locator('#lead-name').evaluate(el => el.validity.valueMissing)).toBeTruthy();
+  expect(postCount, 'invalid form must not submit a POST').toBe(0);
+
   await page.locator('#lead-name').fill('Visual QA');
   await page.locator('#book-email').fill('qa@example.test');
   await page.locator('#lead-need').selectOption({ label: 'IT support and operations' });
-  await page.getByRole('button', { name: 'Send onboarding request' }).click();
+  await submit.click();
   await expect(page.locator('#book-notify-msg')).toContainText('Your request has been submitted');
   await expect(page.locator('#book-form')).toBeHidden();
 });

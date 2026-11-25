@@ -21,7 +21,9 @@ test('capture AKTOps visual states for review and regression evidence', async ({
     await page.locator('.perk-card').first().hover();
     await capture('05-perk-card-hover');
   }
-  await page.locator('.term[data-term="sovereign"]').first().hover();
+  const glossaryTerm = page.locator('.term[data-term="sovereign"]').first();
+  if (testInfo.project.name.includes('mobile')) await glossaryTerm.click();
+  else await glossaryTerm.hover();
   await expect(page.locator('#tip-box')).toBeVisible();
   await capture('06-glossary-tooltip');
   await page.getByRole('button', { name: 'Book a Consultation' }).first().click();

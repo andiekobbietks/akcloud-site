@@ -17,10 +17,10 @@ This is the AKTOps static website repository. It uses vanilla HTML, CSS and Java
 - Prefer the existing vanilla HTML/CSS/JS architecture. Add frameworks or dependencies only with a clear requirement and documented trade-off.
 - Keep secrets out of source, prompts, screenshots and commits.
 - Preserve Decap CMS `data-cms` hooks and content contracts.
-- Respect accessibility, keyboard navigation, responsive layouts and `prefers-reduced-motion`.
+- Respect accessibility, keyboard navigation, responsive layouts and `prefers-reduced-motion`.\n- Run `npm test` and `npm run test:ui` for website changes; inspect Playwright screenshots and accessibility JSON artifacts.\n- Do not update screenshot baselines until current-brand desktop/mobile captures have been reviewed and explicitly approved.
 - Do not deploy production without explicit instruction.
 - Use small, descriptive commits and review the complete diff before proposing a merge.
 
-## Required completion report
+## CI/CD and visual evidence\n\n- GitHub Actions runs static tests, Playwright interactions, responsive checks, design-token assertions and axe-core scans on pull requests and `master`.\n- The post-deploy smoke workflow checks the public Netlify deployment after pushes to `master`.\n- Netlify Git integration remains the deployment mechanism; GitHub Actions must not deploy production without explicit approval.\n- See `docs/engineering/visual-assurance-ci.md` for test coverage and artifact handling.\n\n## Required completion report
 
 State the problem addressed, files changed, checks run, visual states inspected, known limitations and any manual deployment or OAuth steps still required.

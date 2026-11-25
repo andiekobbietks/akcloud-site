@@ -1,9 +1,8 @@
 name: AKTOps post-deploy visual smoke
 
 on:
-  workflow_run:
-    workflows: ["Netlify Build and Deploy"]
-    types: [completed]
+  push:
+    branches: [master]
   workflow_dispatch:
     inputs:
       base_url:
@@ -16,7 +15,6 @@ permissions:
 
 jobs:
   public-smoke:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -27,10 +25,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - run: npm install --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
+
+      - name: Allow Netlify Git deployment to start
+        if: github.event_name == 'push'
+        run: sleep 45
 
       - name: Wait for public deployment to become available
         env:

@@ -11,6 +11,7 @@ test('homepage renders core sections, branding, assets and navigation', async ({
   }
   await expect(page.locator('nav')).toBeVisible();
   await expect(page.locator('footer')).toBeAttached();
+  await page.waitForFunction(() => [...document.images].every(image => image.complete));
   await page.waitForTimeout(1400);
   await expect(page.locator('#spx')).toHaveCSS('display', 'none');
   const broken = await page.locator('img').evaluateAll(images => images.filter(img => !img.complete || img.naturalWidth === 0).map(img => img.src));

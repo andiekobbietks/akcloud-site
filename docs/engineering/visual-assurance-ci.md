@@ -26,9 +26,9 @@ Stages:
 
 File: `.github/workflows/post-deploy-smoke.yml`
 
-Runs after a push to `master`, with a short deployment-readiness poll, or manually against a supplied URL. It checks the deployed page, selected security headers, the consultation modal and a real 404 response, then captures public-site screenshots.
+Runs manually against an explicitly selected public URL. It does not run automatically on pushes: a successful HTTP response cannot prove that Netlify has deployed the triggering commit, and this repository does not currently expose a trusted public deployment-to-commit identifier. It checks the deployed page, selected security headers, the consultation modal and a real 404 response, then captures public-site screenshots.
 
-The current default URL is the legacy Netlify hostname `https://akcloud.netlify.app`. Change the workflow-dispatch input/default when the canonical AKTOps domain is ready.
+The manual workflow currently defaults to the legacy Netlify hostname `https://akcloud.netlify.app`. The URL appears in both the workflow-dispatch input and fallback environment expression in `.github/workflows/post-deploy-smoke.yml`, and in the fallback in `tests/ui/public-smoke.spec.js`. Update all three when the canonical AKTOps domain is ready.
 
 This is a post-deployment verification workflow, not a Netlify deploy command. Netlify's existing Git integration remains responsible for publishing the static site. No Netlify token or site ID is required in GitHub.
 
@@ -57,8 +57,8 @@ The visual-capture suite attaches named screenshots to the Playwright report and
 The pipeline currently creates reviewable visual evidence on each run. It does **not** claim pixel-perfect baseline comparison yet: a baseline needs to be captured from an approved, current AKTOps deployment and reviewed before it becomes the comparison reference. This avoids treating the historical AKCloud screenshots as valid AKTOps baselines.
 
 Recommended baseline process:
-1. Run the workflow against an approved production deployment.
-2. Download and inspect the screenshot artifact at desktop and mobile sizes.
+1. Run `npm run test:visual` locally against the test server, or set `BASE_URL` to an explicitly selected deployment and run `BASE_URL=https://your-domain.example npm run test:visual`.
+2. Download and inspect the resulting screenshot artifact at desktop and mobile sizes.
 3. Confirm fonts, assets, content and dynamic regions are stable.
 4. Commit approved Playwright snapshots under `tests/ui/__screenshots__/` in a separate reviewed change.
 5. Enable `toHaveScreenshot` comparisons for the approved states. Update baselines only with intentional design changes.
@@ -67,7 +67,7 @@ Recommended baseline process:
 
 ```bash
 npm install
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 npm test
 npm run test:ui
 npm run test:visual

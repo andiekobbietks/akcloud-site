@@ -15,9 +15,9 @@ File: `.github/workflows/ui-quality.yml`
 Runs on pull requests targeting `master`, pushes to `master` and manual dispatch.
 
 Stages:
-1. Install the pinned Node development dependencies.
+1. Install the declared Node development dependencies. Playwright and axe-core versions are pinned; the existing Netlify CLI dependency remains range-based.
 2. Run the existing Node test suite.
-3. Install Chromium through Playwright.
+3. Install Chromium, Firefox and WebKit through Playwright.
 4. Run browser interaction, responsive, design-token and axe-core accessibility checks.
 5. Capture screenshot evidence, traces, videos on failure, JUnit output and an HTML report.
 6. Upload evidence as a 30-day GitHub Actions artifact, even when a test fails.

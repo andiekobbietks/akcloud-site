@@ -14,7 +14,11 @@
   <a href="#live-demo">Live Demo</a> •
   <a href="#screenshots">Screenshots</a> •
   <a href="#technical-approach">Technical Approach</a> •
-  <a href="#architecture">Architecture</a> •\n  <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •\n  <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a>
+  <a href="#architecture">Architecture</a> •
+  <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •
+  <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a> •
+  <a href="LICENSING.md">Licensing</a> •
+  <a href="SECURITY_REVIEW.md">Security Review</a>
 </p>
 
 ---

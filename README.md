@@ -19,7 +19,10 @@
   <a href="docs/implementation/elestio-byovm-oci-runbook.md">Elestio BYOVM Runbook</a> •
   <a href="docs/implementation/website-onboarding.md">Website Onboarding</a> •
   <a href="docs/implementation/decap-cms.md">Decap CMS Guide</a> •
+  <a href="DESIGN.md">Design Contract</a> •
   <a href="docs/design-system.md">Design System</a> •
+  <a href="docs/design/token-reference.md">Tokens & Components</a> •
+  <a href="docs/design/pixel-sampling.md">Pixel Sampling</a> •
   <a href="docs/design/stitch-workflow.md">Google Stitch Workflow</a> •
   <a href="docs/implementation/cli-operations-runbook.md">CLI Operations Runbook</a> •
   <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a> •
@@ -52,19 +55,44 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 
 ## Screenshots
 
-### Landing Page: Hero View
+### Historical reference: Landing hero (AKCloud-era)
 <p align="center">
   <img src="screenshots/hero.png" alt="AKTOps Landing Page" width="800" style="border-radius: 8px; border: 1px solid #242424;">
 </p>
 
-*Landing page with responsive navigation, early-access status and a consultation/onboarding call to action. Pure HTML/CSS/JS without a frontend framework.*
+*Historical capture of the earlier AKCloud-branded landing page. It is retained as a visual reference for layout and glow treatment, not as a screenshot of the current AKTOps copy or wordmark.*
 
-### Interactive Glossary Tooltips
+### Historical reference: Glossary tooltip (AKCloud-era)
 <p align="center">
   <img src="screenshots/tip.png" alt="Glossary Tooltip Feature" width="800" style="border-radius: 8px; border: 1px solid #242424;">
 </p>
 
-*Hover any underlined term to see a plain-English explanation. Built for non-technical founders evaluating cloud services. Accessibility: works on touch devices, respects `prefers-reduced-motion`.*
+*Historical capture of the earlier glossary presentation. The underlying tooltip pattern remains a useful reference; verify the current page before treating this image as a current-state screenshot.*
+
+---
+
+**Screenshot provenance:** both images are historical AKCloud-era captures. Their payloads are JPEG-encoded despite the `.png` extensions, and their wordmark/copy predates the current AKTOps rebrand. They are retained as historical visual references until fresh, current-brand screenshots are captured.
+
+---
+
+## Design System Showcase
+
+The interface uses a phosphorescent circuit-board visual language: near-black surfaces, signal-green interaction, geometric display typography, monospace operational labels, controlled optical glow and a distinctive chromatic 404 state.
+
+<p align="center">
+  <img src="docs/design/visual-atlas.svg" alt="AKTOps visual atlas showing the source palette, typography, buttons, cards, glow layers, circuit trace and 404 chromatic treatment" width="100%">
+</p>
+
+| Design reference | What it contains |
+|---|---|
+| [Design system guide](docs/design-system.md) | Design intent, hierarchy, glow/blur distinction, Stitch workflow and change control |
+| [Token and component reference](docs/design/token-reference.md) | Colour, typography, spacing, shape, motion, responsive rules and component inventory |
+| [Pixel sampling protocol](docs/design/pixel-sampling.md) | Reproducible raster sampling method, image-format checks and evidence recording |
+| [Google Stitch workflow](docs/design/stitch-workflow.md) | Reusable visual brief, export hand-off and OpenCode implementation process |
+| [OpenCode design skill](.opencode/skills/aktops-design/SKILL.md) | Repository-aware design implementation instructions |
+| [Canonical design contract](DESIGN.md) | Original design intent and token specification |
+
+**Sampling note:** the atlas visualises exact values declared in the design contract and CSS. It is not presented as a screenshot-derived pixel histogram. The sampling guide records that the current `screenshots/hero.png` and `screenshots/tip.png` payloads have JPEG signatures despite their `.png` filenames.
 
 ---
 

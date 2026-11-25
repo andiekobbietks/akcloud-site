@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1640" viewBox="0 0 1440 1640" role="img" aria-labelledby="title desc">
+<title id="title">AKTOps visual design atlas</title>
+<desc id="desc">Repository-derived palette, typography, component, glow and 404 visual references.</desc>
+<defs>
+  <filter id="greenGlow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="pulse" x1="0" x2="1"><stop offset="0" stop-color="#39FF14" stop-opacity="0"/><stop offset=".5" stop-color="#39FF14"/><stop offset="1" stop-color="#39FF14" stop-opacity="0"/></linearGradient>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#39FF14" stroke-opacity=".08" stroke-width="1"/><circle cx="0" cy="0" r="1.5" fill="#39FF14" fill-opacity=".22"/></pattern>
+  <style>
+    .h{font:700 34px 'Exo 2',Arial,sans-serif;fill:#fff}.sub{font:400 16px 'DM Sans',Arial,sans-serif;fill:#C8C8C8}.mono{font:500 13px 'JetBrains Mono',monospace;fill:#39FF14;letter-spacing:1px}.label{font:700 14px 'Exo 2',Arial,sans-serif;fill:#fff;letter-spacing:1px}.small{font:400 12px 'JetBrains Mono',monospace;fill:#787878}.card{fill:#111;stroke:#242424;stroke-width:1}.muted{fill:#787878}
+  </style>
+</defs>
+<rect width="1440" height="1500" fill="#080808"/>
+<rect width="1440" height="1500" fill="url(#grid)" opacity=".35"/>
+<g transform="translate(72 64)">
+  <text class="mono" y="0">AKTOPS / DESIGN SYSTEM / SOURCE-LED REFERENCE</text>
+  <text class="h" y="56" font-size="52">Visual language atlas</text>
+  <text class="sub" y="88">A visual index of the tokens and interface patterns recorded in this repository.</text>
+  <rect x="0" y="122" width="1296" height="1" fill="#242424"/><rect x="0" y="122" width="180" height="2" fill="#39FF14" filter="url(#greenGlow)"/>
+  <text class="mono" y="170">01 / CORE PALETTE</text>
+  <g transform="translate(0 194)">
+    <g><rect class="card" width="244" height="150" rx="8"/><rect x="12" y="12" width="220" height="76" rx="4" fill="#080808"/><text class="label" x="14" y="113">CANVAS</text><text class="small" x="14" y="135">#080808</text></g>
+    <g transform="translate(264)"><rect class="card" width="244" height="150" rx="8"/><rect x="12" y="12" width="220" height="76" rx="4" fill="#111111"/><text class="label" x="14" y="113">SURFACE 01</text><text class="small" x="14" y="135">#111111</text></g>
+    <g transform="translate(528)"><rect class="card" width="244" height="150" rx="8"/><rect x="12" y="12" width="220" height="76" rx="4" fill="#191919"/><text class="label" x="14" y="113">SURFACE 02</text><text class="small" x="14" y="135">#191919</text></g>
+    <g transform="translate(792)"><rect class="card" width="244" height="150" rx="8"/><rect x="12" y="12" width="220" height="76" rx="4" fill="#242424"/><text class="label" x="14" y="113">BORDER</text><text class="small" x="14" y="135">#242424</text></g>
+    <g transform="translate(1056)"><rect class="card" width="240" height="150" rx="8"/><rect x="12" y="12" width="216" height="76" rx="4" fill="#39FF14"/><text class="label" x="14" y="113">SIGNAL GREEN</text><text class="small" x="14" y="135">#39FF14</text></g>
+  </g>
+  <g transform="translate(0 366)">
+    <g><rect class="card" width="244" height="116" rx="8"/><rect x="12" y="12" width="220" height="42" rx="4" fill="#1FCC00"/><text class="label" x="14" y="80">PRIMARY DIM</text><text class="small" x="14" y="101">#1FCC00</text></g>
+    <g transform="translate(264)"><rect class="card" width="244" height="116" rx="8"/><rect x="12" y="12" width="220" height="42" rx="4" fill="#FFFFFF"/><text class="label" x="14" y="80">WHITE</text><text class="small" x="14" y="101">#FFFFFF</text></g>
+    <g transform="translate(528)"><rect class="card" width="244" height="116" rx="8"/><rect x="12" y="12" width="220" height="42" rx="4" fill="#C8C8C8"/><text class="label" x="14" y="80">BODY TEXT</text><text class="small" x="14" y="101">#C8C8C8</text></g>
+    <g transform="translate(792)"><rect class="card" width="244" height="116" rx="8"/><rect x="12" y="12" width="220" height="42" rx="4" fill="#787878"/><text class="label" x="14" y="80">MUTED TEXT</text><text class="small" x="14" y="101">#787878</text></g>
+    <g transform="translate(1056)"><rect class="card" width="240" height="116" rx="8"/><rect x="12" y="12" width="216" height="42" rx="4" fill="#FF5555"/><text class="label" x="14" y="80">ERROR / GLITCH</text><text class="small" x="14" y="101">#FF5555</text></g>
+  </g>
+  <text class="mono" y="548">02 / TYPOGRAPHY ROLES</text>
+  <rect class="card" y="570" width="1296" height="196" rx="8"/>
+  <text x="28" y="628" font-family="Exo 2,Arial,sans-serif" font-size="44" font-weight="900" fill="#fff">AKTOps / Exo 2</text>
+  <text class="small" x="30" y="655">DISPLAY + HEADINGS + UI LABELS · WEIGHTS 600 / 700 / 900</text>
+  <text x="690" y="628" font-family="DM Sans,Arial,sans-serif" font-size="29" fill="#C8C8C8">Readable operations / DM Sans</text>
+  <text class="small" x="692" y="655">BODY COPY + FORM TEXT · WEIGHTS 400 / 500 / 700</text>
+  <text x="28" y="724" font-family="JetBrains Mono,monospace" font-size="20" fill="#39FF14">SYS.STATUS // READY // v1.0</text>
+  <text class="small" x="690" y="724">TECHNICAL DATA + STATUS + IDENTIFIERS · MONOSPACE</text>
+  <text class="mono" y="824">03 / COMPONENT SPECIMENS</text>
+  <g transform="translate(0 846)">
+    <rect class="card" width="410" height="214" rx="8"/><path d="M0 40V0H40" fill="none" stroke="#39FF14" stroke-width="2" filter="url(#greenGlow)"/>
+    <text class="mono" x="24" y="38">PRIMARY ACTION</text><rect x="24" y="70" width="250" height="52" rx="4" fill="#39FF14" filter="url(#greenGlow)"/><text x="149" y="102" font-family="Exo 2,Arial,sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#080808" letter-spacing="1">BOOK A CONSULTATION</text><text class="small" x="24" y="160">4px radius · black label · layered glow</text><text class="small" x="24" y="183">Source: index.html / .btn-primary</text>
+    <g transform="translate(443)"><rect class="card" width="410" height="214" rx="8"/><path d="M0 40V0H40" fill="none" stroke="#39FF14" stroke-width="2" filter="url(#greenGlow)"/><text class="mono" x="24" y="38">SERVICE CARD</text><rect x="24" y="64" width="362" height="112" rx="8" fill="#111" stroke="#242424"/><path d="M24 104V64H64" fill="none" stroke="#39FF14" stroke-width="2" filter="url(#greenGlow)"/><text class="label" x="48" y="111">INFRASTRUCTURE</text><text class="sub" x="48" y="140" font-size="13">Corner bracket expands on hover.</text><text class="small" x="24" y="198">8px radius · 30/32px padding · hover lift</text></g>
+    <g transform="translate(886)"><rect class="card" width="410" height="214" rx="8"/><text class="mono" x="24" y="38">GHOST ACTION</text><rect x="24" y="70" width="250" height="52" rx="4" fill="none" stroke="#242424"/><text x="149" y="102" font-family="Exo 2,Arial,sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#fff" letter-spacing="1">VIEW ARCHITECTURE</text><text class="small" x="24" y="160">Transparent · border · green hover state</text><text class="small" x="24" y="183">Source: index.html / .btn-ghost</text></g>
+  </g>
+  <text class="mono" y="1120">04 / LIGHT, DEPTH &amp; MOTION</text>
+  <rect class="card" y="1142" width="1296" height="170" rx="8"/>
+  <text class="label" x="28" y="1182">CIRCUIT TRACE</text><rect x="28" y="1206" width="1240" height="1" fill="#242424"/><rect x="28" y="1205" width="260" height="3" fill="url(#pulse)" filter="url(#greenGlow)"/>
+  <text class="small" x="28" y="1245">1px structural rule · green pulse · 4s source animation in index.html</text>
+  <text class="label" x="28" y="1285">GLOW LADDER</text>
+  <circle cx="500" cy="1278" r="5" fill="#39FF14" filter="url(#greenGlow)"/><text class="small" x="520" y="1283">SM · 6px / 14px</text>
+  <circle cx="760" cy="1278" r="6" fill="#39FF14" filter="url(#greenGlow)"/><text class="small" x="780" y="1283">MD · 8px / 24px / 48px</text>
+  <circle cx="1080" cy="1278" r="7" fill="#39FF14" filter="url(#greenGlow)"/><text class="small" x="1100" y="1283">LG · 12px to 120px</text>
+  <text class="mono" y="1370">05 / 404 SIGNATURE</text>
+  <rect class="card" y="1392" width="1296" height="112" rx="8"/>
+  <text x="36" y="1472" font-family="Exo 2,Arial,sans-serif" font-size="68" font-weight="900" fill="#fff">404</text><text x="33" y="1472" font-family="Exo 2,Arial,sans-serif" font-size="68" font-weight="900" fill="#39FF14" opacity=".7" transform="translate(-2 0)" style="mix-blend-mode:screen">404</text><text x="39" y="1472" font-family="Exo 2,Arial,sans-serif" font-size="68" font-weight="900" fill="#FF5555" opacity=".5" transform="translate(2 0)" style="mix-blend-mode:screen">404</text>
+  <text class="mono" x="240" y="1442">STATUS // 404 // SIGNAL_LOST</text><text class="sub" x="240" y="1474">Chromatic split + crisp type + neon return action. Not a blur effect.</text>
+</g>
+</svg>

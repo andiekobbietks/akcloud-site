@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="assets/ak-mark2@2x.png" alt="AKcloud Logo" width="120" style="background:#080808; padding:16px 24px; border-radius:12px; filter: drop-shadow(0 0 12px rgba(57,255,20,0.5));">
+  <img src="assets/ak-mark2@2x.png" alt="AKTOps Logo" width="120" style="background:#080808; padding:16px 24px; border-radius:12px; filter: drop-shadow(0 0 12px rgba(57,255,20,0.5));">
 </p>
 
-<h1 align="center">AKcloud</h1>
+<h1 align="center">AKTOps</h1>
 
 <p align="center">
-  <strong>Sovereign Cloud MSP: Landing Site & Client Acquisition Pipeline</strong><br>
+  <strong>IT Operations, Cloud Infrastructure & DevSecOps: Service Website</strong><br>
   <em>Built end-to-end: from first wireframe to deployed production with real integrations</em>
 </p>
 
@@ -21,7 +21,7 @@
 
 ## What I Built
 
-A complete client acquisition pipeline for a sovereign cloud MSP: zero frameworks, zero build steps, full data sovereignty.
+A service website and client-acquisition pipeline for AKTOps, covering IT operations, cloud infrastructure and DevSecOps. This README reflects the new service identity; the existing deployment address and repository slug remain legacy identifiers pending a later migration.
 
 | Feature | Implementation |
 |---|---|
@@ -36,7 +36,7 @@ A complete client acquisition pipeline for a sovereign cloud MSP: zero framework
 
 ## Live Demo
 
-**🔗 [akcloud.netlify.app](https://akcloud.netlify.app)**
+**Existing deployment URL:** [akcloud.netlify.app](https://akcloud.netlify.app) (legacy AKCloud address; domain and deployment branding will be updated separately)
 
 ---
 
@@ -44,7 +44,7 @@ A complete client acquisition pipeline for a sovereign cloud MSP: zero framework
 
 ### Landing Page: Hero View
 <p align="center">
-  <img src="screenshots/hero.png" alt="AKcloud Landing Page" width="800" style="border-radius: 8px; border: 1px solid #242424;">
+  <img src="screenshots/hero.png" alt="AKTOps Landing Page" width="800" style="border-radius: 8px; border: 1px solid #242424;">
 </p>
 
 *Full landing page with nav, countdown timer, and "Coming Soon" badge. Pure HTML/CSS: no JavaScript frameworks.*
@@ -60,7 +60,7 @@ A complete client acquisition pipeline for a sovereign cloud MSP: zero framework
 
 ## The Problem It Solves
 
-A sovereign cloud MSP needed a professional landing page that:
+The service needed a professional landing page that:
 
 1. **Captures leads** without depending on third-party form services
 2. **Books discovery consultations** directly into their Odoo CRM

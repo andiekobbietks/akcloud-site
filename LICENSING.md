@@ -23,7 +23,7 @@ A public GitHub repository is not automatically an open-source grant. In the abs
 | Odoo Community Edition 19 | LGPL-3.0 | Planned platform dependency, not currently vendored in this repository. Retain notices and comply with LGPL terms for the deployed/distributed combination |
 | OCA Calendar / Resource Booking | OCA Calendar repository is AGPL-3.0 at repository level; each addon manifest can declare its own licence | **Excluded** from the selected booking implementation. Do not copy, adapt or add AGPL booking code or dependencies |
 | AKTOps booking addon | Intended to be independently authored; final licence not selected | Keep a clean-room provenance record. Review the module's relationship to Odoo LGPL-3.0 and the intended commercial distribution model before choosing a licence |
-| AgentSON | Apache-2.0 in its separate project | Not included in this repository as a dependency or codebase; do not infer that this site inherits AgentSON's licence |
+| AgentSON | Separate project; not part of this repository | Not included as a dependency or codebase; assess its own licence independently |
 | AK Build | Proprietary internal product/workflow | Not published here. Internal source, policy rules, prompts, orchestration, scoring and assurance implementation must remain private |
 
 ## Odoo licensing decision

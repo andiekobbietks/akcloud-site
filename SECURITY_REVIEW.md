@@ -8,7 +8,7 @@
 
 ## Executive summary
 
-**Remediation branch only:** the review identified several real security design weaknesses in the legacy browser admin and booking functions. The remediation branch removes those components and reduces personal data in signup logs. **The changes are not yet merged into `master` and have not been deployed to Netlify.** Until the pull request is merged and the Netlify deployment is verified, the public production site may still serve the legacy implementation.
+**Merged and build/deploy workflow successful:** the review identified several real security design weaknesses in the legacy browser admin and booking functions. The fixes were merged into `master` in [PR #2](https://github.com/andiekobbietks/akcloud-site/pull/2), merge commit `5961cb3de4f7cbd69b9b1777d2f4a2d9cbe32ac3`. GitHub Actions reports the build and deploy jobs completed successfully. A separate live HTTP smoke test of the production routes and review of Netlify environment variables have not been completed, so do not treat those as verified.
 
 No hard-coded production API key, private key or cloud credential value was confirmed in the inspected high-risk source excerpts. This is **not** a clean full-history secret-scan result: a dedicated automated full-history scanner has not been run in this review. If any credential was ever configured in Netlify or Odoo and may have been exposed, rotate it independently of this code change.
 
@@ -34,7 +34,7 @@ The website contained an authentication flow implemented entirely in browser Jav
 
 **Impact:** visitors could inspect and bypass the browser-side gate and reach the admin interface. The interface contained operational controls and Odoo configuration fields.
 
-**Remediation on branch:** removed the obsolete client-side authentication/hidden admin-entry code from `index.html` and removed `admin.html`. A replacement admin console must use server-validated authentication and authorisation, secure session handling, CSRF protection and rate limiting.
+**Remediation merged into `master`:** removed the obsolete client-side authentication/hidden admin-entry code from `index.html` and removed `admin.html`. A replacement admin console must use server-validated authentication and authorisation, secure session handling, CSRF protection and rate limiting.
 
 ### SEC-02: Odoo credentials were stored in browser local storage
 
@@ -72,7 +72,7 @@ The function logged email, company, topic, source, forwarded IP and user-agent i
 
 The function also interpolated user-submitted values into HTML email without escaping, creating an HTML injection risk in notification content.
 
-**Remediation on branch:** logs now retain only receipt timestamp and sanitised form name; user-controlled email/company/topic/source values are escaped before HTML insertion and control characters are stripped. Review the final deployed function and retention settings after merge.
+**Remediation on branch:** logs now retain only receipt timestamp and sanitised form name; user-controlled email/company/topic/source values are escaped before HTML insertion and control characters are stripped. The merged deploy workflow completed successfully; live notification testing and retention-setting review remain outstanding.
 
 ### SEC-06: Public repository history retains removed legacy code
 
@@ -107,9 +107,9 @@ The public repository has no declared repository-wide licence. The generated `su
 
 ## Verification still required
 
-- [ ] Merge the remediation pull request after review.
-- [ ] Confirm Netlify is configured to deploy the intended `master` branch and verify the new deployment.
-- [ ] Verify `/admin.html`, `/api/get-waitlist`, `/api/save-config` and `/api/submit-booking` no longer resolve to active functions in production.
+- [x] Merge the remediation pull request into `master` (PR #2; merge commit `5961cb3de4f7cbd69b9b1777d2f4a2d9cbe32ac3`).
+- [x] GitHub Actions build and deploy jobs completed successfully for the merge commit.
+- [ ] Perform live HTTP smoke tests confirming `/admin.html`, `/api/get-waitlist`, `/api/save-config` and `/api/submit-booking` do not expose the removed interfaces/functions.
 - [ ] Confirm Netlify environment variables for obsolete admin/Odoo XML-RPC functions have been removed or rotated.
 - [ ] Run Gitleaks or equivalent against all refs and all reachable history, with redaction enabled.
 - [ ] Review GitHub secret-scanning alerts and Netlify/Odoo audit logs where available.
@@ -126,4 +126,4 @@ AgentSON may be used as a separate provenance/evidence format in private assuran
 
 ## Limitations
 
-This report is not a certification, penetration-test attestation, legal opinion or proof that no secret exists anywhere in the repository's history or connected deployment systems. It records the evidence actually reviewed and the remediation committed on the named branch. Production status remains unverified until merge and deployment checks are complete.
+This report is not a certification, penetration-test attestation, legal opinion or proof that no secret exists anywhere in the repository's history or connected deployment systems. It records the evidence actually reviewed and the remediation committed on the named branch. The merge and GitHub Actions deployment workflow are complete; live route verification, environment-variable review and a full-history secret scan remain outstanding.

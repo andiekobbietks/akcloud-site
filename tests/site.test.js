@@ -47,7 +47,7 @@ test('consultation form is a real Netlify form with matching static detection fi
 test('unconfigured booking does not send visitors to an old Odoo tenant', () => {
   assert.doesNotMatch(html, /andiekobbie\.odoo\.com/);
   assert.match(js, /fetch\('\/api\/get-config'/);
-  assert.match(js, /EARLY ACCESS/);
+  assert.match(html, /EARLY ACCESS/);
 });
 
 test('fake client login is not presented as a working portal', () => {

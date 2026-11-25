@@ -1,17 +1,31 @@
-// netlify/functions/get-config.js
-// Returns site-wide config (booking URL, etc.) for all visitors.
-
+// Public booking configuration. No default Odoo tenant is assumed.
 export default async () => {
-  const config = {
-    booking_url: process.env.BOOKING_URL || 'https://andiekobbie.odoo.com/appointment/discovery-consultation-more-1',
-    updated_at: process.env.CONFIG_UPDATED_AT || new Date().toISOString(),
-  };
+  let bookingUrl = null;
+  const configured = process.env.BOOKING_URL;
 
-  return new Response(JSON.stringify(config, null, 2), {
+  if (configured) {
+    try {
+      const parsed = new URL(configured);
+      if (parsed.protocol === 'https:' && !parsed.username && !parsed.password) {
+        bookingUrl = parsed.toString();
+      } else {
+        console.error('[AKTOps] BOOKING_URL must be an HTTPS URL without embedded credentials.');
+      }
+    } catch {
+      console.error('[AKTOps] BOOKING_URL is not a valid URL.');
+    }
+  }
+
+  return new Response(JSON.stringify({
+    booking_enabled: Boolean(bookingUrl),
+    booking_url: bookingUrl,
+    updated_at: process.env.CONFIG_UPDATED_AT || new Date().toISOString(),
+  }), {
     status: 200,
     headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=300',
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
     },
   });
 };

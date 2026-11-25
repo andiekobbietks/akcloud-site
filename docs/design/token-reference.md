@@ -17,6 +17,8 @@ The [visual atlas SVG](visual-atlas.svg) is a repository-local, zoomable referen
 | `color.canvas` | `#080808` | Page canvas / on-primary text | DESIGN.md, index.html, 404.html |
 | `color.surface.1` | `#111111` | Cards, modal and primary panels | DESIGN.md, index.html |
 | `color.surface.2` | `#191919` | Elevated surfaces, tooltip and status track | DESIGN.md, index.html |
+| `color.surface.section` | `#0C0C0C` | Alternate full-width section background in the landing page | index.html |
+| Logo halo | `rgba(80,200,70,0.35)` | Asset-specific green drop shadow; not the core signal token | index.html |
 | `color.border` | `#242424` | Borders, dividers and input outlines | DESIGN.md, index.html |
 | `color.signal` | `#39FF14` | Primary action, active state, circuit pulse | DESIGN.md, index.html, 404.html |
 | `color.signal.dim` | `#1FCC00` | Defined pressed/active variant; not consistently used in current page CSS | DESIGN.md |
@@ -26,6 +28,7 @@ The [visual atlas SVG](visual-atlas.svg) is a repository-local, zoomable referen
 | `color.text.muted` | `#787878` | Supporting copy and labels | DESIGN.md, index.html, 404.html |
 | `color.text.subdued` | `#3A3A3A` | Metadata and placeholders | DESIGN.md, index.html, 404.html |
 | `color.signal.error` | `#FF5555` | 404 red chromatic offset | 404.html |
+| Ambient green fields | `rgba(57,255,20,0.025–0.11)` | Circuit grid and radial illumination opacity values; effects, not standalone colour tokens | index.html |
 
 ### Colour usage
 
@@ -106,6 +109,11 @@ Other observed effects:
 | Status indicator | `.status-bar`, `.status-shimmer` | 3px track, animated green shimmer |
 | Circuit divider | `.circuit-rule`, `.circuit-line`, `.circuit-pulse` | 1px divider with moving green trace |
 | 404 state | `.code`, `.glitch`, `.btn`, `.meta` | Status label, chromatic split, return action |
+| Splash / intro | `#spx`, `#spx-grid`, `#spx-radial`, `#spx-presents`, `#spx-powered` | Full-screen intro, circuit grid, radial field, staged wordmark and powered-by lockup |
+| Brand wordmark | `#spx-ak`, `#spx-cloud`, `#spx-pre-word` | Exo 2 wordmark, green/white split, typewriter caption |
+| Hero | `#top`, `#hero`, `#hero-logo-tap` | Centered hero, oversized AKTOps wordmark, radial highlight and primary action |
+| Section bands | `#credits`, `#stories` | Alternate `#0C0C0C` bands with top/bottom border |
+| Partner/status tiles | Inline footer panels, `.status-bar`, `.status-shimmer` | Three compact verification/status panels with animated progress shimmer |
 | CMS loading fallback | `.cms-loading` in `admin/index.html` | Dark bordered panel; currently uses system font |
 
 ## 6. Motion and timing
@@ -118,6 +126,12 @@ Other observed effects:
 | `akShimmer` | 1.8s / 2.3s shimmer variants | Same global query |
 | `akFade` | 8px upward entrance with opacity | Same global query |
 | `akFadeIn` | Opacity entrance | Same global query |
+| `spxAKIn` | 1.4s scale/opacity wordmark entrance after 0.3s delay | Same global query |
+| `spxCloudIn` | 1.2s horizontal/opacity entrance after 1.6s delay | Same global query |
+| `spxType` / `spxCursor` / `spxCursorOff` | Typewriter reveal and timed cursor blink | Same global query |
+| `spxPoweredIn` | 1.2s powered-by reveal after 5s delay | Same global query |
+| `spxRadialPulse` | 2.4s radial illumination pulse, delayed and alternating | Same global query |
+| `spxExit` | Splash fade-out keyframe | Same global query |
 | Card hover | Border/glow expansion and 2px lift | Transition disabled under reduced motion |
 
 The implementation has a broad `prefers-reduced-motion: reduce` override in `index.html`. Keep motion non-essential and do not remove this fallback.

@@ -13,7 +13,6 @@
   <a href="#what-i-built">What I Built</a> •
   <a href="#live-demo">Live Demo</a> •
   <a href="#screenshots">Screenshots</a> •
-  <a href="#design-system-showcase">Design System</a> •
   <a href="#technical-approach">Technical Approach</a> •
   <a href="#architecture">Architecture</a> •
   <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •
@@ -21,7 +20,7 @@
   <a href="docs/implementation/website-onboarding.md">Website Onboarding</a> •
   <a href="docs/implementation/decap-cms.md">Decap CMS Guide</a> •
   <a href="DESIGN.md">Design Contract</a> •
-  <a href="docs/design-system.md">Design System Guide</a> •
+  <a href="docs/design-system.md">Design System</a> •
   <a href="docs/design/token-reference.md">Tokens & Components</a> •
   <a href="docs/design/pixel-sampling.md">Pixel Sampling</a> •
   <a href="docs/design/stitch-workflow.md">Google Stitch Workflow</a> •
@@ -74,13 +73,11 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 
 ## Design System Showcase
 
-The interface is built around a phosphorescent circuit-board visual language: near-black surfaces, signal-green interaction, geometric display type, monospace system labels, controlled optical glow and a distinctive chromatic 404 state.
+The interface uses a phosphorescent circuit-board visual language: near-black surfaces, signal-green interaction, geometric display typography, monospace operational labels, controlled optical glow and a distinctive chromatic 404 state.
 
 <p align="center">
   <img src="docs/design/visual-atlas.svg" alt="AKTOps visual atlas showing the source palette, typography, buttons, cards, glow layers, circuit trace and 404 chromatic treatment" width="100%">
 </p>
-
-The atlas is a visual index of the **source-defined** design tokens and components. It is paired with a deeper reference so design exploration in Google Stitch and implementation/review in OpenCode use the same evidence.
 
 | Design reference | What it contains |
 |---|---|
@@ -91,7 +88,7 @@ The atlas is a visual index of the **source-defined** design tokens and componen
 | [OpenCode design skill](.opencode/skills/aktops-design/SKILL.md) | Repository-aware design implementation instructions |
 | [Canonical design contract](DESIGN.md) | Original design intent and token specification |
 
-**Sampling note:** the atlas displays exact values declared in the design contract and CSS. It is not presented as a screenshot-derived pixel histogram. The two existing screenshot payloads currently have JPEG signatures despite their `.png` filenames; the sampling guide records this and defines the follow-up checks.
+**Sampling note:** the atlas visualises exact values declared in the design contract and CSS. It is not presented as a screenshot-derived pixel histogram. The sampling guide records that the current `screenshots/hero.png` and `screenshots/tip.png` payloads have JPEG signatures despite their `.png` filenames.
 
 ---
 

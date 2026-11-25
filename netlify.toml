@@ -1,5 +1,5 @@
 # ─── Build & deploy ───────────────────────────────────────────
-# AKcloud is a pure static site — no build step required.
+# AKTOps site — pure static deployment, no build step required.
 # Netlify will serve the repo root as-is.
 
 [build]
@@ -60,10 +60,10 @@
 # [context.production.environment]
 #   RESEND_API_KEY = "re_xxx"
 #   ODOO_URL       = "https://your-sovereign-odoo.example.com"
-#   ODOO_DB        = "akcloud"
-#   ODOO_USER      = "api@akcloud.example.com"
+#   ODOO_DB        = "aktops"
+#   ODOO_USER      = "api@aktops.example.com"
 #   ODOO_API_KEY   = "xxx"
-#   NOTIFY_EMAIL   = "you@akcloud.example.com"
+#   NOTIFY_EMAIL   = "you@aktops.example.com"
 
 # ─── Functions ─────────────────────────────────────────────────
 [functions]

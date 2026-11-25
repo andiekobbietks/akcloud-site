@@ -1,0 +1,42 @@
+backend:
+  name: github
+  repo: andiekobbietks/akcloud-site
+  branch: master
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+site_url: https://akcloud.netlify.app
+display_url: https://akcloud.netlify.app
+logo_url: /assets/ak-mark2.png
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+publish_mode: editorial_workflow
+collections:
+  - name: "site"
+    label: "Website content"
+    files:
+      - name: "homepage"
+        label: "Homepage"
+        file: "content/homepage.json"
+        format: "json"
+        fields:
+          - { label: "Browser title", name: "title", widget: "string" }
+          - { label: "Meta description", name: "description", widget: "text" }
+          - { label: "Hero eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Hero tagline", name: "hero_tagline", widget: "text" }
+          - { label: "About eyebrow", name: "about_eyebrow", widget: "string" }
+          - { label: "About heading", name: "about_heading", widget: "string" }
+          - { label: "About description", name: "about_description", widget: "text" }
+  - name: "posts"
+    label: "Insights"
+    label_singular: "Insight"
+    folder: "content/insights"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish date", name: "date", widget: "datetime" }
+      - { label: "Summary", name: "description", widget: "text" }
+      - { label: "Featured image", name: "thumbnail", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }

@@ -35,7 +35,7 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 | **Interactive Glossary** | Hover/tap tooltips explaining cloud terminology (MSP, sovereign, hyperscaler, etc.): accessibility-first |
 | **Onboarding Form** | Netlify Forms consultation request with name, work email, organisation, service area and optional context |
 | **Appointment Booking** | Uses a validated HTTPS `BOOKING_URL` only when configured; otherwise offers the onboarding request form. Odoo Community 19 via Elestio BYOVM on OCI remains planned |
-| **Admin Panel** | Disabled and removed during security remediation; replacement requires server-side authentication |
+| **Content Management** | Decap CMS at `/admin/`, GitHub-backed editorial workflow, editable homepage copy and Markdown insights; OAuth setup required |
 | **Security** | Legacy admin and booking endpoints removed; remediation merged and deployment workflow successful |
 
 ---

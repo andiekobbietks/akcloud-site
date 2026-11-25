@@ -8,12 +8,12 @@
   # command = "npm run build"
 
 # ─── Redirects ─────────────────────────────────────────────────
-# Pretty URLs and the admin route.
+# Pretty URLs. Decap CMS is served from /admin/index.html.
 
 [[redirects]]
   from = "/admin"
-  to   = "/admin.html"
-  status = 200
+  to   = "/admin/"
+  status = 301
 
 # Force HTTPS (Netlify does this by default; this is belt-and-braces)
 [[redirects]]

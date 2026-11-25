@@ -43,7 +43,7 @@ The website contained an authentication flow implemented entirely in browser Jav
 
 The admin UI persisted Odoo URL, database, user and API-key configuration in `localStorage`. Browser storage is accessible to same-origin JavaScript and can be exposed by XSS, malicious extensions or shared-device access. It is not suitable for privileged server credentials.
 
-**Remediation on branch:** removed the admin page. Do not reintroduce browser-side Odoo API keys or database credentials. Store service credentials only in protected server-side secret configuration and use least-privilege accounts.
+**Remediation merged into `master`:** removed the admin page. Do not reintroduce browser-side Odoo API keys or database credentials. Store service credentials only in protected server-side secret configuration and use least-privilege accounts.
 
 ### SEC-03: Public XML-RPC booking function lacked application-level caller authentication
 
@@ -52,7 +52,7 @@ The admin UI persisted Odoo URL, database, user and API-key configuration in `lo
 
 The function accepted POST requests, read Odoo credentials from environment variables and then created/located contacts and created calendar events. The incoming request did not require an authenticated caller, and the implementation did not enforce booking-specific permissions, rate limits or a safe booking lifecycle. If its Odoo environment variables were configured, an unauthenticated caller could invoke privileged server-side operations.
 
-**Remediation on branch:** removed the legacy function. The new booking path must use Odoo server-side business logic with explicit public permissions, validation, transactional availability checks, rate limits and abuse monitoring.
+**Remediation merged into `master`:** removed the legacy function. The new booking path must use Odoo server-side business logic with explicit public permissions, validation, transactional availability checks, rate limits and abuse monitoring.
 
 ### SEC-04: Administrative Netlify functions had Basic-auth-only protection
 
@@ -61,7 +61,7 @@ The function accepted POST requests, read Odoo credentials from environment vari
 
 The functions compared a Basic Authorization header against environment-configured credentials. The reviewed code did not implement rate limiting, lockout, session lifecycle or a second factor. The browser admin page also kept credentials in local storage.
 
-**Remediation on branch:** removed both functions with the legacy admin page. If a future admin API is needed, use a server-validated identity/session provider, scoped authorisation, CSRF protection, audit events and rate limiting. Do not recreate this Basic-auth/local-storage pattern.
+**Remediation merged into `master`:** removed both functions with the legacy admin page. If a future admin API is needed, use a server-validated identity/session provider, scoped authorisation, CSRF protection, audit events and rate limiting. Do not recreate this Basic-auth/local-storage pattern.
 
 ### SEC-05: Signup notifications logged personal data and forwarded network metadata
 
@@ -72,7 +72,7 @@ The function logged email, company, topic, source, forwarded IP and user-agent i
 
 The function also interpolated user-submitted values into HTML email without escaping, creating an HTML injection risk in notification content.
 
-**Remediation on branch:** logs now retain only receipt timestamp and sanitised form name; user-controlled email/company/topic/source values are escaped before HTML insertion and control characters are stripped. The merged deploy workflow completed successfully; live notification testing and retention-setting review remain outstanding.
+**Remediation merged into `master`:** logs now retain only receipt timestamp and sanitised form name; user-controlled email/company/topic/source values are escaped before HTML insertion and control characters are stripped. The merged deploy workflow completed successfully; live notification testing and retention-setting review remain outstanding.
 
 ### SEC-06: Public repository history retains removed legacy code
 

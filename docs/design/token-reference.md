@@ -153,8 +153,10 @@ The repository contains both a formal `DESIGN.md` and a live implementation. The
 3. `DESIGN.md` says glow should be reserved for interactive/key brand elements, but current section eyebrow and countdown text also glow.
 4. `DESIGN.md` says green should never be a background fill, but the primary CTA and 404 return button are green filled. The working UI is the stronger evidence for those existing components.
 5. `DESIGN.md` says traditional box shadows are not used, but current card hover, tooltip and button styles use box shadows. These are functional optical treatments, not a consistent absence of shadows.
-6. The formal spec describes a 48px circuit background grid; the live page also contains a subtle circuit pattern treatment. Confirm the exact production implementation before changing it.
-7. The root `DESIGN.md` and `uploads/DESIGN.md` are near-duplicates with different names/descriptions. Treat the root file as the canonical design contract; do not edit the CMS upload copy as if it were a production token source.
+6. The formal spec describes a 48px circuit background grid at 3% green opacity. The live splash uses 3%; the persistent page background uses 2.5%. The landing hero and splash also use radial green gradients, despite the formal spec's general prohibition on decorative background gradients. Preserve these as existing exceptions unless a deliberate visual decision changes them.
+7. The formal spec describes the service-card corner bracket as expanding from 40×40px to 80×80px. The live CSS starts at 38×38px and expands the pseudo-element to the full card dimensions plus 2px.
+8. Logo assets use a separate `rgba(80,200,70,0.35–0.42)` drop-shadow treatment. Do not silently replace it with the signal-green token.
+9. The root `DESIGN.md` and `uploads/DESIGN.md` are near-duplicates with different names/descriptions. Treat the root file as the canonical design contract; do not edit the CMS upload copy as if it were a production token source.
 
 Resolve these contradictions deliberately in a future design decision record. Do not change visual behaviour merely to make code match a prose specification.
 

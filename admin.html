@@ -650,7 +650,7 @@
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href = url;
-    a.download = 'akcloud-waitlist-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.download = 'aktops-waitlist-' + new Date().toISOString().slice(0,10) + '.csv';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     URL.revokeObjectURL(url);
     toast('CSV downloaded — ' + list.length + ' email' + (list.length !== 1 ? 's' : ''));

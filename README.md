@@ -93,26 +93,27 @@ The service needed a professional landing page that:
 ## Architecture
 
 ```
-Visitor
+Visitor / staff
   |
   v
 AKTOps website (Netlify static HTML/CSS/JS)
-  |  booking link
+  | HTTPS booking link
   v
 booking.aktops.co.uk
   |
   v
-OCI edge / HTTPS reverse proxy
-  |
+Elestio-managed Odoo Community 19 service
+  | BYOVM management connection
   v
-Dedicated LXD guest: Odoo 19 Community
+OCI Compute VM (AKTOps tenancy)
   |                         |
   |                         +--> PostgreSQL (private only)
   |
+  +--> Odoo filestore (persistent)
   +--> independently authored AKTOps booking addon (planned)
 ```
 
-The booking service is a separate OCI-hosted application. The current website booking link still points to the legacy Odoo Online URL until the new service is deployed and verified.
+The booking service is a separate application running on AKTOps-owned OCI infrastructure and managed through Elestio BYOVM. The current website booking link still points to the legacy Odoo Online URL until the new service is deployed and verified.
 
 ---
 

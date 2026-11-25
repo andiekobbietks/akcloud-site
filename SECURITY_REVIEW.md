@@ -16,10 +16,10 @@ No hard-coded production API key, private key or cloud credential value was conf
 
 - Enumerated the 37 commits reachable from `master` at the review SHA.
 - Confirmed the history consists of the 32-commit pre-documentation chain, four Odoo documentation commits and the merge commit.
-- Reviewed per-commit changed-file metadata and patches across the 37 commits.
+- Enumerated all 37 commit entries and reviewed their changed-file inventories and relevant diff sections.
 - Read the current high-risk files in full, including `index.html`, `admin.html`, `netlify/functions/save-config.js`, `get-waitlist.js`, `submit-booking.js` and `notify-signup.js`.
 - Checked repository branches and pull-request state.
-- This was a manual source review, not a penetration test, production configuration audit or automated secret scan of every historical blob.
+- This was a manual source review. The review covered all 37 commit entries, but it was not a line-by-line legal provenance review of every asset, a penetration test, a production configuration audit or an automated secret scan of every historical blob.
 
 The repository is public. The preserved `backup/pre-conventional-commit-history-2026-11-25` branch retains the original 32-commit chain. The Odoo documentation feature branch is also preserved.
 

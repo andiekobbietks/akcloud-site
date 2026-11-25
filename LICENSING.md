@@ -7,7 +7,7 @@
 
 ## Executive result
 
-<badge>Action required</badge> **The repository does not currently declare a repository-wide licence.** GitHub reports no detected repository licence and no root `LICENSE` file was present in the reviewed tree. Do not describe the repository as MIT, Apache-2.0, open source or otherwise permissively licensed until the owner deliberately selects and adds a licence.
+**Action required:** the repository does not currently declare a repository-wide licence. GitHub reports no detected repository licence and no root `LICENSE` file was present in the reviewed tree. Do not describe the repository as MIT, Apache-2.0, open source or otherwise permissively licensed until the owner deliberately selects and adds a licence.
 
 A public GitHub repository is not automatically an open-source grant. In the absence of an explicit licence, ordinary copyright restrictions continue to apply.
 

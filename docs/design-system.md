@@ -1,6 +1,6 @@
 # AKTOps visual system
 
-**Status:** documented from the current website source; not yet extracted into shared CSS tokens.
+**Status:** documented from the current website source; tokens are catalogued but not yet extracted into shared CSS variables.
 
 This document records the existing visual language so design work in Google Stitch and implementation work in OpenCode converge on the same product. It is not permission to redesign the brand or replace working UI.
 
@@ -19,15 +19,16 @@ The visual identity should feel:
 When sources disagree, use this order:
 
 1. Existing production UI and its current CSS, unless a verified defect is being corrected.
-2. This document's recorded values, checked against source before changing them.
-3. Approved Google Stitch screens and annotations for the specific task.
-4. New proposals explicitly labelled as proposals.
+2. The root `DESIGN.md` as the canonical intended design contract.
+3. The detailed evidence-led inventory in [token-reference.md](design/token-reference.md).
+4. Approved Google Stitch screens and annotations for the specific task.
+5. New proposals explicitly labelled as proposals.
 
-Do not infer a new brand palette from a single screenshot. Do not silently replace existing copy, assets, layout or interaction behaviour.
+Do not infer a new brand palette from a single screenshot. Do not silently replace existing copy, assets, layout or interaction behaviour. `uploads/DESIGN.md` is a near-duplicate CMS/upload copy, not the canonical design contract.
 
 ## 3. Current visual tokens observed in source
 
-These are observed values, not a newly invented palette. They currently appear as literals in `index.html` and `404.html`; they have not yet been centralised in a token file.
+These are observed values, not a newly invented palette. They currently appear as literals in `index.html`, `404.html` and the root `DESIGN.md`; they have not yet been centralised in a token file.
 
 | Token | Current value | Role |
 |---|---|---|
@@ -36,11 +37,13 @@ These are observed values, not a newly invented palette. They currently appear a
 | Surface elevated | `#191919` | Tooltip / secondary surface |
 | Border | `#242424` | Dividers and component outlines |
 | Signal green | `#39FF14` | Primary accent, actions, active states |
+| Signal dim | `#1FCC00` | Defined pressed/active variant |
+| Signal tint | `rgba(57,255,20,0.12)` | Subtle tinted state |
 | Text primary | `#FFFFFF` | Headings and high-emphasis text |
 | Text body | `#C8C8C8` | Main readable copy |
 | Text muted | `#787878` | Supporting copy |
 | Text subdued | `#3A3A3A` | Metadata and placeholders |
-| Error accent | `#FF5555` | Glitch/error chromatic offset |
+| Error accent | `#FF5555` | 404 glitch/chromatic offset |
 
 ### Typography
 
@@ -89,7 +92,19 @@ The current `404.html` uses text shadows, layered button box shadows and green/r
 - **Errors:** concise explanation, clear recovery action and no blame; the 404's "Return to Base" is the reference voice.
 - **Forms:** dark fields with visible borders; green focus indicator must remain obvious without relying on glow alone.
 
-## 6. Accessibility and responsive constraints
+The full component inventory, including navigation, cards, perk cards, glossary terms/tooltips, booking modal, form controls, countdown, status shimmer and 404 state, is in [token-reference.md](design/token-reference.md).
+
+## 6. Visual atlas and pixel sampling
+
+![AKTOps visual design atlas](design/visual-atlas.svg)
+
+The [visual atlas](design/visual-atlas.svg) makes the source-defined palette, typography roles, component specimens, glow ladder, circuit trace and 404 treatment visible in one zoomable reference.
+
+The atlas is deliberately labelled as a source-token visualisation. It is not a screenshot-derived colour histogram. For reproducible raster measurements, use the [pixel sampling protocol](design/pixel-sampling.md). That protocol records file signatures, hashes, dimensions, sample coordinates and colour values, and distinguishes flat token colours from glow/compositing artefacts.
+
+The current repository screenshot files named `screenshots/hero.png` and `screenshots/tip.png` have JPEG signatures despite their `.png` extensions. Treat this as asset-format hygiene debt and verify all references before any rename or conversion.
+
+## 7. Accessibility and responsive constraints
 
 - Maintain WCAG AA contrast for normal text wherever possible; do not assume neon green on black is sufficient at every font size and weight. Verify actual foreground/background pairs.
 - Focus states must be visible for keyboard users and not depend only on hover.
@@ -98,7 +113,9 @@ The current `404.html` uses text shadows, layered button box shadows and green/r
 - Do not use hover-only interactions for essential controls.
 - Avoid blur effects that make underlying content difficult to understand or increase motion sensitivity.
 
-## 7. Google Stitch → OpenCode workflow
+The token reference records current breakpoints and animation names/durations observed in `index.html`.
+
+## 8. Google Stitch → OpenCode workflow
 
 Google Stitch is the visual exploration and screen-design environment. OpenCode is the repository-aware implementation and verification agent. Treat the Stitch output as a design proposal, not as automatically production-ready code.
 
@@ -106,7 +123,7 @@ Google Stitch is the visual exploration and screen-design environment. OpenCode 
 
 Give Stitch:
 - The relevant current screenshot(s) and page context.
-- The token table above.
+- The token reference and visual atlas.
 - The type roles and component rules.
 - The user journey and the job the screen must accomplish.
 - Explicit "preserve" constraints (brand, copy, routes, form behaviour, accessibility).
@@ -136,7 +153,7 @@ Ask Stitch to explore the requested screen or state only. Ask for desktop and mo
 - [ ] Assets and export rights/licences checked
 - [ ] OpenCode implementation reviewed against the approved design
 
-## 8. Change control
+## 9. Change control
 
 Before changing a token, record:
 - Existing value and where it is used.
@@ -148,11 +165,21 @@ Before changing a token, record:
 
 A visual change is not complete because it looks good in Stitch. It is complete when the implemented page, responsive states, accessibility behaviour and actual interactions have been checked.
 
-## 9. Current technical debt
+## 10. Current technical debt
 
 - Colour, typography and shadow values are duplicated as CSS literals in `index.html` and `404.html`.
 - The 404 has its own inline stylesheet.
 - A shared token stylesheet has been proposed but is not yet implemented.
+- Root `DESIGN.md` and `uploads/DESIGN.md` are near-duplicates and should be kept distinct until the CMS asset's intended purpose is confirmed.
 - Stitch-to-repository hand-off is a documented human-reviewed process; no automatic Stitch synchronisation is assumed.
+- Raster pixel sampling and live-browser screenshot comparison remain follow-up work; source-token swatches are not a substitute.
 
 Recommended next engineering step: extract verified shared values into `assets/css/tokens.css` and import it from both pages, but do this as a separate refactor with visual regression checks. Do not combine token extraction with an unrelated redesign.
+
+## Reference files
+
+- [Detailed token and component reference](design/token-reference.md)
+- [Visual atlas SVG](design/visual-atlas.svg)
+- [Pixel and colour sampling protocol](design/pixel-sampling.md)
+- [Google Stitch workflow](design/stitch-workflow.md)
+- [Canonical design contract](../DESIGN.md)

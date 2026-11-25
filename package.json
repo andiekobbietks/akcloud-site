@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "netlify dev",
     "build": "npm test",
-    "test": "node --test",
+    "test": "node --test tests/site.test.js",
     "test:ui": "playwright test",
     "test:ui:headed": "playwright test --headed",
     "test:visual": "playwright test tests/ui/visual-capture.spec.js",

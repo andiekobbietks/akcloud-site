@@ -18,7 +18,8 @@
   <a href="docs/architecture/odoo-community-oci-booking.md">Odoo Architecture</a> •
   <a href="docs/implementation/elestio-byovm-oci-runbook.md">Elestio BYOVM Runbook</a> •
   <a href="docs/implementation/website-onboarding.md">Website Onboarding</a> •
-  <a href="docs/implementation/decap-cms.md">Decap CMS Guide</a> •\n  <a href="docs/implementation/cli-operations-runbook.md">CLI Operations Runbook</a> •
+  <a href="docs/implementation/decap-cms.md">Decap CMS Guide</a> •
+  <a href="docs/implementation/cli-operations-runbook.md">CLI Operations Runbook</a> •
   <a href="docs/implementation/odoo-community-oci-booking-plan.md">Implementation Plan</a> •
   <a href="LICENSING.md">Licensing</a> •
   <a href="SECURITY_REVIEW.md">Security Review</a>

@@ -34,7 +34,7 @@ A service website and client-acquisition pipeline for AKTOps, covering IT operat
 | **Email Waitlist** | Netlify Forms with webhook processing → Resend email notifications → Slack/Discord alerts |
 | **Appointment Booking** | Current site opens a configured external booking URL; migration to Odoo Community on OCI is planned and documented |
 | **Admin Panel** | Disabled and removed during security remediation; replacement requires server-side authentication |
-| **Security** | Security review and remediation are documented; deployment verification remains outstanding |
+| **Security** | Legacy admin and booking endpoints removed; remediation merged and deployment workflow successful |
 
 ---
 
@@ -71,7 +71,7 @@ The service needed a professional landing page that:
 3. **Keeps client data sovereign**: not trapped in SaaS platforms
 4. **Works without JavaScript frameworks** or build pipelines
 
-**Current state:** The static site and lead-notification function are in place. The OCI-hosted Odoo Community booking service is a planned integration and is not yet represented as a live production booking system. Legacy admin and XML-RPC endpoints have been removed on the security remediation branch; that branch still needs review and deployment.
+**Current state:** The static site and lead-notification function are in place. The OCI-hosted Odoo Community booking service is a planned integration and is not yet represented as a live production booking system. Legacy admin and XML-RPC endpoints have been removed in the merged remediation. GitHub Actions build/deploy completed successfully; live route smoke tests and environment-variable review remain outstanding.
 
 ---
 

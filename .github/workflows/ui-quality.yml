@@ -35,7 +35,7 @@ jobs:
         run: npm test
 
       - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium firefox webkit
 
       - name: Run UI, interaction, responsive and accessibility tests
         run: npx playwright test

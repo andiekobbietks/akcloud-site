@@ -1,8 +1,8 @@
 ---
 version: alpha
-name: AndieKobbieTech Solutions
+name: AKTOps
 description: >
-  Phosphorescent circuit board aesthetic for a UK sovereign cloud architect
+  Phosphorescent circuit-board identity for an IT operations, cloud infrastructure and DevSecOps practice
   and Microsoft Solutions Partner consultant. Dark matter surfaces with
   fluorescent neon green electrical charge running through every interaction.
 
@@ -139,9 +139,9 @@ components:
 
 Phosphorescent circuit board meets sovereign infrastructure.
 
-AndieKobbieTech Solutions is the technical authority for UK organisations
-navigating Microsoft's partner ecosystem, hybrid cloud architecture, and
-digital sovereignty. The UI should feel like being inside the infrastructure
+AKTOps is an IT operations, cloud infrastructure and DevSecOps service identity
+under Andrea Kwabena Technologies. It supports UK organisations with practical
+infrastructure management, automation, cloud operations and secure digital services. The UI should feel like being inside the infrastructure
 itself — dark matter with electrical charge escaping through the traces.
 
 The fluorescent green (`#39FF14`) is not decorative. It is the charge carrier.

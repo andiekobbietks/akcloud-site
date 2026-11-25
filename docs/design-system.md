@@ -165,7 +165,13 @@ Before changing a token, record:
 
 A visual change is not complete because it looks good in Stitch. It is complete when the implemented page, responsive states, accessibility behaviour and actual interactions have been checked.
 
-## 10. Current technical debt
+## 10. Continuous visual assurance
+
+The repository now includes Playwright browser checks and GitHub Actions workflows for rendered design-token assertions, responsive layouts, onboarding and glossary interactions, Decap fallback, 404 behaviour, reduced motion, axe-core accessibility scans and screenshot evidence. See [Visual assurance CI/CD](engineering/visual-assurance-ci.md) for coverage, local commands, artifacts and baseline policy.
+
+Screenshots are captured and retained as reviewable artifacts. Pixel-diff baselines are deliberately not enabled until fresh current-brand screenshots are approved; the historical AKCloud images are not valid baselines.
+
+## 11. Current technical debt
 
 - Colour, typography and shadow values are duplicated as CSS literals in `index.html` and `404.html`.
 - The 404 has its own inline stylesheet.
@@ -177,6 +183,8 @@ A visual change is not complete because it looks good in Stitch. It is complete 
 Recommended next engineering step: extract verified shared values into `assets/css/tokens.css` and import it from both pages, but do this as a separate refactor with visual regression checks. Do not combine token extraction with an unrelated redesign.
 
 ## Reference files
+
+- [Visual assurance CI/CD](engineering/visual-assurance-ci.md)
 
 - [Detailed token and component reference](design/token-reference.md)
 - [Visual atlas SVG](design/visual-atlas.svg)
